@@ -1,0 +1,193 @@
+/*
+==============
+Main Scss styling
+==============
+*/
+@import "_variables.scss";
+@import "placeholder";
+
+//Login Page
+body{
+  .main-container{
+    margin:0;
+    padding:0;
+  }
+}
+.left-part-login{
+  background-color: #A9ABA7;
+  width: 50%;
+  height: 100%;
+  position:fixed;
+  @extend %box-shadow;
+  .left-inside{
+    @extend %box-shadow;
+    margin-top: 15%;
+    height: 500px;
+    background: url("../img/paper.jpg");
+    padding: 0;
+    z-index: 1;
+    font-weight: 600;
+    border-radius: 10px 0 0 10px;
+    .overlay-inside{
+      position:absolute;
+      background-color: #55595D;
+      opacity: 0.9;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px 0 0 10px;
+    }
+    .upper-part{
+      color:#ffffff;
+      z-index: 5;
+      padding: 80px 80px 80px 80px;
+      .logo-icon{
+        font-size: 95px;
+      }
+      h1{
+        padding: 15px 16px;
+        font-weight: 800;
+        font-size: 62px;
+      }
+      h3,h2,h5{
+        font-weight: 600;
+        color: #999999;
+      }
+      .divider-login{
+        border-color: #999999;
+      }
+    }
+  }
+}
+.right-part-login{
+  width: 50%;
+  height: 100%;
+  left:50%;
+  position:fixed;
+  background-color: #E3E5DF;
+  .right-inside{
+    @extend %box-shadow;
+    border-radius: 0 10px 10px 0;
+    margin-top: 15%;
+    height: 500px;
+    background-color: #FFFFFF;
+    padding-top: 100px;
+    padding-left: 60px;
+    p{
+      color: #D8D8D8;
+      width: 300px;
+      margin-bottom: 60px;
+    }
+    .input-group{
+      height: 50px;
+      .help-block{
+        margin-top: 50px;
+        background-color: #636b6f;
+        color: #FFFFFF;
+        padding: 5px 5px;
+        font-size: 12px;
+        border-radius: 10px;
+        &:before{
+          content: "";
+          width: 0;
+          left: 20px;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-bottom: 10px solid #636b6f;
+          position: absolute;
+          top: 95px;
+        }
+      }
+      .input-icon{
+        color: #999999;
+        position:absolute;
+        margin-top: 10px;
+        margin-left: 10px;
+        font-size: 18px;
+        padding-right: 5px;
+        border-right: 1px solid #999999;
+      }
+    }
+    input{
+      outline-color: #000000;
+      @extend %box-shadow;
+      padding: 10px 40px;
+      border-radius: 55px;
+      font-family: 'Cutive Mono', monospace;
+      font-size: 15px;
+      font-weight: bold;
+      color: #000000;
+      width: 300px;
+      margin-bottom: 10px;
+      background: transparent;
+      border: 1px solid #D7D7D7;
+      &:focus{
+        border: 1px solid #505558;
+      }
+    }
+    .btn-login{
+      border-radius: 55px;
+      @extend %box-shadow;
+      width: 150px;
+      background-color: lime;
+      margin-top: 20px;
+      outline:none;
+      border: none;
+      height: 50px;
+    }
+  }
+  .forgot-password-link{
+    position: absolute;
+    bottom: 20px;
+    font-size: 12px;
+    color: #505558;
+  }
+}
+
+/*
+=================================
+Actual Site Development Begins
+=================================
+*/
+
+/*Navbar Customization*/
+.main-body{
+  padding-top: 70px;
+  padding-left: 30px;
+}
+a{
+  color: $secondary-link-color;
+  &:hover,
+  &:active,
+  &:focus{
+    background:transparent;
+    text-decoration: none;
+    color: $primary-link-color;
+  }
+}
+.main-nav{
+  background-color: $navbar-default-bg;
+  .username-text{
+    color: #FFFFFF;
+    font-weight: bold;
+  }
+}
+
+.sidenav{
+  position: fixed;
+  left: 0;
+  height: 100%;
+  top: 55px;
+  width:300px;
+  background-color: $sidenav-default-bg;
+  li,a{
+    color: $sidenav-font-color;
+    &:hover{
+      background: none;
+    }
+    .active{
+      background-color: #999999;
+    }
+  }
+}
