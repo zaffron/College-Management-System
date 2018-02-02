@@ -21,15 +21,25 @@ Route::get('/', function () {
 /*Auth Controller*/
 Auth::routes();
 
- Route::post('admin_login','App\Http\Controllers\Auth\LoginController@login');
- Route::get('admin_login','App\Http\Controllers\Auth\LoginController@showLoginForm');
- Route::post('admin_logout','App\Http\Controllers\Auth\LoginController@logout');
+/*User Controllers*/
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+Route::get('/dashboard', 'HomeController@index')->middleware('auth');
+
+/*Admin Routes*/
+Route::prefix('admin')->group(function(){
+	Route::post('/login','Auth\AdminLoginController@login')->name('admin.login.submit');
+	Route::get('/login','Auth\AdminLoginController@showLoginForm')->name('admin.login');
+	Route::get('/', 'AdminController@index')->name('admin.dashboard');
+});
+ 
+
+/* Route::post('admin_logout','App\Http\Controllers\Auth\AdminController@logout');
  Route::post('admin_password/email','App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail');
  Route::post('admin_password/reset','App\Http\Controllers\Auth\ResetPasswordController@reset');
  Route::get('admin_password/reset','App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm');
  Route::get('admin_password/reset/{token}','App\Http\Controllers\Auth\ResetPasswordController@showResetForm');
 Route::get('admin_register','App\Http\Controllers\Auth\RegisterController@showRegistrationForm');
-Route::post('admin_register','App\Http\Controllers\Auth\RegisterController@register');
+Route::post('admin_register','App\Http\Controllers\Auth\RegisterController@register');*/
 
 
 
@@ -45,8 +55,4 @@ Route::group(['middleware' => 'auth'], function()
 Route::get('protected', ['middleware' => ['auth','admin'],function(){
 }]);
 
-/*Get Controllers*/
-Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
-Route::get('/dashboard', 'HomeController@index')->middleware('auth');
 
-Route::get('/admin_home', 'AdminHomeController@index');
