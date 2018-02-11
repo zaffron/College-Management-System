@@ -53,19 +53,19 @@
                     <h6 class="dropdown-header">New Messages:</h6>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">
-                        <strong>David Miller</strong>
+                        <strong>Bina</strong>
                         <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">Hey there! This new version of SB Admin is pretty awesome! These messages clip off when they reach the end of the box so they don't overflow over to the sides!</div>
+                        <div class="dropdown-message small">Hey there! This new version of cms is pretty awesome! These messages clip off when they reach the end of the box so they don't overflow over to the sides!</div>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">
-                        <strong>Jane Smith</strong>
+                        <strong>Avi</strong>
                         <span class="small float-right text-muted">11:21 AM</span>
                         <div class="dropdown-message small">I was wondering if you could meet for an appointment at 3:00 instead of 4:00. Thanks!</div>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">
-                        <strong>John Doe</strong>
+                        <strong>Rajest</strong>
                         <span class="small float-right text-muted">11:21 AM</span>
                         <div class="dropdown-message small">I've sent the final files over to you for review. When you're able to sign off of them let me know and we can discuss distribution.</div>
                     </a>

@@ -33,12 +33,12 @@
         <div class="right-part-login">
             <div class="col-md-9 right-inside">
                 <p><strong>Please enter your username and password to login</strong></p>
-                @if($errors->has('username')||$errors->has('password'))
+                @if($errors->has('password') || $errors->has('username'))
                     <div class="alert alert-danger" role="alert">
-                        {{ $errors->first('username') }}
+                        These credentials do not match our records.
                     </div>
                 @endif
-                <form action="{{ route('admin.login') }}" method="POST" role="form">
+                <form action="{{ route('admin.submit') }}" method="POST" role="form">
                     {{ csrf_field() }}
                     <div class="input-group">
                         <label for="username" class="sr-only">Username</label>
@@ -49,6 +49,10 @@
                         <label for="password" class="sr-only">Password</label>
                         <i class="fas fa-key input-icon"></i>
                         <input type="password" name="password" placeholder="Password" class="login-input-box">
+                    </div>
+                    <div class="input-group">
+                        <input type="checkbox" value="remember" name="remember" style="outline:none;width:auto;">
+                        <label for="remember" style="margin-top: 7px;margin-left: 5px;">Remember</label>
                     </div>
                     <button class="btn btn-login">Login <i class="fas fa-arrow-right"></i> </button>
                 </form>

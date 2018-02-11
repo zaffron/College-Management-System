@@ -1,5 +1,5 @@
-@extends('layouts.layout')
+@extends('layouts.admin')
 
-@section('content')
-
+@section('js')
+    <script src="{{ asset('js/dashboard-charts.js') }}"></script>
 @endsection

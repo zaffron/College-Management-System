@@ -7,46 +7,52 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                <a class="nav-link" href="{{ route('home') }}">
+                <a class="nav-link" href="{{ route('admin.dashboard') }}">
                     <i class="fa fa-fw fa-dashboard"></i>
                     <span class="nav-link-text">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Attendance">
-                <a class="nav-link" href="{{ route('attendance.index') }}">
-                    <i class="fa fa-fw fa-book"></i>
-                    <span class="nav-link-text">Attendance</span>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Department">
+                <a class="nav-link" href="{{ route('department.index') }}">
+                    <i class="fa fa-fw fa-user-circle-o"></i>
+                    <span class="nav-link-text">Department Management</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Students">
-                <a class="nav-link" href="{{ route('student.index') }}">
-                    <i class="fa fa-fw fa-user-o"></i>
-                    <span class="nav-link-text">Students</span>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="User Management">
+                <a class="nav-link" href="{{ route('user.index') }}">
+                    <i class="fa fa-fw fa-user-circle-o"></i>
+                    <span class="nav-link-text">User Management</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Proctees">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Proctors Management">
                 <a class="nav-link" href="{{ route('proctor.index') }}">
-                    <i class="fa fa-fw fa-male"></i>
-                    <span class="nav-link-text">Proctees</span>
+                    <i class="fa fa-fw fa-user-o"></i>
+                    <span class="nav-link-text">Proctors Management</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Subjects">
-                <a class="nav-link" href="#">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Students Management">
+                <a class="nav-link" href="{{ route('student.index') }}">
+                    <i class="fa fa-fw fa-male"></i>
+                    <span class="nav-link-text">Students Managemenet</span>
+                </a>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Subjects Management">
+                <a class="nav-link" href="{{ route('subject.index') }}">
                     <i class="fa fa-fw fa-sticky-note-o"></i>
                     <span class="nav-link-text">Subjects</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Course">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Course Management">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-wrench"></i>
                     <span class="nav-link-text">Course</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseComponents">
                     <li>
-                        <a href="navbar.html">UG</a>
+                        <a href="#">UG</a>
                     </li>
                     <li>
-                        <a href="cards.html">PG</a>
+                        <a href="#">PG</a>
                     </li>
                 </ul>
             </li>
@@ -73,19 +79,19 @@
                     <h6 class="dropdown-header">New Messages:</h6>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">
-                        <strong>David Miller</strong>
+                        <strong>Bina</strong>
                         <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">Hey there! This new version of SB Admin is pretty awesome! These messages clip off when they reach the end of the box so they don't overflow over to the sides!</div>
+                        <div class="dropdown-message small">Hey there! This new version of cms is pretty awesome! These messages clip off when they reach the end of the box so they don't overflow over to the sides!</div>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">
-                        <strong>Jane Smith</strong>
+                        <strong>Avi</strong>
                         <span class="small float-right text-muted">11:21 AM</span>
                         <div class="dropdown-message small">I was wondering if you could meet for an appointment at 3:00 instead of 4:00. Thanks!</div>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">
-                        <strong>John Doe</strong>
+                        <strong>Rajest</strong>
                         <span class="small float-right text-muted">11:21 AM</span>
                         <div class="dropdown-message small">I've sent the final files over to you for review. When you're able to sign off of them let me know and we can discuss distribution.</div>
                     </a>
@@ -140,10 +146,10 @@
                 <a href="#" class="nav navbar-text">Welcome! Username Rijal</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="modal" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                <a class="nav-link" data-toggle="modal" href="{{ route('admin.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                     <i class="fa fa-fw fa-sign-out"></i>Logout</a>
             </li>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none">{{ csrf_field() }}</form>
+            <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display:none">{{ csrf_field() }}</form>
         </ul>
     </div>
 </nav>

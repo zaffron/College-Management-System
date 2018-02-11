@@ -10,7 +10,7 @@ class AdminLoginController extends Controller
 {
 	public function __construct()
 	{
-		$this->middleware('guest:admin');
+		$this->middleware('guest');
 	}
     public function showLoginForm()
     {
@@ -20,8 +20,8 @@ class AdminLoginController extends Controller
     {
     	//Validate the form data
     	$this->validate($request,[
-    		'username' => 'required|max:255',
-    		'password' => 'required|min:6',
+    		'username' => 'required',
+    		'password' => 'required',
     	]);
     	//Attempt to log the user in
     	if(Auth::guard('admin')->attempt(['username' => $request->username, 'password' => $request->password], $request->remember)){
@@ -29,6 +29,21 @@ class AdminLoginController extends Controller
 	    	return redirect()->intended(route('admin.dashboard'));
     	}
     	//If unsuccessfull, then redirect back to the login with the form data
-    	return redirect()->back()->withInput($request->only('username', 'remember'));
+    	return redirect()->back()->withInput($request->only('username', 'remember','errors'));
     }
+
+
+	/**
+	 * Log the user out of the application.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function logout(Request $request)
+	{
+		Auth::guard('admin')->logout();
+		$request->session()->flush();
+		$request->session()->regenerate();
+		return redirect()->guest(route( 'admin.login' ));
+	}
 }
