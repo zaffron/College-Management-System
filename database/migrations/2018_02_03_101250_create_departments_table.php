@@ -18,6 +18,7 @@ class CreateDepartmentsTable extends Migration
             $table->string('name')->unique();
             $table->text('description')->nullable();
             $table->integer('teachers_count')->default('0');
+            $table->integer('students_count')->default('0');
             $table->timestamps();
         });
     }

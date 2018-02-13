@@ -6,6 +6,7 @@ $(document).on('click', '.add-modal', function() {
     title = $(this).data('admin');
     if(title == "Admin") {
         addUrl = 'create';
+        $('.dept-row').hide();
     }else{
         addUrl = 'user';
     }
@@ -24,6 +25,7 @@ $('.modal-footer').on('click', '.add-user', function() {
             'email' : $('#email_add').val(),
             'password': $('#password_add').val(),
             'password_confirmation': $('#confirm_password_add').val(),
+            'department': $('#department_add').val(),
             'gender': $('#gender_add').val(),
         },
         success: function(data) {
@@ -58,7 +60,7 @@ $('.modal-footer').on('click', '.add-user', function() {
                     toastr.success('Successfully added Admin!', 'Success Alert', {timeOut: 5000});
                     adminCount += 1;
                     $('#adminCount').text(adminCount);
-                    $('#adminsTable').append("<tr class='item" + data.id + "'><td>" + data.id + "</td><td>" + data.username + "</td><td>" + data.email + "</td><td><button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.username + "' data-email='" + data.email + "'><span class='fa fa-eye'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.username + "'><span class='fa fa-trash'></span></button></td></tr>");
+                    $('#adminsTable').append("<tr class='item" + data.id + "'><td>" + data.id + "</td><td>" + data.username + "</td><td>" + data.email + "</td><td><button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-department='" + data.department + "' data-name='" + data.username + "' data-email='" + data.email + "'><span class='fa fa-eye'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.username + "'><span class='fa fa-trash'></span></button></td></tr>");
                 }else{
                     toastr.success('Successfully added User!', 'Success Alert', {timeOut: 5000});
                     userCount += 1;
@@ -72,13 +74,18 @@ $('.modal-footer').on('click', '.add-user', function() {
 
 // Show a user
 $(document).on('click', '.show-modal', function() {
+    title = $(this).data('admin');
     $('.modal-name').text('Show');
     $('#id_show').val($(this).data('id'));
     $('#name_show').val($(this).data('name'));
     $('#username_show').val($(this).data('username'));
     $('#email_show').val($(this).data('email'));
+    $('#department_show').val($(this).data('department'));
     $('#gender_show').val($(this).data('gender'));
     $('#showModal').modal('show');
+    if(title == "admin"){
+        $('.dept-row').hide();
+    }
 });
 
 
@@ -128,13 +135,21 @@ Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSyste
 Chart.defaults.global.defaultFontColor = '#292b2c';
 // -- Pie Chart User
 var ctx = document.getElementById("myPieChart");
+var colors = ['#007bff', '#dc3545', '#ffc107', '#28a745', '#FEFEFE', '#474758'];
+var useColors = new Array();
+
+for(i=0;i<departmentNames.length;i++)
+{
+    useColors.push(colors[i]);
+}
+
 var myPieChart = new Chart(ctx, {
     type: 'pie',
     data: {
-        labels: ["Blue", "Red", "Yellow", "Green"],
+        labels: departmentNames,
         datasets: [{
-            data: [12.21, 15.58, 11.25, 8.32],
-            backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+            data: dataValues,
+            backgroundColor: useColors,
         }],
     },
 });

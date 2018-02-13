@@ -15,7 +15,13 @@ class DepartmentTableSeeder extends Seeder
         $department = new Department();
         $department->name = "BCA";
         $department->description = "Bachelor of computer application";
-        $department->teachers_count = 15;
+        $department->teachers_count = 0;
         $department->save();
+
+        $department1 = new Department();
+        $department1->name = "MCA";
+        $department1->description = "Masters of computer application";
+        $department1->teachers_count = 0;
+        $department1->save();
     }
 }

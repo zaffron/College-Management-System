@@ -62,9 +62,9 @@
                             <td>{{ $admin->id }}</td>
                             <td>{{ $admin->username }}</td>
                             <td>{{ $admin->email }}</td>
-                            <td>
-                                <button class="show-modal btn btn-sm btn-success" data-id="{{$admin->id}}" data-email="{{ $admin->email }}" data-gender="{{ $admin->gender }}" data-name="{{$admin->name}}" data-username="{{$admin->username}}"><span class="fa fa-eye"></span></button>
-                                <button class="delete-modal btn btn-sm btn-danger" data-id="{{$admin->id}}" data-email="{{ $admin->email }}" data-gender="{{ $admin->gender }}" data-name="{{$admin->name}}" data-admin="admin" data-description="{{$admin->username}}"><span class="fa fa-trash"></span></button>
+                            <td class="col-md-1">
+                                <button class="show-modal btn btn-sm btn-success" data-admin="admin" data-id="{{$admin->id}}" data-email="{{ $admin->email }}" data-gender="{{ $admin->gender }}" data-name="{{$admin->name}}" data-username="{{$admin->username}}"><span class="fa fa-eye"></span></button>
+                                <button class="delete-modal btn btn-sm btn-danger" data-id="{{$admin->id}}" data-email="{{ $admin->email }}" data-gender="{{ $admin->gender }}" data-name="{{$admin->name}}"  data-username="{{$admin->username}}"><span class="fa fa-trash"></span></button>
                             </td>
                         </tr>
                     @endforeach
@@ -89,8 +89,8 @@
                             <td>{{$user->id}}</td>
                             <td>{{$user->username}}</td>
                             <td>{{$user->email }}</td>
-                            <td>
-                                <button class="show-modal btn btn-sm btn-success" data-id="{{$user->id}}" data-email="{{ $user->email }}" data-gender="{{ $user->gender }}" data-name="{{$user->name}}" data-username="{{$user->username}}"><span class="fa fa-eye"></span></button>
+                            <td class="col-md-1">
+                                <button class="show-modal btn btn-sm btn-success" data-admin="user" data-department="{{$user->department}}" data-id="{{$user->id}}" data-email="{{ $user->email }}" data-gender="{{ $user->gender }}" data-name="{{$user->name}}" data-username="{{$user->username}}"><span class="fa fa-eye"></span></button>
                                 <button class="delete-modal btn btn-sm btn-danger" data-id="{{$user->id}}" data-email="{{ $user->email }}" data-gender="{{ $user->gender }}" data-name="{{$user->name}}" data-username="{{$user->username}}"><span class="fa fa-trash"></span></button>
                             </td>
                         </tr>
@@ -104,7 +104,7 @@
 
             <div class="col-lg-4">
                 <div class="card mb-3">
-                    <div class="card-header">
+                    <div class="card-header text-center">
                         Operations
                     </div>
                     <div class="card-body">
@@ -116,7 +116,7 @@
                 </div>
                 <!--Pie Chart Card-->
                 <div class="card mb-3">
-                    <div class="card-header">
+                    <div class="card-header text-center">
                         <i class="fa fa-pie-chart"></i> User Chart </div>
                     <div class="card-body">
                         <canvas id="myPieChart" width="100%" height="150"></canvas>
@@ -126,166 +126,178 @@
         </div>
 
 
-        {{--All modals--}}
-    <!-- Modal form to add a user -->
-        <div id="addUserModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title modal-name"></h4>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group">
-                                <label for="username" class="control-label col-sm-2">Username:</label>
-                                <input type="text" class="form-control" id="username_add" autofocus required>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Name:</label>
-                                <input type="text" class="form-control" id="name_add"  required>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Email:</label>
-                                <input type="email" class="form-control" id="email_add"  required>
-                            </div>
-                            <div class="form-group">
-                                <label for="department" class="control-label col-sm-2">Department</label>
-                                <select name="department" id="department_add" class="form-control">
-                                    @forelse($departments as $department)
-                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                    @empty
-                                        <opton>No department</opton>
-                                    @endforelse
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="control-label col-sm-2">Password:</label>
-                                <input type="password" class="form-control" id="password_add"  required>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-6" for="confirm_password">Confirm Password:</label>
-                                <input type="password" class="form-control" id="confirm_password_add"  required>
-                            </div>
-                            <div class="form-group">
-                                <label for="gender" class="control-label col-sm-2">Gender:</label>
-                                <select name="gender" id="gender_add" class="form-control">
-                                    <option value="male" selected>Male</option>
-                                    <option value="female">Female</option>
-                                </select>
-                            </div>
-                        </form>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success add-user" data-dismiss="modal">
-                                <span class='fa fa-check'></span> Add
-                            </button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                <span class='fa fa-close'></span> Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal form to show a user -->
-        <div id="showModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title modal-name"></h4>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group">
-                                <label for="id" class="control-label col-sm-2">ID:</label>
-                                <input type="text" class="form-control" id="id_show" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="username" class="control-label col-sm-2">Username:</label>
-                                <input type="text" class="form-control" id="username_show" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Name:</label>
-                                <input type="text" class="form-control" id="name_show"  readonly>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="email">Email:</label>
-                                <input type="email" class="form-control" id="email_show"  readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="gender" class="control-label col-sm-2">Gender:</label>
-                                <input type="text" class="form-control" id="gender_show">
-                            </div>
-                        </form>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success add-user" data-dismiss="modal">
-                                <span class='fa fa-check'></span> Add
-                            </button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                <span class='fa fa-close'></span> Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal form to delete a user -->
-        <div id="deleteModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title"></h4>
-                        <button type="button" class="close" data-dismiss="modal">×</button>
-                    </div>
-                    <div class="modal-body">
-                        <h3 class="text-center">Are you sure you want to delete the following department?</h3>
-                        <br />
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="id">ID:</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control" id="id_delete" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="title">Name:</label>
-                                <div class="col-sm-12">
-                                    <input type="name" class="form-control" id="name_delete" disabled>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger delete" data-dismiss="modal">
-                                <span id="" class='fa fa-trash'></span> Delete
-                            </button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                <span class='fa fa-remove'></span> Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>{{--Models ends here--}}
-
-
-
-        <canvas id="myAreaChart" style="display:none;" ></canvas>
-        <canvas id="myBarChart" style="display:none;" ></canvas>
-
         <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded" href="#page-top">
             <i class="fa fa-angle-up"></i>
         </a>
+    </div>
+@endsection
+
+@section('modals')
+
+    {{--All modals--}}
+    <!-- Modal form to add a user -->
+    <div id="addUserModal" class="modal fade" role="dialog" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title modal-name"></h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="username" class="control-label col-sm-2">Username:</label>
+                            <input type="text" class="form-control" id="username_add" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="name">Name:</label>
+                            <input type="text" class="form-control" id="name_add"  required>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="name">Email:</label>
+                            <input type="email" class="form-control" id="email_add"  required>
+                        </div>
+                        <div class="form-group dept-row">
+                            <label for="department" class="control-label col-sm-2">Department</label>
+                            <select name="department" id="department_add" class="form-control">
+                                @forelse($departments as $department)
+                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                @empty
+                                    <opton>No department</opton>
+                                @endforelse
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="control-label col-sm-2">Password:</label>
+                            <input type="password" class="form-control" id="password_add"  required>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="confirm_password">Confirm Password:</label>
+                            <input type="password" class="form-control" id="confirm_password_add"  required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender" class="control-label col-sm-2">Gender:</label>
+                            <select name="gender" id="gender_add" class="form-control">
+                                <option value="male" selected>Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success add-user" data-dismiss="modal">
+                            <span class='fa fa-check'></span> Add
+                        </button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='fa fa-close'></span> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal form to show a user/admin -->
+    <div id="showModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title modal-name"></h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="id" class="control-label col-sm-2">ID:</label>
+                            <input type="text" class="form-control" id="id_show" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="control-label col-sm-2">Username:</label>
+                            <input type="text" class="form-control" id="username_show" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="name">Name:</label>
+                            <input type="text" class="form-control" id="name_show"  readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="email">Email:</label>
+                            <input type="email" class="form-control" id="email_show"  readonly>
+                        </div>
+                        <div class="form-group dept-row">
+                            <label for="department" class="control-label col-sm-2">Department:</label>
+                            <input type="text" class="form-control" id="department_show">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender" class="control-label col-sm-2">Gender:</label>
+                            <input type="text" class="form-control" id="gender_show">
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='fa fa-close'></span> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal form to delete a user -->
+    <div id="deleteModal" class="modal fade" role="dialog" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                    <h3 class="text-center">Are you sure you want to delete the following department?</h3>
+                    <br />
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="id">ID:</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="id_delete" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="title">Name:</label>
+                            <div class="col-sm-12">
+                                <input type="name" class="form-control" id="name_delete" disabled>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger delete" data-dismiss="modal">
+                            <span id="" class='fa fa-trash'></span> Delete
+                        </button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='fa fa-remove'></span> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>{{--Modals ends here--}}
 @endsection
 
 @section('js')
+    <script>
+        var departmentNames = [
+            @foreach($departments as $department)
+            " {{ $department->name }} ",
+            @endforeach
+        ];
+        var dataValues = [
+            @foreach($departments as $department)
+            " {{ $department->teachers_count }} ",
+            @endforeach
+        ];
+    </script>
             {{--For toaster notification--}}
             <script type="text/javascript" src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
             <script src="{{ asset('js/admin-user.js') }}"></script>

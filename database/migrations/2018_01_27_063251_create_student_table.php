@@ -18,11 +18,11 @@ class CreateStudentTable extends Migration
             $table->string('regno')->unique();
 	        $table->string('name');
 	        $table->string('email')->unique();
-	        $table->char('gender');
-	        $table->text('address');
+	        $table->string('gender');
 	        $table->string('contact');
+	        $table->date('dob');
 	        $table->string('course');
-	        $table->longText('img')->nullable();
+	        $table->string('proctor');
             $table->timestamps();
         });
     }

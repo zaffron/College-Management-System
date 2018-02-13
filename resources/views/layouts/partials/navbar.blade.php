@@ -25,7 +25,7 @@
                 </a>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Proctees">
-                <a class="nav-link" href="{{ route('proctor.index') }}">
+                <a class="nav-link" href="">
                     <i class="fa fa-fw fa-male"></i>
                     <span class="nav-link-text">Proctees</span>
                 </a>

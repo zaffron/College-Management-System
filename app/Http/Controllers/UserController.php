@@ -22,6 +22,7 @@ class UserController extends Controller
             'username' => 'required|string|max:40|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'email' => 'required|email|max:255|unique:users',
+            'department' =>'required',
             'gender' => 'required',
         ];
     /**
@@ -68,7 +69,12 @@ class UserController extends Controller
             $user->username = $request->username;
             $user->gender = $request->gender;
             $user->email = $request->email;
+            $user->department = $request->department;
             $user->password = bcrypt($request->password);
+            //Adding teacher count after adding user
+            $department = Department::findOrFail($request->department);
+            $department->teachers_count = $department->teachers_count + 1;
+            $department->save();
             $user->save();
             return response()->json($user->toArray());
         }
@@ -117,6 +123,10 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        //Adding teacher count after adding user
+        $department = Department::findOrFail($user->department);
+        $department->teachers_count =- 1;
+        $department->save();
         $user->delete();
 
         return response()->json( $user->toArray() );

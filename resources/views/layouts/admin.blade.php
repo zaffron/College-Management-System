@@ -22,6 +22,7 @@
 <div class="content-wrapper">
     <div class="container-fluid">
         @yield('content')
+        @yield('modals')
     </div>
 </div>
 

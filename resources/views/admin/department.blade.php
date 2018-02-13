@@ -91,7 +91,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="name">Title:</label>
                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" id="name_add" autofocus required>
+                                    <input type="text" class="form-control" id="name_add" required>
                                     {{--<small>Min: 2, Max: 32, only text</small>
                                     <p class="errorTitle text-center alert alert-danger hidden"></p>--}}
                                 </div>
@@ -178,7 +178,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="name">Name:</label>
                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" id="name_edit" autofocus>
+                                    <input type="text" class="form-control" id="name_edit" >
                                     {{--<p class="errorTitle text-center alert alert-danger hidden"></p>--}}
                                 </div>
                             </div>

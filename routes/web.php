@@ -38,17 +38,6 @@ Route::prefix('admin')->group(function(){
 	Route::resource('department', 'DepartmentController');
 	Route::resource('student', 'StudentController');
 	Route::resource('attendance', 'AttendanceController');
-	Route::resource('proctor', 'ProctorController');
-	Route::resource('subject', 'SubjectController');
-});
-
-/*Resource Controller*/
-Route::group(['middleware' => 'auth'], function()
-{
-
-	Route::resource('student', 'StudentController');
-	Route::resource('attendance', 'AttendanceController');
-	Route::resource('proctor', 'ProctorController');
 	Route::resource('subject', 'SubjectController');
 });
 

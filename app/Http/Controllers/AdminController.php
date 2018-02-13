@@ -26,6 +26,7 @@ class AdminController extends Controller
             'username' => 'required|string|max:40|unique:admins',
             'password' => 'required|string|min:4|confirmed',
             'email' => 'required|email|max:255|unique:admins',
+            'department' =>'required',
             'gender' => 'required',
         ];
 
@@ -60,6 +61,7 @@ class AdminController extends Controller
             $admin->username = $request->username;
             $admin->gender = $request->gender;
             $admin->email = $request->email;
+            $admin->department = $request->department;
             $admin->password = bcrypt($request->password);
             $admin->save();
             return response()->json( $admin->toArray() );

@@ -3,9 +3,48 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Student;
+use App\Department;
+use App\User;
+use Validator;
+use Illuminate\Support\Facades\Input;
+use Response;
 
 class StudentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
+
+    public function rules($id)
+    {
+        $student = Student::findOrFail($id);
+        return
+            [
+                'name' => 'required|min:2|max:32',
+                'email' => 'email|required|unique:students,email,'.$student->id,
+                'regno' => 'required|min:10|unique:students,regno,'.$student->id,
+                'contact' => 'required|min:10',
+                'dob' => 'required',
+                'course' => 'required',
+                'gender' => 'required',
+                'proctor' => 'required',
+            ];
+    }
+    protected $rules =
+        [
+            'name' => 'required|min:2|max:32',
+            'email' => 'email|required|unique:students',
+            'regno' => 'required|min:10|unique:students',
+            'contact' => 'required|min:10',
+            'dob' => 'required',
+            'course' => 'required',
+            'gender' => 'required',
+            'proctor' => 'required',
+        ];
+
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +52,10 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('user.student');
+        $departments = Department::all();
+        $students = Student::all();
+        $users = User::all();
+        return view('admin.student', compact('departments', 'users', 'students'));
     }
 
     /**
@@ -34,7 +76,30 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make( Input::all(), $this->rules);
+        If($validator->fails())
+        {
+            return Response::json( array(
+                'errors' => $validator->getMessageBag()->toArray()
+            ));
+        }
+        else{
+            $student = new Student();
+            $student->regno = strtoupper($request->regno);
+            $student->name = $request->name;
+            $student->email = $request->email;
+            $student->contact = $request->contact;
+            $student->dob = $request->dob;
+            $student->course = $request->course;
+            $student->gender = $request->gender;
+            $student->proctor = $request->proctor;
+            $student->save();
+            $dept = Department::findOrFail($student->course);
+            $dept->students_count += 1;
+            $dept->save();
+            $student->department = $dept->name;
+            return response()->json( $student->toArray() );
+        }
     }
 
     /**
@@ -56,7 +121,7 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -68,7 +133,25 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make(Input::all(), $this->rules($id));
+        if($validator->fails()){
+            return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
+        }else {
+            $student = Student::findOrFail($id);
+            $student->name = $request->name;
+            $student->regno = $request->regno;
+            $student->email = $request->email;
+            $student->contact = $request->contact;
+            $student->dob = $request->dob;
+            $student->gender = $request->gender;
+            $student->proctor = $request->proctor;
+            $student->course = $request->course;
+            $student->save();
+            $dept = Department::findOrFail($student->course);
+            $student->department = $dept->name;
+
+            return response()->json( $student->toArray() );
+        }
     }
 
     /**
@@ -79,6 +162,12 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $student = Student::findOrFail($id);
+        $dept = Department::findOrFail($student->course);
+        $student->delete();
+        $dept->students_count -= 1;
+        $dept->save();
+
+        return response()->json( $student->toArray() );
     }
 }

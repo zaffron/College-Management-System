@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Department;
+use App\User;
 
 class SubjectController extends Controller
 {
@@ -13,7 +15,9 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+        $departments = Department::all();
+        $users = User::all();
+        return view('admin.subject', compact('departments', 'users'));
     }
 
     /**

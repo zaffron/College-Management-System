@@ -15,12 +15,12 @@ class AdminUsersTableSeeder extends Seeder
      */
     public function run()
     {
-	    $user = new Admin();
-	    $user->name = "Zaffron Admino";
-	    $user->username = "root";
-        $user->gender = "male";
-        $user->email = "avlasgamer2427@gmail.com";
-        $user->password = crypt("root","");
-	    $user->save();
+	    $admin = new Admin();
+	    $admin->name = "Zaffron Admino";
+	    $admin->username = "root";
+        $admin->gender = "male";
+        $admin->email = "avlasgamer2427@gmail.com";
+        $admin->password = crypt("root","");
+	    $admin->save();
     }
 }

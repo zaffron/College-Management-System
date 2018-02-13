@@ -24,12 +24,6 @@
                     <span class="nav-link-text">User Management</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Proctors Management">
-                <a class="nav-link" href="{{ route('proctor.index') }}">
-                    <i class="fa fa-fw fa-user-o"></i>
-                    <span class="nav-link-text">Proctors Management</span>
-                </a>
-            </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Students Management">
                 <a class="nav-link" href="{{ route('student.index') }}">
                     <i class="fa fa-fw fa-male"></i>
