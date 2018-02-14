@@ -269,7 +269,7 @@
     {{--For toaster notification--}}
     <script type="text/javascript" src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/admin-department.js') }}"></script>
-    <script src="{{ asset('js/search.js') }}"></script>
+    <script src="{{ asset('js/search-department.js') }}"></script>
 @endsection
 
 
