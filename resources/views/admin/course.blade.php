@@ -48,32 +48,32 @@
                 <div class="card-body-icon">
                     <i class="fa fa-fw fa-book"></i>
                 </div>
-                The number of department is: <strong id="subjectCount">{{ count($subjects) }}</strong>
+                The number of course is: <strong id="courseCount">{{ count($courses) }}</strong>
                 <hr class="bg-white">
-                <button type="button" data-toggle="modal" data-target="#addModal" class="btn btn-md btn-primary text-white">Add New Subject</button>
+                <button type="button" data-toggle="modal" data-target="#addModal" class="btn btn-md btn-primary text-white">Add New Course</button>
             </div>
         </div>
 
         {{--Table to show the students--}}
-        <table class="table text-center" id="subjectTable" >
-            <thead class="thead-dark">
+        <table class="table text-center" id="courseTable" >
+            <thead class="thead">
             <tr>
                 <th class="col-md-1">#</th>
-                <th class="col-md-9">Subject Name</th>
+                <th class="col-md-9">Course Name</th>
                 <th class="col-md-2">Operation</th>
             </tr>
-            @forelse($subjects as $subject)
-                <tr class='item{{ $subject->id }}'>
-                    <td>{{ $subject->id }}</td>
-                    <td>{{ $subject->name }}</td>
+            @forelse($courses as $course)
+                <tr class='item{{ $course->id }}'>
+                    <td>{{ $course->id }}</td>
+                    <td>{{ $course->name }}</td>
                     <td>
-                        <button class='edit-modal btn btn-info btn-sm' data-id="{{ $subject->id }}" data-name="{{ $subject->name }}"><span class='fa fa-edit'></span></button>
-                        <button class='delete-modal btn btn-danger btn-sm' data-id="{{ $subject->id }}" data-name="{{ $subject->name }}"><span class='fa fa-trash'></span></button>
+                        <button class='edit-modal btn btn-info btn-sm' data-id="{{ $course->id }}" data-name="{{ $course->name }}"><span class='fa fa-edit'></span></button>
+                        <button class='delete-modal btn btn-danger btn-sm' data-id="{{ $course->id }}" data-name="{{ $course->name }}"><span class='fa fa-trash'></span></button>
                     </td>
                 </tr>
             @empty
                 <tr id="noStudent">
-                    <td colspan="3" >No Subject Found</td>
+                    <td colspan="3" >No Course Found</td>
                 </tr>
             @endforelse
             </thead>
@@ -95,7 +95,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add Subject</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Add Course</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -103,7 +103,7 @@
                         <div class="modal-body">
                             <form action="" class="form">
                                 <div class="form-group row">
-                                    <label for="name" class="col-12 col-form-label">Subject Name:</label>
+                                    <label for="name" class="col-12 col-form-label">Course Name:</label>
                                     <div class="col-12">
                                         <input class="form-control" name="name" type="text"  id="name_add">
                                     </div>
@@ -112,7 +112,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary add">Add Subject</button>
+                            <button type="button" class="btn btn-primary add">Add Course</button>
                         </div>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit Subject</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Course</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -132,7 +132,7 @@
                         <div class="modal-body">
                             <form action="" class="form">
                                 <div class="form-group row">
-                                    <label for="name" class="col-12 col-form-label">Subject Name:</label>
+                                    <label for="name" class="col-12 col-form-label">Course Name:</label>
                                     <div class="col-12">
                                         <input class="form-control" name="name" type="text"  id="name_edit">
                                     </div>
@@ -141,7 +141,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary edit" data-id="">Update Subject</button>
+                            <button type="button" class="btn btn-primary edit" data-id="">Update Course</button>
                         </div>
                     </div>
                 </div>
@@ -152,7 +152,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Delete the following subject?</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Delete the following course?</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -161,13 +161,13 @@
                             <form action="" class="form">
                                 <div class="form-group row">
                                     <label for="regno" class="col-12 col-form-label">ID</label>
-                                    <div class="col-10">
+                                    <div class="col-12">
                                         <input class="form-control" name="regno" type="text"  id="id_delete"  readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="name" class="col-12 col-form-label">Name</label>
-                                    <div class="col-10">
+                                    <div class="col-12">
                                         <input class="form-control" name="name" type="text"  id="name_delete" readonly>
                                     </div>
                                 </div>
@@ -186,6 +186,6 @@
 
             {{--For toaster notification--}}
             <script type="text/javascript" src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('js/admin-subject.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/admin-course.js') }}"></script>
 
 @endsection

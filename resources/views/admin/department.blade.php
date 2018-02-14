@@ -52,28 +52,16 @@
             </div>
         </div>
         <br>
-        {{--I will add this only if the project guide wants me to include it. I don't think search is needed--}}
-{{--        <div class="row">
-            <form class="form-inline">
-                <div class="alert alert-innfo mb-4">Search Filter</div>
-
-                <div class="input-group mb-6">
-                    <div class="input-group" >
-                        <select name="" id="" class="form-control" style="margin-right: 10px;">
-                            <option value="">ID</option>
-                            <option value="" selected="selected">Name</option>
-                            <option value="">Description</option>
-                        </select>
-                    </div>
-                    <div class="input-group mb-4">
+        <div class="row">
+            <form class="form-inline col-md-12">
+                    <div class="input-group mb-4 col-md-12">
                         <div class="input-group-prepend">
                             <span class="input-group-text fa fa-search bg-white text-warning" id="basic-addon1"></span>
                         </div>
-                        <input type="text" class="form-control pull-right" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon1">
+                        <input type="text" autocomplete="off" class="form-control search-box" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon1">
                     </div>
-                </div>
             </form>
-        </div>--}}
+        </div>
 
 
         <!-- Modal form to add a department -->
@@ -281,4 +269,8 @@
     {{--For toaster notification--}}
     <script type="text/javascript" src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/admin-department.js') }}"></script>
+    <script src="{{ asset('js/search.js') }}"></script>
 @endsection
+
+
+

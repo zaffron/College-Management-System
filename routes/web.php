@@ -33,7 +33,9 @@ Route::prefix('admin')->group(function(){
     Route::post('/create', 'AdminController@store')->name('admin.store');
     Route::delete('/destroy/{id}', 'AdminController@destroy')->name('admin.destroy');
     Route::get('/', 'AdminController@index')->name('admin.dashboard');
+    Route::post('/search', 'AdminController@search')->name('admin.search');
 
+    Route::resource('course', 'CourseController');
 	Route::resource('user', 'UserController');
 	Route::resource('department', 'DepartmentController');
 	Route::resource('student', 'StudentController');

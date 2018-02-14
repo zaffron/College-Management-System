@@ -37,18 +37,10 @@
                 </a>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Course Management">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#" data-parent="#exampleAccordion">
-                    <i class="fa fa-fw fa-wrench"></i>
-                    <span class="nav-link-text">Course</span>
+                <a class="nav-link" href="{{ route('course.index') }}">
+                    <i class="fa fa-fw fa-sticky-note-o"></i>
+                    <span class="nav-link-text">Courses</span>
                 </a>
-                <ul class="sidenav-second-level collapse" id="collapseComponents">
-                    <li>
-                        <a href="#">UG</a>
-                    </li>
-                    <li>
-                        <a href="#">PG</a>
-                    </li>
-                </ul>
             </li>
         </ul>
         <ul class="navbar-nav sidenav-toggler">

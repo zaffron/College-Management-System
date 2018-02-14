@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Department;
+use App\Course;
 use Validator;
 use Response;
 use Illuminate\Support\Facades\Input;
-use App\User;
-use App\Subject;
 
-class SubjectController extends Controller
+class CourseController extends Controller
 {
     protected $rules =
         [
@@ -23,10 +21,8 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $departments = Department::all();
-        $users = User::all();
-        $subjects = Subject::all();
-        return view('admin.subject', compact('departments', 'users', 'subjects'));
+        $courses = Course::all();
+        return view('admin.course', compact('courses'));
     }
 
     /**
@@ -55,10 +51,10 @@ class SubjectController extends Controller
             ));
         }
         else{
-            $subject = new Subject();
-            $subject->name = $request->name;
-            $subject->save();
-            return response()->json( $subject->toArray() );
+            $course = new Course();
+            $course->name = $request->name;
+            $course->save();
+            return response()->json( $course->toArray() );
         }
     }
 
@@ -97,11 +93,11 @@ class SubjectController extends Controller
         if ($validator->fails()) {
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
         } else {
-            $subject              = Subject::findOrFail( $id );
-            $subject->name        = $request->name;
-            $subject->save();
+            $course              = Course::findOrFail( $id );
+            $course->name        = $request->name;
+            $course->save();
 
-            return response()->json( $subject->toArray() );
+            return response()->json( $course->toArray() );
         }
     }
 
@@ -113,9 +109,9 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
-        $subject = Subject::findOrFail($id);
-        $subject->delete();
+        $course = Course::findOrFail($id);
+        $course->delete();
 
-        return response()->json( $subject->toArray() );
+        return response()->json( $course->toArray() );
     }
 }
