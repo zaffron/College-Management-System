@@ -54,6 +54,11 @@
             </div>
         </div>
 
+        <div class="row" id="app">
+            <search></search>
+        </div>
+
+
         {{--Table to show the students--}}
         <table class="table text-center" id="subjectTable" >
             <thead class="thead-dark">
@@ -187,5 +192,6 @@
             {{--For toaster notification--}}
             <script type="text/javascript" src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
             <script type="text/javascript" src="{{ asset('js/admin-subject.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
 
 @endsection

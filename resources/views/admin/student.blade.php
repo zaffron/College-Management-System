@@ -92,8 +92,36 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <i class="fa fa-bar-chart"></i> Students Counts In Each Department
-                        <div class="pull-right">
-                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addModal">Add Student <span class="fa fa-check-circle"></span></button>
+                        <div class="pull-right inline">
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addModal">Add Student <span class="fa fa-check-circle"></span></button>
+                                <div class="dropdown show ml-3">
+                                    <button class="btn btn-sm btn-danger dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Import <span class="fa fa-arrow-down"></span>
+                                    </button>
+
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#" id="importXLS" data-toggle="modal" data-target="#xModal">XLS</a>
+                                        <a class="dropdown-item" href="#" id="importCSV" data-toggle="modal" data-target="#xModal">CSV</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown show ml-3">
+                                    <button class="btn btn-sm btn-success dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Export <span class="fa fa-arrow-up"></span>
+                                    </button>
+
+                                    <div class="dropdown-menu" id="export-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#"  onclick="event.preventDefault();document.getElementById('export-xls-form').submit();" >XLS</a>
+                                        <a class="dropdown-item" onclick="event.preventDefault();document.getElementById('export-csv-form').submit();" >CSV</a>
+                                        <form id="export-xls-form" method="POST" action="{{route('student.export', $type='xls')}}">
+                                            {{csrf_field()}}
+                                        </form>
+                                        <form id="export-csv-form" method="POST" action="{{route('student.export', $type='csv')}}">
+                                            {{csrf_field()}}
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -438,7 +466,35 @@
                     </div>
                 </div>
             </div>
-@endsection
+            {{--Model for xls and csv import export--}}
+            <div class="modal fade" id="xModal" tabindex="-1" role="dialog" aria-labelledby="xModal" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="xTitle"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" class="form" enctype="multipart/form-data">
+                                <div class="form-group row">
+                                    <label for="file" class="col-2 col-form-label">File</label>
+                                    <div class="col-10">
+                                        <input class="form-control" name="file" type="file"  id="file_import">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary xConfirm"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        @endsection
 
 @section('js')
             <script>

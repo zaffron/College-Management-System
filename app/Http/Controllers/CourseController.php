@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Input;
 
 class CourseController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
     protected $rules =
         [
             'name' => 'required|min:2|max:132|regex:/^[a-z ,.\'-]+$/i',

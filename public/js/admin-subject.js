@@ -1,4 +1,5 @@
 // add a new post
+
 var subjectCount = parseInt($('#subjectCount').text());
 
 $('.modal-footer').on('click', '.add', function() {

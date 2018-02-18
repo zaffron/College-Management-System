@@ -1,6 +1,7 @@
 // add a new post
 var studentCount = parseInt($('#studentCount').text());
 
+
 $('.modal-footer').on('click', '.add', function() {
     $.ajax({
         type: 'POST',
@@ -139,6 +140,62 @@ $('.modal-footer').on('click', '.delete', function() {
             $('#studentCount').text(studentCount);
             $('.item' + data['id']).remove();
             $('#deleteModal').modal('hide');
+        }
+    });
+});
+
+/*
+* Import and Export
+* ==================
+* */
+
+//Import Excel
+
+$(document).on('click', '#importXLS', function(){
+    $('#xTitle').text("Import Excel file");
+   $('.xConfirm').text("Import");
+    var url = 'postImport';
+    var type = 'xls';
+});
+
+//Import CSV
+
+$(document).on('click', '#importCSV', function(){
+    $('#xTitle').text("Import CSV file");
+    $('.xConfirm').text("Import");
+    var url = 'postImport';
+    var type = 'csv';
+});
+
+
+//Importing file
+$('.modal-footer').on('click', '.xConfirm', function() {
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+            '_token': $('input[name=_token]').val(),
+            'file' : $('input[name=file]').val(),
+        },
+        success: function(data) {
+            toastr.success('Operation Successful!', 'Success Alert', {timeOut: 5000});
+        }
+    });
+});
+
+//Exporting data
+$('#export-menu').on('click', '.export', function() {
+    var type = $(this).data('type');
+
+
+    $.ajax({
+        type: 'POST',
+        url: 'postExport/'+ type,
+        data: {
+            '_token': $('input[name=_token]').val(),
+        },
+        success: function(data) {
+            toastr.success('Operation Successful!', 'Success Alert', {timeOut: 5000});
         }
     });
 });

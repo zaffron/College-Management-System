@@ -17,7 +17,7 @@
     @yield('styles')
 </head>
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<body class="fixed-nav sticky-footer bg-light" id="page-top">
 @include('admin.partials.navbar')
 <div class="content-wrapper">
     <div class="container-fluid">
@@ -35,6 +35,12 @@
 <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
 <!-- Custom scripts for all pages-->
 <script src="{{ asset('js/dashboard.min.js') }}"></script>
+<script>
+    window.Laravel = <?php echo json_encode([
+        'csrfToken' => csrf_token(),
+    ]); ?>
+</script>
+
 
 @yield('js')
 </body>

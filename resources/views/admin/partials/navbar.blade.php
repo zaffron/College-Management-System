@@ -1,11 +1,11 @@
 <!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" id="mainNav">
     <a class="navbar-brand" href="{{ route('home') }}">Dashboard</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <ul class="navbar-nav navbar-sidenav">
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
                 <a class="nav-link" href="{{ route('admin.dashboard') }}">
                     <i class="fa fa-fw fa-dashboard"></i>
@@ -129,7 +129,7 @@
                 </div>
             </li>
             <li class="nav-item user-name-dispaly">
-                <a href="#" class="nav navbar-text">Welcome! Username Rijal</a>
+                <a href="{{ route('admin.profile', Auth::user()->id ) }}" class="nav navbar-text">Welcome! Username Rijal</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="modal" href="{{ route('admin.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">

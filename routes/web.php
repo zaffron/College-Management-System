@@ -35,6 +35,11 @@ Route::prefix('admin')->group(function(){
     Route::get('/', 'AdminController@index')->name('admin.dashboard');
     Route::post('/search/department', 'AdminController@searchDepartment')->name('admin.search.department');
     Route::post('/search/student', 'AdminController@searchStudent')->name('admin.search.student');
+    Route::get('/profile/{id}', 'AdminController@profile')->name('admin.profile');
+
+    /*Import export using CSV and XLS*/
+    Route::post('/postImport', 'StudentController@postImport');
+    Route::post('/postExport/{type}', 'StudentController@studentsExport')->name('student.export');
 
 
     Route::resource('course', 'CourseController');

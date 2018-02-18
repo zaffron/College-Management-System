@@ -42,6 +42,12 @@ class AdminController extends Controller
    		return view('admin.home');
     }
 
+
+
+    public function profile(Admin $id){
+        return view('admin.profile');
+    }
+
     public function searchDepartment(Request $request)
     {
         $department = Department::where('name','like','%'.Input::get('query').'%')->orWhere('description', 'like', '%'.Input::get('query').'%')->get();
@@ -51,8 +57,16 @@ class AdminController extends Controller
     }
     public function searchStudent(Request $request)
     {
-        $student = Student::where('regno','like','%'.Input::get('query').'%')->orWhere('name', 'like', '%'.Input::get('query').'%')->orWhere('course','like','%'.Input::get('query').'%')->get();
-        return response()->json( $student->toArray() );
+        $students = Student::where('regno','like','%'.Input::get('query').'%')->orWhere('name', 'like', '%'.Input::get('query').'%')->orWhere('course','like','%'.Input::get('query').'%')->get();
+
+        foreach($students as $student)
+        {
+            $dept = Department::findOrFail($student->course);
+            if($dept){
+                $student->department = $dept->name;
+            }
+        }
+        return response()->json( $students->toArray() );
     }
     /**
      * Store a newly created resource in storage.

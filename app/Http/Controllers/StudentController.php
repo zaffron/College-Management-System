@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Student;
 use App\Department;
 use App\User;
+use DB;
+use Excel;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use Response;
@@ -58,14 +60,44 @@ class StudentController extends Controller
         return view('admin.student', compact('departments', 'users', 'students'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function studentsExport($type)
     {
-        //
+        $data = Student::get()->toArray();
+        return Excel::create('Students Details', function($excel) use ($data){
+            $excel->sheet('Students Details', function($sheet) use ($data){
+               $sheet->fromArray($data);
+            });
+        })->download($type);
+    }
+
+    public function studentsImport(Request $request)
+    {
+        if($request->hasFile('students')){
+            $path = $request->file('students')->getRealPath();
+            $data = \Excel::load($path)->get();
+            if($data->count()){
+                foreach($data as $key => $value){
+                    $student_list[] =
+                        [
+                            'name' => $value->name,
+                            'regno' => strtoupper($value->regno),
+                            'email' => $value->email,
+                            'contact' => $value->contact,
+                            'dob' => $value->dob,
+                            'course' => $value->course,
+                            'gender' => $value->gender,
+                            'proctor' => $value->proctor,
+                        ];
+                }
+                if(!empty($student_list)){
+                    Student::insert($student_list);
+                    \Session::flash('success', 'File imported successfully');
+                }
+            }else{
+                \Session::flash('warning', 'There is no file to import');
+            }
+        }
+        return redirect()->back();
     }
 
     /**
@@ -101,6 +133,18 @@ class StudentController extends Controller
             return response()->json( $student->toArray() );
         }
     }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+
 
     /**
      * Display the specified resource.
