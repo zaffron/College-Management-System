@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Course;
+use App\Subject;
 use Validator;
 use Response;
 use Illuminate\Support\Facades\Input;
@@ -26,17 +27,25 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
-        return view('admin.course', compact('courses'));
+        $subjects = Subject::all();
+        return view('admin.course', compact('courses', 'subjects'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function addSubjects(Request $request)
     {
-        //
+        $validator = Validator::make(Input::all(), ['id_course' => 'required', 'name_course' => 'required', 'subjects' => 'required']);
+        if($validator->fails())
+        {
+            return Response::json(array(
+               'errors' => $validator->getMessageBag()->toArray()
+            ));
+        }
+        else{
+            $course = Course::findOrFail($request->id_course);
+            $course->subjects()->attach($request->subjects);
+            $course->save();
+            return response()->json( $course->toArray() );
+        }
     }
 
     /**
@@ -48,7 +57,7 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make( Input::all(), $this->rules);
-        If($validator->fails())
+        if($validator->fails())
         {
             return Response::json( array(
                 'errors' => $validator->getMessageBag()->toArray()

@@ -7,36 +7,9 @@
 
     <!-- toastr notifications -->
     <link rel="stylesheet" href="{{ asset('vendor/toastr/css/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/selectize/selectize.min.css') }}">
     <style>
-        .panel-heading {
-            padding: 0;
-        }
-        .panel-heading ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-        .panel-heading li {
-            float: left;
-            border-right:1px solid #bbb;
-            display: block;
-            padding: 14px 16px;
-            text-align: center;
-        }
-        .panel-heading li:last-child:hover {
-            background-color: #ccc;
-        }
-        .panel-heading li:last-child {
-            border-right: none;
-        }
-        .panel-heading li a:hover {
-            text-decoration: none;
-        }
 
-        .table.table-bordered tbody td {
-            vertical-align: baseline;
-        }
     </style>
 @endsection
 
@@ -58,14 +31,22 @@
         <table class="table text-center" id="courseTable" >
             <thead class="thead">
             <tr>
-                <th class="col-md-1">#</th>
-                <th class="col-md-9">Course Name</th>
+                <th class="col-md-5">Course Name</th>
+                <th class="col-md-4">Subjects</th>
                 <th class="col-md-2">Operation</th>
             </tr>
             @forelse($courses as $course)
                 <tr class='item{{ $course->id }}'>
-                    <td>{{ $course->id }}</td>
                     <td>{{ $course->name }}</td>
+                    <td>
+                        <select name="show_subjects" id="show_subjects">
+                            @forelse($subjects as $subject)
+                                <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                            @empty
+                                <option value="null" selected disabled>No subjects found</option>
+                            @endforelse
+                        </select>
+                        <button data-id="{{ $course->id }}" data-name="{{ $course->name }}" class="add-subject btn btn-warning btn-sm"><span class="fa fa-plus"></span></button></td>
                     <td>
                         <button class='edit-modal btn btn-info btn-sm' data-id="{{ $course->id }}" data-name="{{ $course->name }}"><span class='fa fa-edit'></span></button>
                         <button class='delete-modal btn btn-danger btn-sm' data-id="{{ $course->id }}" data-name="{{ $course->name }}"><span class='fa fa-trash'></span></button>
@@ -180,9 +161,63 @@
                     </div>
                 </div>
             </div>
+
+            {{--Modal to add subject--}}
+            <div class="modal fade" id="addSubject" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Subjects</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" class="form">
+                                <div class="form-group row">
+                                    <label for="id_course" class="col-12 col-form-label">ID:</label>
+                                    <div class="col-12">
+                                        <input class="form-control" name="id_course" type="text"  id="id_course" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="name_course" class="col-12 col-form-label">Course Name:</label>
+                                    <div class="col-12">
+                                        <input class="form-control" name="name_course" type="text"  id="name_course" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="name" class="col-12 col-form-label">Subjects</label>
+                                    <div class="col-12">
+                                        <select class="form-control" multiple name="subjects" id="input-subjects" >
+                                            @foreach($subjects as $subject)
+                                                <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger addSubjects">Add</button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         @endsection
 
         @section('js')
+
+            {{--For multiple selection--}}
+            <script type="text/javascript" src="{{ asset('vendor/selectize/selectize.min.js') }}"></script>
+            <script>
+                $('#input-subjects').selectize({
+                    plugins: ['remove_button'],
+                    delimiter: ',',
+                    persist: false,
+                });
+            </script>
 
             {{--For toaster notification--}}
             <script type="text/javascript" src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>

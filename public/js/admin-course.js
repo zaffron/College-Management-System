@@ -100,3 +100,24 @@ $('.modal-footer').on('click', '.delete', function() {
         }
     });
 });
+
+//Add subjects
+$(document).on('click', '.add-subject', function(){
+   $('#id_course').val($(this).data('id'));
+   $('#name_course').val($(this).data('name'));
+   id = $(this).data('id');
+   $('#addSubject').modal('show');
+});
+
+$('.modal-footer').on('click', '.addSubjects', function(){
+    $.ajax({
+        type: 'POST',
+        url: 'course/addSubjects',
+        data: {
+          '_token' : $('input[name=_token]').val(),
+          'id_course' : $('input[name=id_course]').val(),
+          'name_course' : $('input[name=name_course]').val(),
+          'subjects' : $('#input-subjects').val(),
+        },
+    });
+});
