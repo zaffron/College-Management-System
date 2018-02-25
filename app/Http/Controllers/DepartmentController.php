@@ -94,7 +94,15 @@ class DepartmentController extends Controller
      */
     public function edit( $id)
     {
-    	//
+
+    }
+
+    public function activate($id)
+    {
+        $department = Department::findOrFail($id);
+        $department->active = 1;
+        $department->save();
+        return response()->json( $department->toArray() );
     }
 
     /**
@@ -130,7 +138,15 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
 	    $department = Department::findOrFail($id);
-	    $department->delete();
+	    if($department->students_count > 0 || $department->teachers_count > 0)
+        {
+            $department->active = 0;
+            $department->save();
+            $department->delete = 0;
+        }else{
+            $department->delete();
+            $department->delete = 1;
+        }
 
 	    return response()->json( $department->toArray() );
     }

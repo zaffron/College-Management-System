@@ -14,7 +14,11 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="card p-2 text-center" >
-                    <img class="card-img-top pb-4" src="{{ asset('img/dummy.png') }}" alt="Card image cap">
+                    <div class="col-md-12">
+                        <img class="profile-img" src="{{ asset('img/dummy.png') }}" alt="Card image cap">
+                        <div id="uploader">Upload <span class="fa fa-image"></span></div>
+                        <input id="avatar-uploader" name="avatar" type="file" required>
+                    </div>
                     <div class="card-block">
                         <h4 class="card-title">Username</h4>
                         <p class="card-text">Some cool description</p>
@@ -51,4 +55,5 @@
     {{--For toaster notification--}}
     <script type="text/javascript" src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/admin-user.js') }}"></script>
+    <script src="{{ asset('js/profile.js') }}"></script>
 @endsection

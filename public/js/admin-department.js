@@ -36,7 +36,19 @@ $('.modal-footer').on('click', '.add', function() {
                 toastr.success('Successfully added Department!', 'Success Alert', {timeOut: 5000});
                 deptCount += 1;
                 $('#deptCount').text(deptCount);
-                $('#deptTable').append("<tr class='item" + data.id + "'><td>" + data.id + "</td><td>" + data.name + "</td><td>" + data.description + "</td><td>" + data.teachers_count + "</td><td><button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-trash'></span></button></td></tr>");
+                    $('#deptTable').append("\
+                        <tr class='item" + data.id + "'>\
+                            <td>" + data.id + "</td>\
+                            <td>" + data.name + "</td>\
+                            <td>" + data.description + "</td>\
+                            <td>" + "0" + "</td>\
+                            <td>" + "0" + "</td>\
+                            <td><span class='text-success'>Active</span></td>\
+                            <td>\
+                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
+                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button>\
+                                <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-trash'></span></button></td>\
+                        </tr>");
             }
         },
     });
@@ -92,8 +104,38 @@ $('.modal-footer').on('click', '.edit', function() {
                 }
             } else {
                 toastr.success('Successfully updated Department!', 'Success Alert', {timeOut: 5000});
-                $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td>" + data.id + "</td><td>" + data.name + "</td><td>" + data.description + "</td><td>" + data.teachers_count + "</td><td><button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-trash'></span></button></td></tr>");
+                if(data.active){
+                    $('.item' + data.id).replaceWith("\
+                        <tr class='item" + data.id + "'>\
+                            <td>" + data.id + "</td>\
+                            <td>" + data.name + "</td>\
+                            <td>" + data.description + "</td>\
+                            <td>" + data.teachers_count + "</td>\
+                            <td>" + data.students_count + "</td>\
+                            <td><span class='text-success'>Active</span></td>\
+                            <td>\
+                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
+                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
+                                <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-trash'></span></button></td>\
+                        </tr>\
+                        ");
+                }else{
+                    $('.item' + data.id).replaceWith("\
+                        <tr class='item" + data.id + "'>\
+                            <td>" + data.id + "</td>\
+                            <td>" + data.name + "</td>\
+                            <td>" + data.description + "</td>\
+                            <td>" + data.teachers_count + "</td>\
+                            <td>" + data.students_count + "</td>\
+                            <td><span class='text-danger'>Inactive</span></td>\
+                            <td>\
+                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
+                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
+                                <button class='active-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-check'></span></button></td>\
+                        </tr>\
+                        ");
 
+                }
             }
         }
     });
@@ -115,10 +157,66 @@ $('.modal-footer').on('click', '.delete', function() {
             '_token': $('input[name=_token]').val(),
         },
         success: function(data) {
-            toastr.success('Successfully deleted Department!', 'Success Alert', {timeOut: 5000});
-            deptCount -= 1;
-            $('#deptCount').text(deptCount);
-            $('.item' + data['id']).remove();
+            if(data.delete){
+                toastr.success('Successfully deleted Department!', 'Success Alert', {timeOut: 5000});
+                deptCount -= 1;
+                $('#deptCount').text(deptCount);
+                $('.item' + data['id']).remove();
+            }
+            else{
+                toastr.warning('Department deactivated successfully!', 'Deactivation Alert', {timeOut: 5000});
+                $('.item' + data.id).replaceWith("\
+                        <tr class='item" + data.id + "'>\
+                            <td>" + data.id + "</td>\
+                            <td>" + data.name + "</td>\
+                            <td>" + data.description + "</td>\
+                            <td>" + data.teachers_count + "</td>\
+                            <td>" + data.students_count + "</td>\
+                            <td><span class='text-danger'>Inactive</span></td>\
+                            <td>\
+                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
+                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
+                                <button class='active-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-check'></span></button></td>\
+                        </tr>\
+                        ");
+            }
         }
     });
+});
+
+//Activating the department
+$(document).on('click', '.active-modal', function(){
+   $('#id_activate').val($(this).data('id'));
+   $('#name_activate').val($(this).data('name'));
+   $('#activateModal').modal('show');
+   id = $('#id_activate').val();
+});
+
+$('.modal-footer').on('click', '.activate', function(){
+   $.ajax({
+      type: 'POST',
+       url: 'department/activate/' + id,
+       data:{
+          '_token': $('input[name=_token]').val(),
+       },
+       success:function(data){
+           toastr.info('Department activated successfully!', 'Deactivation Activate', {timeOut: 5000});
+           $('.item' + data.id).replaceWith("\
+                        <tr class='item" + data.id + "'>\
+                            <td>" + data.id + "</td>\
+                            <td>" + data.name + "</td>\
+                            <td>" + data.description + "</td>\
+                            <td>" + data.teachers_count + "</td>\
+                            <td>" + data.students_count + "</td>\
+                            <td><span class='text-success'>Active</span></td>\
+                            <td>\
+                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
+                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
+                                <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-trash'></span></button></td>\
+                        </tr>\
+                        ");
+
+       }
+
+   });
 });

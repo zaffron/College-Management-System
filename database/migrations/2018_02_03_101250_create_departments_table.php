@@ -19,6 +19,7 @@ class CreateDepartmentsTable extends Migration
             $table->text('description')->nullable();
             $table->integer('teachers_count')->default('0');
             $table->integer('students_count')->default('0');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }
