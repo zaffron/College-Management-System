@@ -17,9 +17,9 @@ The objective of the CMS is to provide the following functionality
 ### If you want to visit the official site please visit:
 [StudyTweaks](www.studytweaks.com) for more information and highlights
 
-### How to Install
+## How to Install
 ---
-## Run following commands
+### Run following commands
 ```
 composer install
 php artisan key:generate
