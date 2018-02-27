@@ -30,7 +30,8 @@ npm install
 create a .env file and copy all the contents of .env.example file
 run the artisan 
 ```
-*I am open to the suggestions and any appreciation from your side and you can use it anywhere you want. But please do ask for permission before using. I would be really happy if you collaborate with me in this project*
+>I am open to the suggestions and any appreciation from your side and you can use it anywhere you want. But please do ask for permission before using. I would be really happy if you collaborate with me in this project
 ---
 _Thank You_
-*From Your Dev Zaffron*
+
+*From Your Dev Zaffron  :sunglasses:*
