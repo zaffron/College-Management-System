@@ -1,4 +1,4 @@
-## Welcome to College Management System
+# Welcome to College Management System
 
 This is the all around college management system initiated to help the colleges to digitalize their official work in a more efficient and proper way.
 It will help to reduce the redundancy of work and will make it more dynamic.
