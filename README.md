@@ -1,4 +1,4 @@
-## Welcome to College Management System
+# Welcome to College Management System
 
 This is the all around college management system initiated to help the colleges to digitalize their official work in a more efficient and proper way.
 It will help to reduce the redundancy of work and will make it more dynamic.
@@ -17,9 +17,15 @@ The objective of the CMS is to provide the following functionality
 ### If you want to visit the official site please visit:
 [StudyTweaks](www.studytweaks.com) for more information and highlights
 
+<<<<<<< HEAD
 ### How to Install
 ---
 ## Run following commands
+=======
+## How to Install
+---
+### Run following commands
+>>>>>>> 2d801436cdbc9a0b1cd578fb54bdf704e377ea57
 ```
 composer install
 php artisan key:generate
@@ -29,4 +35,3 @@ npm install
 create a .env file and copy all the contents of .env.example file
 run the artisan 
 ```
-
