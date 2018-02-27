@@ -17,20 +17,5 @@ The objective of the CMS is to provide the following functionality
 ### If you want to visit the official site please visit:
 [StudyTweaks](www.studytweaks.com) for more information and highlights
 
-## How to Install
----
-### Run following commands
----
-```
-composer install
-php artisan key:generate
-php artisan migrate
 php artisan db:seed
-npm install
-create a .env file and copy all the contents of .env.example file
-run the artisan 
-```
-*I am open to the suggestions and any appreciation from your side and you can use it anywhere you want. But please do ask for permission before using. I would be really happy if you collaborate with me in this project*
----
-_Thank You_
-*From Zaffron*
+php artisan migrate
