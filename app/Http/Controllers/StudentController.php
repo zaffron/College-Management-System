@@ -128,10 +128,11 @@ class StudentController extends Controller
             $student->gender = $request->gender;
             $student->proctor = $request->proctor;
             $student->save();
-            $dept = Department::findOrFail($student->course);
+            $course = Course::findOrFail($student->course);
+            $dept = Department::where('course'.'='.$course->id)->get();
             $dept->students_count += 1;
             $dept->save();
-            $student->department = $dept->name;
+            $student->courseName = $course->name;
             return response()->json( $student->toArray() );
         }
     }
@@ -193,9 +194,8 @@ class StudentController extends Controller
             $student->proctor = $request->proctor;
             $student->course = $request->course;
             $student->save();
-            $dept = Department::findOrFail($student->course);
-            $student->department = $dept->name;
-
+            $course = Course::findOrFail($student->course);
+            $student->courseName = $course->name;
             return response()->json( $student->toArray() );
         }
     }

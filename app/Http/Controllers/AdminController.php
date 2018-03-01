@@ -62,14 +62,13 @@ class AdminController extends Controller
     }
     public function searchStudent(Request $request)
     {
-        $students = Student::where('regno','like','%'.Input::get('query').'%')->orWhere('name', 'like', '%'.Input::get('query').'%')->orWhere('course','like','%'.Input::get('query').'%')->get();
+        $course = Course::where('name', 'Like','%'.Input::get('query').'%')->pluck('id')->toArray();
+        $students = Student::where('regno','like','%'.Input::get('query').'%')->orWhere('name', 'like', '%'.Input::get('query').'%')->orWhereIn('course',$course)->get();
 
         foreach($students as $student)
         {
-            $dept = Department::findOrFail($student->course);
-            if($dept){
-                $student->department = $dept->name;
-            }
+            $course = Course::findOrFail($student->course);
+            $student->courseName = $course->name;
         }
         return response()->json( $students->toArray() );
     }
