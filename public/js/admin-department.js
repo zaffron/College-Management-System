@@ -11,6 +11,7 @@ $('.modal-footer').on('click', '.add', function() {
         data: {
             '_token': $('input[name=_token]').val(),
             'name': $('#name_add').val(),
+            'course': $('#course_add').val(),
             'description': $('#description_add').val()
         },
         success: function(data) {
@@ -41,13 +42,14 @@ $('.modal-footer').on('click', '.add', function() {
                             <td>" + data.id + "</td>\
                             <td>" + data.name + "</td>\
                             <td>" + data.description + "</td>\
+                            <td>" + data.courseName +"</td>\
                             <td>" + "0" + "</td>\
                             <td>" + "0" + "</td>\
                             <td><span class='text-success'>Active</span></td>\
                             <td>\
-                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
-                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button>\
-                                <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-trash'></span></button></td>\
+                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-course='" + data.course + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
+                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "'data-course='" + data.course + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button>\
+                                <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-course='" + data.course + "' data-description='" + data.description + "'><span class='fa fa-trash'></span></button></td>\
                         </tr>");
             }
         },
@@ -59,6 +61,7 @@ $(document).on('click', '.show-modal', function() {
     $('.modal-name').text('Show');
     $('#id_show').val($(this).data('id'));
     $('#name_show').val($(this).data('name'));
+    $('#course_show').val($(this).data('course'));
     $('#description_show').val($(this).data('description'));
     $('#showModal').modal('show');
 });
@@ -70,6 +73,7 @@ $(document).on('click', '.edit-modal', function() {
     $('#id_edit').val($(this).data('id'));
     $('#name_edit').val($(this).data('name'));
     $('#description_edit').val($(this).data('description'));
+    $('#course_edit').val($(this).data('course'));
     id = $('#id_edit').val();
     $('#editModal').modal('show');
 });
@@ -82,6 +86,7 @@ $('.modal-footer').on('click', '.edit', function() {
             '_token': $('input[name=_token]').val(),
             'id': $("#id_edit").val(),
             'name': $('#name_edit').val(),
+            'course': $('#course_edit').val(),
             'description': $('#description_edit').val()
         },
         success: function(data) {
@@ -110,13 +115,14 @@ $('.modal-footer').on('click', '.edit', function() {
                             <td>" + data.id + "</td>\
                             <td>" + data.name + "</td>\
                             <td>" + data.description + "</td>\
+                            <td>" + data.courseName + "</td>\
                             <td>" + data.teachers_count + "</td>\
                             <td>" + data.students_count + "</td>\
                             <td><span class='text-success'>Active</span></td>\
                             <td>\
-                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
-                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
-                                <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-trash'></span></button></td>\
+                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
+                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
+                                <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-trash'></span></button></td>\
                         </tr>\
                         ");
                 }else{
@@ -125,13 +131,14 @@ $('.modal-footer').on('click', '.edit', function() {
                             <td>" + data.id + "</td>\
                             <td>" + data.name + "</td>\
                             <td>" + data.description + "</td>\
+                            <td>" + data.courseName + "</td>\
                             <td>" + data.teachers_count + "</td>\
                             <td>" + data.students_count + "</td>\
                             <td><span class='text-danger'>Inactive</span></td>\
                             <td>\
-                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
-                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
-                                <button class='active-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-check'></span></button></td>\
+                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
+                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
+                                <button class='active-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-check'></span></button></td>\
                         </tr>\
                         ");
 
@@ -170,13 +177,14 @@ $('.modal-footer').on('click', '.delete', function() {
                             <td>" + data.id + "</td>\
                             <td>" + data.name + "</td>\
                             <td>" + data.description + "</td>\
+                            <td>" + data.courseName + "</td>\
                             <td>" + data.teachers_count + "</td>\
                             <td>" + data.students_count + "</td>\
                             <td><span class='text-danger'>Inactive</span></td>\
                             <td>\
-                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
-                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
-                                <button class='active-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-check'></span></button></td>\
+                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
+                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
+                                <button class='active-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-check'></span></button></td>\
                         </tr>\
                         ");
             }
@@ -206,13 +214,14 @@ $('.modal-footer').on('click', '.activate', function(){
                             <td>" + data.id + "</td>\
                             <td>" + data.name + "</td>\
                             <td>" + data.description + "</td>\
+                            <td>" + data.courseName + "</td>\
                             <td>" + data.teachers_count + "</td>\
                             <td>" + data.students_count + "</td>\
                             <td><span class='text-success'>Active</span></td>\
                             <td>\
-                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
-                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
-                                <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-trash'></span></button></td>\
+                                <button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-eye'></span></button>\
+                                <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-edit'></span></button> \
+                                <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-course='" + data.course + "' data-name='" + data.name + "' data-description='" + data.description + "'><span class='fa fa-trash'></span></button></td>\
                         </tr>\
                         ");
 

@@ -7,6 +7,7 @@ use App\Student;
 use App\Department;
 use App\User;
 use DB;
+use App\Course;
 use Excel;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -55,9 +56,10 @@ class StudentController extends Controller
     public function index()
     {
         $departments = Department::all();
+        $courses = Course::all();
         $students = Student::all();
         $users = User::all();
-        return view('admin.student', compact('departments', 'users', 'students'));
+        return view('admin.student', compact('departments', 'courses','users', 'students'));
     }
 
     public function studentsExport($type)

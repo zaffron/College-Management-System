@@ -229,11 +229,18 @@
                         </div>
                         <div class="form-group dept-row">
                             <label for="department" class="control-label col-sm-2">Department:</label>
-                            <input type="text" class="form-control" id="department_show">
+                            <select name="department_show" class="form-control" disabled id="department_show">
+                                @foreach($departments as $department)
+                                    <option value="{{$department->id}}">{{$department->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="gender" class="control-label col-sm-2">Gender:</label>
-                            <input type="text" class="form-control" id="gender_show">
+                            <select name="gender" id="gender_show" disabled class="form-control">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
                         </div>
                     </form>
                     <div class="modal-footer">

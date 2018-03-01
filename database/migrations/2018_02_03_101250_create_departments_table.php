@@ -17,6 +17,7 @@ class CreateDepartmentsTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->text('description')->nullable();
+            $table->text('course')->nullable();
             $table->integer('teachers_count')->default('0');
             $table->integer('students_count')->default('0');
             $table->boolean('active')->default(true);

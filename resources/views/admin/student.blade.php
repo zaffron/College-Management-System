@@ -158,9 +158,9 @@
                     <td>{{ $student->regno }}</td>
                     <td>{{ $student->name }}</td>
                     <td>
-                        @foreach($departments as $department)
-                            @if($department->id == $student->course)
-                                {{ $department->name }}
+                        @foreach($courses as $course)
+                            @if($course->id == $student->course)
+                                {{ $course->name }}
                                 @break
                             @endif
                         @endforeach
@@ -168,7 +168,7 @@
                     <td>
                         <button class='show-modal btn btn-success btn-sm' data-dob="{{ $student->dob }}" data-regno='{{ $student->regno }}' data-id='{{ $student->id }}' data-gender='{{ $student->gender }}' data-proctor='{{ $student->proctor }}' data-email='{{ $student->email }}' data-contact='{{ $student->contact }}' data-name='{{ $student->name }}' data-course='{{ $student->course }}'><span class='fa fa-eye'></span></button>
                         <button class='edit-modal btn btn-info btn-sm' data-dob="{{ $student->dob }}" data-regno='{{ $student->regno }}' data-id='{{ $student->id }}' data-gender='{{ $student->gender }}' data-proctor='{{ $student->proctor }}' data-email='{{ $student->email }}' data-contact='{{ $student->contact }}' data-name='{{ $student->name }}' data-course='{{ $student->course }}'><span class='fa fa-edit'></span></button>
-                        <button class='delete-modal btn btn-danger btn-sm' data-id='{{ $student->id }}' data-regno='{{ $student->regno }}' data-name='{{ $student->name }}' data-course='{{ $department->name }}'><span class='fa fa-trash'></span></button></td>
+                        <button class='delete-modal btn btn-danger btn-sm' data-id='{{ $student->id }}' data-regno='{{ $student->regno }}' data-name='{{ $student->name }}' data-course='{{ $course->name }}'><span class='fa fa-trash'></span></button></td>
                 </tr>
                 @empty
                 <tr id="noStudent">
@@ -321,8 +321,8 @@
                                     <label for="department" class="col-3 col-form-label">Course</label>
                                     <div class="col-9">
                                         <select name="department" class="form-control" id="course_edit">
-                                            @forelse($departments as $department)
-                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                            @forelse($courses as $course)
+                                                <option value="{{ $course->id }}">{{ $course->name }}</option>
                                             @empty
                                                 No Department
                                             @endforelse
@@ -404,7 +404,11 @@
                                 <div class="form-group row">
                                     <label for="dob" class="col-2 col-form-label">Course</label>
                                     <div class="col-10">
-                                        <input class="form-control" name="course" type="text" id="course_show" readonly>
+                                        <select name="course" id="course_show" disabled>
+                                            @foreach($courses as $course)
+                                                <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -416,7 +420,11 @@
                                 <div class="form-group row">
                                     <label for="dob" class="col-2 col-form-label">Proctor</label>
                                     <div class="col-10">
-                                        <input class="form-control" name="proctor" type="text" id="proctor_show" readonly>
+                                        <select name="proctor" id="proctor_show" disabled>
+                                            @foreach($users as $user)
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </form>

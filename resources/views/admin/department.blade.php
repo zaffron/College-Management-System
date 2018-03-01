@@ -70,6 +70,7 @@
                 <th>#</th>
                 <th>Department Name</th>
                 <th>Description</th>
+                <th>Course</th>
                 <th>Teachers</th>
                 <th>Students</th>
                 <th>Status</th>
@@ -83,6 +84,11 @@
                     <td>{{$data->id}}</td>
                     <td>{{$data->name}}</td>
                     <td>{{App\Department::getExcerpt($data->description)}}</td>
+                    @foreach($courses as $course)
+                        @if($course->id == $data->course)
+                            <td>{{ $course->name }}</td>
+                        @endif
+                    @endforeach
                     <td>{{$data->teachers_count}}</td>
                     <td>{{$data->students_count}}</td>
                     <td>
@@ -94,12 +100,12 @@
                     </td>
                     {{--                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->diffForHumans() }}</td>--}}
                     <td>
-                        <button class="show-modal btn btn-sm btn-success" data-id="{{$data->id}}" data-name="{{$data->name}}" data-description="{{$data->description}}"><span class="fa fa-eye"></span></button>
-                        <button class="edit-modal btn btn-sm btn-info" data-id="{{$data->id}}" data-name="{{$data->name}}" data-description="{{$data->description}}"><span class="fa fa-edit"></span></button>
+                        <button class="show-modal btn btn-sm btn-success" data-id="{{$data->id}}" data-course="{{ $data->course }}" data-name="{{$data->name}}" data-description="{{$data->description}}"><span class="fa fa-eye"></span></button>
+                        <button class="edit-modal btn btn-sm btn-info" data-id="{{$data->id}}" data-course="{{ $data->course }}" data-name="{{$data->name}}" data-description="{{$data->description}}"><span class="fa fa-edit"></span></button>
                         @if(!$data->active)
-                            <button class="active-modal btn btn-sm btn-warning" data-id="{{$data->id}}" data-name="{{$data->name}}"><span class="fa fa-check"></span></button>
+                            <button class="active-modal btn btn-sm btn-warning" data-id="{{$data->id}}" data-course="{{ $data->course }}" data-name="{{$data->name}}"><span class="fa fa-check"></span></button>
                         @else
-                            <button class="delete-modal btn btn-sm btn-danger" data-id="{{$data->id}}" data-name="{{$data->name}}" data-description="{{$data->description}}"><span class="fa fa-trash"></span></button>
+                            <button class="delete-modal btn btn-sm btn-danger" data-id="{{$data->id}}" data-course="{{ $data->course }}" data-name="{{$data->name}}" data-description="{{$data->description}}"><span class="fa fa-trash"></span></button>
                         @endif
                     </td>
                 </tr>
@@ -132,6 +138,18 @@
                                 <input type="text" class="form-control" id="name_add" required>
                                 {{--<small>Min: 2, Max: 32, only text</small>
                                 <p class="errorTitle text-center alert alert-danger hidden"></p>--}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="name">Course:</label>
+                            <div class="col-sm-12">
+                                <select name="courses" id="course_add" class="form-control">
+                                    @forelse($courses as $course)
+                                        <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                    @empty
+                                        No courses
+                                    @endforelse
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -179,6 +197,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="control-label col-sm-2" for="name">Course:</label>
+                            <div class="col-sm-12">
+                                <select name="courses" id="course_show" disabled class="form-control">
+                                    @forelse($courses as $course)
+                                        <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                    @empty
+                                        No courses
+                                    @endforelse
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label col-sm-2" for="description">Description:</label>
                             <div class="col-sm-12">
                                 <textarea class="form-control" id="description_show" cols="40" rows="5" disabled></textarea>
@@ -218,6 +248,18 @@
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="name_edit" >
                                 {{--<p class="errorTitle text-center alert alert-danger hidden"></p>--}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="name">Course:</label>
+                            <div class="col-sm-12">
+                                <select name="courses" id="course_edit" class="form-control">
+                                    @forelse($courses as $course)
+                                        <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                    @empty
+                                        No courses
+                                    @endforelse
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">

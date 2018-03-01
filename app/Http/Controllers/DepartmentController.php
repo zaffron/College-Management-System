@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\Department;
 use Validator;
 use Response;
@@ -18,7 +19,8 @@ class DepartmentController extends Controller
     protected $rules =
         [
             'name' => 'required|min:2|max:32|regex:/^[a-z ,.\'-]+$/i',
-            'description' => 'required|min:2|max:256|regex:/^[a-z ,.\'-]+$/i'
+            'description' => 'required|min:2|max:256|regex:/^[a-z ,.\'-]+$/i',
+            'course' => 'required'
         ];
 
 
@@ -32,8 +34,9 @@ class DepartmentController extends Controller
 
     public function index()
     {
+        $courses = Course::all();
 	    $datas = Department::all();
-	    return view('admin.department', compact('datas'));
+	    return view('admin.department', compact('courses','datas'));
     }
 
     /**
@@ -70,7 +73,10 @@ class DepartmentController extends Controller
 		    else{
 		    	$department->description  = 'No description';
 		    }
+		    $department->course = $request->course;
 		    $department->save();
+		    $course = Course::findOrFail($request->course);
+		    $department->courseName = $course->name;
 		    return response()->json( $department->toArray() );
 	    }
     }
@@ -122,7 +128,10 @@ class DepartmentController extends Controller
 	        $department              = Department::findOrFail( $id );
 	        $department->name        = $request->name;
 	        $department->description = $request->description;
+	        $department->course      = $request->course;
 	        $department->save();
+            $course = Course::findOrFail($request->course);
+            $department->courseName = $course->name;
 
 	        return response()->json( $department->toArray() );
         }

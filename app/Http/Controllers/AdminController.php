@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Auth;
 use Validator;
 use Response;
+use App\Course;
 use App\Admin;
 use App\Student;
 use App\Department;
@@ -51,6 +52,10 @@ class AdminController extends Controller
     public function searchDepartment(Request $request)
     {
         $department = Department::where('name','like','%'.Input::get('query').'%')->orWhere('description', 'like', '%'.Input::get('query').'%')->get();
+        foreach($department as $dept){
+            $course = Course::findOrFail($dept->course);
+            $dept->courseName = $course->name;
+        }
         return response()->json( $department->toArray() );
         //Possibility of sql injection here
 
