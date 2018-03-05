@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Subject;
 use Illuminate\Http\Request;
 use App\Student;
 use App\Department;
@@ -57,9 +58,10 @@ class StudentController extends Controller
     {
         $departments = Department::all();
         $courses = Course::all();
+        $subjects = Subject::all();
         $students = Student::all();
         $users = User::all();
-        return view('admin.student', compact('departments', 'courses','users', 'students'));
+        return view('admin.student', compact('departments','subjects', 'courses','users', 'students'));
     }
 
     public function studentsExport($type)
@@ -69,7 +71,7 @@ class StudentController extends Controller
             $excel->sheet('Students Details', function($sheet) use ($data){
                $sheet->fromArray($data);
             });
-        })->download($type);
+        })->export($type);
     }
 
     public function studentsImport(Request $request)

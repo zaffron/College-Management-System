@@ -1,6 +1,12 @@
 // add a new post
 var courseCount = parseInt($('#courseCount').text());
 
+$('#input-subjects').selectize({
+    plugins: ['remove_button'],
+    delimiter: ',',
+    persist: false,
+});
+
 $('.modal-footer').on('click', '.add', function() {
     $.ajax({
         type: 'POST',
@@ -105,11 +111,17 @@ $('.modal-footer').on('click', '.delete', function() {
 $(document).on('click', '.add-subject', function(){
    $('#id_course').val($(this).data('id'));
    $('#name_course').val($(this).data('name'));
+   var subjects = JSON.parse("[" + $(this).data('subjects') + "]");
+   subjects = Object.assign(subjects);
+   console.log(subjects);
+    $('#input-subjects').selectize();
    id = $(this).data('id');
    $('#addSubject').modal('show');
+
 });
 
 $('.modal-footer').on('click', '.addSubjects', function(){
+
     $.ajax({
         type: 'POST',
         url: 'course/addSubjects',
@@ -117,7 +129,11 @@ $('.modal-footer').on('click', '.addSubjects', function(){
           '_token' : $('input[name=_token]').val(),
           'id_course' : $('input[name=id_course]').val(),
           'name_course' : $('input[name=name_course]').val(),
-          'subjects' : $('#input-subjects').val(),
+          'subjects' : $('#input-subjects').val()
         },
+        success: function(data){
+            toastr.success('Subject added Successfully!', 'Subject Updated', {timeOut: 5000});
+            $('#addSubject').modal('hide');
+        }
     });
 });

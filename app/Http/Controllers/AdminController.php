@@ -7,6 +7,8 @@ use Response;
 use App\Course;
 use App\Admin;
 use App\Student;
+use App\Subject;
+use App\User;
 use App\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -40,7 +42,12 @@ class AdminController extends Controller
      */
     public function index()
     {
-   		return view('admin.home');
+        $departments = Department::all();
+        $courses = Course::all();
+        $subjects = Subject::all();
+        $students = Student::all();
+        $users = User::all();
+   		return view('admin.home', compact('departments', 'courses', 'subjects', 'students', 'users'));
     }
 
 

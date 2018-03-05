@@ -39,14 +39,14 @@
                 <tr class='item{{ $course->id }}'>
                     <td>{{ $course->name }}</td>
                     <td>
-                        <select name="show_subjects" id="show_subjects">
-                            @forelse($subjects as $subject)
-                                <option value="{{ $subject->id }}">{{ $subject->name }}</option>
-                            @empty
-                                <option value="null" selected disabled>No subjects found</option>
-                            @endforelse
+                        <select name="show_subjects" id="show_subjects" class="col-md-6">
+                                @forelse($course->list as $sub)
+                                    <option value="{{ $sub->id }}">{{ $sub->name }}</option>
+                                @empty
+                                    <option value="#">No Subjects</option>
+                                @endforelse
                         </select>
-                        <button data-id="{{ $course->id }}" data-name="{{ $course->name }}" class="add-subject btn btn-warning btn-sm"><span class="fa fa-plus"></span></button></td>
+                        <button data-id="{{ $course->id }}" data-subjects="{{ $course->subjects }}" data-name="{{ $course->name }}" class="add-subject btn btn-warning btn-sm"><span class="fa fa-plus"></span></button></td>
                     <td>
                         <button class='edit-modal btn btn-info btn-sm' data-id="{{ $course->id }}" data-name="{{ $course->name }}"><span class='fa fa-edit'></span></button>
                         <button class='delete-modal btn btn-danger btn-sm' data-id="{{ $course->id }}" data-name="{{ $course->name }}"><span class='fa fa-trash'></span></button>
@@ -211,13 +211,6 @@
 
             {{--For multiple selection--}}
             <script type="text/javascript" src="{{ asset('vendor/selectize/selectize.min.js') }}"></script>
-            <script>
-                $('#input-subjects').selectize({
-                    plugins: ['remove_button'],
-                    delimiter: ',',
-                    persist: false,
-                });
-            </script>
 
             {{--For toaster notification--}}
             <script type="text/javascript" src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>

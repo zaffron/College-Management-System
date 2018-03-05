@@ -70,7 +70,7 @@
                         <div class="card-body-icon">
                             <i class="fa fa-fw fa-book"></i>
                         </div>
-                        <div class="mr-5">92 Subjects!</div>
+                        <div class="mr-5">{{ count($subjects) }} Subjects!</div>
                     </div>
                 </div>
             </div>
@@ -113,10 +113,14 @@
                                     <div class="dropdown-menu" id="export-menu" aria-labelledby="dropdownMenuLink">
                                         <a class="dropdown-item" href="#"  onclick="event.preventDefault();document.getElementById('export-xls-form').submit();" >XLS</a>
                                         <a class="dropdown-item" onclick="event.preventDefault();document.getElementById('export-csv-form').submit();" >CSV</a>
+                                        <a class="dropdown-item" onclick="event.preventDefault();document.getElementById('export-pdf-form').submit();" >PDF</a>
                                         <form id="export-xls-form" method="POST" action="{{route('student.export', $type='xls')}}">
                                             {{csrf_field()}}
                                         </form>
                                         <form id="export-csv-form" method="POST" action="{{route('student.export', $type='csv')}}">
+                                            {{csrf_field()}}
+                                        </form>
+                                        <form id="export-pdf-form" method="POST" action="{{route('student.export', $type='pdf')}}">
                                             {{csrf_field()}}
                                         </form>
                                     </div>

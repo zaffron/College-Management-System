@@ -26,7 +26,13 @@ class CourseController extends Controller
      */
     public function index()
     {
+        /*First i will send all the courses*/
         $courses = Course::all();
+
+        foreach($courses as $course) {
+            $course->list = $course->subjects()->get();
+        }
+
         $subjects = Subject::all();
         return view('admin.course', compact('courses', 'subjects'));
     }
@@ -42,7 +48,9 @@ class CourseController extends Controller
         }
         else{
             $course = Course::findOrFail($request->id_course);
-            $course->subjects()->attach($request->subjects);
+            foreach($request->subjects as $id){
+                $course->subjects()->attach($id);
+            }
             $course->save();
             return response()->json( $course->toArray() );
         }
