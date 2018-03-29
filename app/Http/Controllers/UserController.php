@@ -6,6 +6,8 @@ use Validator;
 use Response;
 use App\Department;
 use App\Admin;
+use App\Subject;
+use App\Course;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -25,6 +27,15 @@ class UserController extends Controller
             'department' =>'required',
             'gender' => 'required',
         ];
+    protected $edit_rules = 
+        [
+            'name' => 'required|min:2|max:256|regex:/^[a-z ,.\'-]+$/i',
+            'email' => 'required|email|max:255',
+            'department' =>'required',
+            'subjects' =>'required',
+            'course' => 'required',
+            'gender' => 'required',
+        ];
     /**
      * Display a listing of the resource.
      *
@@ -34,8 +45,14 @@ class UserController extends Controller
     {
         $users = User::all();
         $admins = Admin::all();
+        $courses = Course::all();
+        $subjects = subject::all();
         $departments = Department::all();
-		return view('admin.user',compact('users','admins', 'departments'));
+        foreach($users as $user) {
+            $user->list = $user->subjects()->get();
+            $user->sub_list = $user->subjects()->pluck('subjects.id')->toArray();
+        }
+		return view('admin.user',compact('users','admins','subjects','courses','departments'));
     }
 
     /**
@@ -70,15 +87,20 @@ class UserController extends Controller
             $user->gender = $request->gender;
             $user->email = $request->email;
             $user->department = $request->department;
+            $user->course = $request->course;
             $user->password = bcrypt($request->password);
             //Adding teacher count after adding user
             $department = Department::findOrFail($request->department);
             $department->teachers_count = $department->teachers_count + 1;
             $department->save();
             $user->save();
+            foreach($request->subjects as $id){
+                $user->subjects()->attach($id);
+            }
             return response()->json($user->toArray());
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -111,7 +133,34 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $validator = Validator::make( Input::all(), $this->edit_rules);
+        If($validator->fails())
+        {
+            return Response::json( array(
+                'errors' => $validator->getMessageBag()->toArray()
+            ));
+        }
+        else {
+            $user = User::findOrFail($id);
+            $user->name = $request->name;
+            $user->gender = $request->gender;
+            $user->email = $request->email;
+            $department = Department::findOrFail($user->department);
+            $department->teachers_count = $department->teachers_count - 1;
+            $user->department = $request->department;
+            $user->course = $request->course;
+            //Adding teacher count after adding user
+            $department = Department::findOrFail($request->department);
+            $department->teachers_count = $department->teachers_count + 1;
+            $department->save();
+            $user->save();
+            $user->subjects()->detach();
+            foreach($request->subjects as $id){
+                $user->subjects()->attach($id);
+            }
+            return response()->json($user->toArray());
+        }
     }
 
     /**

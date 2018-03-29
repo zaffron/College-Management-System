@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>SB Admin - Start Bootstrap Template</title>
+    <title>College Management System</title>
     <!-- Bootstrap core CSS-->
     <link href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <!-- Custom fonts for this template-->
@@ -21,9 +21,9 @@
         <div class="content-wrapper">
             <div class="container-fluid">
                 @yield('content')
+                @yield('modals')
             </div>
         </div>
-    @yield('js')
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -34,6 +34,8 @@
     <script src="{{ asset('js/dashboard-charts.js') }}"></script>
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('js/dashboard.min.js') }}"></script>
+    @yield('js')
+
 </body>
 
 </html>

@@ -7,37 +7,6 @@
 
     <!-- toastr notifications -->
     <link rel="stylesheet" href="{{ asset('vendor/toastr/css/toastr.min.css') }}">
-    <style>
-        .panel-heading {
-            padding: 0;
-        }
-        .panel-heading ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-        .panel-heading li {
-            float: left;
-            border-right:1px solid #bbb;
-            display: block;
-            padding: 14px 16px;
-            text-align: center;
-        }
-        .panel-heading li:last-child:hover {
-            background-color: #ccc;
-        }
-        .panel-heading li:last-child {
-            border-right: none;
-        }
-        .panel-heading li a:hover {
-            text-decoration: none;
-        }
-
-        .table.table-bordered tbody td {
-            vertical-align: baseline;
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -113,14 +82,10 @@
                                     <div class="dropdown-menu" id="export-menu" aria-labelledby="dropdownMenuLink">
                                         <a class="dropdown-item" href="#"  onclick="event.preventDefault();document.getElementById('export-xls-form').submit();" >XLS</a>
                                         <a class="dropdown-item" onclick="event.preventDefault();document.getElementById('export-csv-form').submit();" >CSV</a>
-                                        <a class="dropdown-item" onclick="event.preventDefault();document.getElementById('export-pdf-form').submit();" >PDF</a>
                                         <form id="export-xls-form" method="POST" action="{{route('student.export', $type='xls')}}">
                                             {{csrf_field()}}
                                         </form>
                                         <form id="export-csv-form" method="POST" action="{{route('student.export', $type='csv')}}">
-                                            {{csrf_field()}}
-                                        </form>
-                                        <form id="export-pdf-form" method="POST" action="{{route('student.export', $type='pdf')}}">
                                             {{csrf_field()}}
                                         </form>
                                     </div>
@@ -194,8 +159,8 @@
 @section('modals')
         <!-- Modal -->
             {{--Add modal for adding student--}}
-            <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+            <div class="modal  fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Add Student</h5>
@@ -206,38 +171,53 @@
                         <div class="modal-body">
                             <form action="" class="form">
                                 <div class="form-group row">
-                                    <label for="regno" class="col-2 col-form-label">Regno</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="regno" type="text"  id="regno_add">
+                                    <div class="col-md-4">
+                                        <img class="profile-img" src="{{ asset('img/dummy.png') }}" alt="Card image cap">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group row">
+                                            <label for="regno" class="col-2 col-form-label">Regno</label>
+                                            <div class="col-10">
+                                                <input class="form-control" name="regno" type="text"  id="regno_add">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="name" class="col-2 col-form-label">Name</label>
+                                            <div class="col-10">
+                                                <input class="form-control" name="name" type="text"  id="name_add">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="email" class="col-2 col-form-label">Email</label>
+                                            <div class="col-10">
+                                                <input class="form-control" name="email" type="email" id="email_add">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="gender" class="col-2 col-form-label">Gender</label>
+                                            <div class="col-4">
+                                                <select name="gender" id="gender_add" class="form-control">
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                </select>
+                                            </div>
+                                            <label for="dob" class="col-1 col-form-label">DOB</label>
+                                            <div class="col-5">
+                                                <input class="form-control" name="dob" type="date" value="1995-08-19" id="dob_add">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="contact" class="col-2 col-form-label">Contact</label>
+                                            <div class="col-10">
+                                                <input class="form-control" name="contact" type="tel" id="contact_add">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                
                                 <div class="form-group row">
-                                    <label for="name" class="col-2 col-form-label">Name</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="name" type="text"  id="name_add">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="email" class="col-2 col-form-label">Email</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="email" type="email" id="email_add">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="contact" class="col-2 col-form-label">Contact</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="contact" type="tel" id="contact_add">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="dob" class="col-2 col-form-label">DOB</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="dob" type="date" value="1995-08-19" id="dob_add">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="course" class="col-3 col-form-label">Course</label>
-                                    <div class="col-9">
+                                    <label for="course" class="col-1 col-form-label">Course</label>
+                                    <div class="col-5">
                                         <select name="course" class="form-control" id="course_add">
                                             @forelse($departments as $department)
                                                 <option value="{{ $department->id }}">{{ $department->name }}</option>
@@ -246,19 +226,8 @@
                                             @endforelse
                                         </select>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="gender" class="col-3 col-form-label">Gender</label>
-                                    <div class="col-9">
-                                        <select name="gender" id="gender_add" class="form-control">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="department-input" class="col-3 col-form-label">Proctor</label>
-                                    <div class="col-9">
+                                    <label for="department-input" class="col-1 col-form-label">Proctor</label>
+                                    <div class="col-5">
                                         <select name="proctor" id="proctor_add" class="form-control">
                                             @forelse($users as $user)
                                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -267,12 +236,17 @@
                                             @endforelse
                                         </select>
                                     </div>
+                                    
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-2 col-form-label">Address</label>
+                                    <textarea class="form-control col-md-9" style="resize:none;" name="address_add" rows="2"></textarea>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary add">Add Student</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>

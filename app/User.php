@@ -29,8 +29,13 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function isAdmin()
+    public function proctees()
     {
-    	return $this->admin;
+        return $this->hasMany('App\Student', 'proctor');
     }
+    public function subjects()
+    {
+        return $this->belongsToMany('App\Subject', 'user_subject');
+    }
+
 }

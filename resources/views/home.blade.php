@@ -10,14 +10,8 @@
                     <div class="card-body-icon">
                         <i class="fa fa-fw fa-graduation-cap"></i>
                     </div>
-                    <div class="mr-5">26 Student!</div>
+                    <div class="mr-5">{{ count($students) }} Student!</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="#">
-                    <span class="float-left">View Details</span>
-                    <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-                </a>
             </div>
         </div>
         <div class="col-xl-3 col-sm-6 mb-3" id="total-teacher">
@@ -26,14 +20,8 @@
                     <div class="card-body-icon">
                         <i class="fa fa-fw fa-male"></i>
                     </div>
-                    <div class="mr-5">12 Teachers!</div>
+                    <div class="mr-5">{{ count($users) }} Teachers!</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="#">
-                    <span class="float-left">View Details</span>
-                    <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-                </a>
             </div>
         </div>
         <div class="col-xl-3 col-sm-6 mb-3" id="total-subjects">
@@ -42,14 +30,8 @@
                     <div class="card-body-icon">
                         <i class="fa fa-fw fa-book"></i>
                     </div>
-                    <div class="mr-5">92 Subjects!</div>
+                    <div class="mr-5">{{ count($subjects) }} Subjects!</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="#">
-                    <span class="float-left">View Details</span>
-                    <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-                </a>
             </div>
         </div>
         <div class="col-xl-3 col-sm-6 mb-3" id="total-class">
@@ -58,14 +40,8 @@
                     <div class="card-body-icon">
                         <i class="fa fa-fw fa-archive"></i>
                     </div>
-                    <div class="mr-5">18 Total Class!</div>
+                    <div class="mr-5">{{ count($courses) }} Total Courses!</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="#">
-                    <span class="float-left">View Details</span>
-                    <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-                </a>
             </div>
         </div>
     </div>

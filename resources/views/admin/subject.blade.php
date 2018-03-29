@@ -7,37 +7,6 @@
 
     <!-- toastr notifications -->
     <link rel="stylesheet" href="{{ asset('vendor/toastr/css/toastr.min.css') }}">
-    <style>
-        .panel-heading {
-            padding: 0;
-        }
-        .panel-heading ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-        .panel-heading li {
-            float: left;
-            border-right:1px solid #bbb;
-            display: block;
-            padding: 14px 16px;
-            text-align: center;
-        }
-        .panel-heading li:last-child:hover {
-            background-color: #ccc;
-        }
-        .panel-heading li:last-child {
-            border-right: none;
-        }
-        .panel-heading li a:hover {
-            text-decoration: none;
-        }
-
-        .table.table-bordered tbody td {
-            vertical-align: baseline;
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -63,22 +32,24 @@
         <table class="table text-center" id="subjectTable" >
             <thead class="thead-dark">
             <tr>
-                <th class="col-md-1">#</th>
-                <th class="col-md-9">Subject Name</th>
-                <th class="col-md-2">Operation</th>
+                <th class="md-1">#</th>
+                <th class="md-4">Subject Name</th>
+                <th class="md-5">Description</th>
+                <th class="md-2">Operation</th>
             </tr>
             @forelse($subjects as $subject)
                 <tr class='item{{ $subject->id }}'>
-                    <td>{{ $subject->id }}</td>
-                    <td>{{ $subject->name }}</td>
-                    <td>
-                        <button class='edit-modal btn btn-info btn-sm' data-id="{{ $subject->id }}" data-name="{{ $subject->name }}"><span class='fa fa-edit'></span></button>
+                    <td class="md-1">{{ $subject->id }}</td>
+                    <td class="md-9">{{ $subject->name }}</td>
+                    <td class="md-5">{{ $subject->description }}</td>
+                    <td class="md-2">
+                        <button class='edit-modal btn btn-info btn-sm' data-id="{{ $subject->id }}" data-name="{{ $subject->name }}" data-description="{{ $subject->description }}"><span class='fa fa-edit'></span></button>
                         <button class='delete-modal btn btn-danger btn-sm' data-id="{{ $subject->id }}" data-name="{{ $subject->name }}"><span class='fa fa-trash'></span></button>
                     </td>
                 </tr>
             @empty
                 <tr id="noStudent">
-                    <td colspan="3" >No Subject Found</td>
+                    <td colspan="5">No Subject Found</td>
                 </tr>
             @endforelse
             </thead>
@@ -108,16 +79,22 @@
                         <div class="modal-body">
                             <form action="" class="form">
                                 <div class="form-group row">
-                                    <label for="name" class="col-12 col-form-label">Subject Name:</label>
+                                    <label for="name" class="col-12 col-form-label">Subject Name <span class="text-info"> (Short name if possible):</span></label>
                                     <div class="col-12">
                                         <input class="form-control" name="name" type="text"  id="name_add">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-12 col-form-label">Description: </label>
+                                    <div class="col-12">
+                                        <textarea class="form-control" id="description_add" style="resize: none;"></textarea>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary add">Add Subject</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -140,6 +117,12 @@
                                     <label for="name" class="col-12 col-form-label">Subject Name:</label>
                                     <div class="col-12">
                                         <input class="form-control" name="name" type="text"  id="name_edit">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-12 col-form-label">Description: </label>
+                                    <div class="col-12">
+                                        <textarea class="form-control" id="description_edit " style="resize: none;"></textarea>
                                     </div>
                                 </div>
                             </form>
@@ -166,13 +149,13 @@
                             <form action="" class="form">
                                 <div class="form-group row">
                                     <label for="regno" class="col-12 col-form-label">ID</label>
-                                    <div class="col-10">
+                                    <div class="col-12">
                                         <input class="form-control" name="regno" type="text"  id="id_delete"  readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="name" class="col-12 col-form-label">Name</label>
-                                    <div class="col-10">
+                                    <div class="col-12">
                                         <input class="form-control" name="name" type="text"  id="name_delete" readonly>
                                     </div>
                                 </div>

@@ -8,6 +8,10 @@ class Subject extends Model
 {
     public function courses()
     {
-        $this->belongsToMany('App\Course', 'course_subject');
+        return $this->belongsToMany('App\Course', 'course_subject');
+    }
+    public function users()
+    {
+        return $this->belongsToMany('App\User', 'user_subject');
     }
 }

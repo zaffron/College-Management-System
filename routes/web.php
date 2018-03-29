@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
 	if(Auth::user()) {
-		return view( 'home' );
+		route('home');
 	}
 	return view('auth.login');
 });
@@ -24,6 +24,9 @@ Auth::routes();
 /*User Controllers*/
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::get('/dashboard', 'HomeController@index')->middleware('auth');
+Route::get('/students', 'HomeController@showStudents')->middleware('auth')->name('user.students');
+Route::post('/search/student', 'HomeController@searchStudents')->middleware('auth');
+Route::get('/proctees', 'HomeController@proctees')->middleware('auth')->name('user.proctees');
 
 /*Admin Routes*/
 Route::prefix('admin')->group(function(){

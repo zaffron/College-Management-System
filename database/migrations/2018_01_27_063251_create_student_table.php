@@ -20,7 +20,10 @@ class CreateStudentTable extends Migration
 	        $table->string('email')->unique();
 	        $table->string('gender');
 	        $table->string('contact');
+            $table->string('address')->nullable();
 	        $table->date('dob');
+            $table->string('semester')->default('1');
+            $table->string('parent_contact')->nullable();
 	        $table->string('course');
 	        $table->string('proctor');
             $table->timestamps();

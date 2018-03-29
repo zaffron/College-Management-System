@@ -61,6 +61,7 @@ class SubjectController extends Controller
         else{
             $subject = new Subject();
             $subject->name = $request->name;
+            $subject->description = $request->description;
             $subject->save();
             return response()->json( $subject->toArray() );
         }
@@ -103,6 +104,7 @@ class SubjectController extends Controller
         } else {
             $subject              = Subject::findOrFail( $id );
             $subject->name        = $request->name;
+            $subject->description = $request->description;
             $subject->save();
 
             return response()->json( $subject->toArray() );

@@ -57,7 +57,7 @@
                     <button class="btn btn-login">Login <i class="fas fa-arrow-right"></i> </button>
                 </form>
                 <a href="{{route('password.request')}}" class="forgot-password-link">Forgot Your Password?</a>
-                <a href="{{ route('register') }}" class="forgot-password-link" style="margin-left: 200px;">Register New User !</a>
+                <a href="{{ route('login') }}" class="forgot-password-link" style="margin-left: 200px;">User Panel !</a>
             </div>
         </div>
     </div>

@@ -1,11 +1,6 @@
 // add a new post
 var courseCount = parseInt($('#courseCount').text());
 
-$('#input-subjects').selectize({
-    plugins: ['remove_button'],
-    delimiter: ',',
-    persist: false,
-});
 
 $('.modal-footer').on('click', '.add', function() {
     $.ajax({
@@ -14,6 +9,9 @@ $('.modal-footer').on('click', '.add', function() {
         data: {
             '_token': $('input[name=_token]').val(),
             'name': $('#name_add').val(),
+            'description' : $('#description_add').val(),
+            'subjects': $('#input-subjects').val(),
+            'semester': $('#semester_add').val(),
         },
         success: function(data) {
 
@@ -27,17 +25,26 @@ $('.modal-footer').on('click', '.add', function() {
                     $('.errorTitle').removeClass('hidden');
                     $('.errorTitle').text(data.errors.name);
                 }
+                if (data.errors.description) {
+                    $('.errorTitle').removeClass('hidden');
+                    $('.errorTitle').text(data.errors.description);
+                }
+                if (data.errors.subjects) {
+                    $('.errorTitle').removeClass('hidden');
+                    $('.errorTitle').text(data.errors.subjects);
+                }
+                if (data.errors.semester) {
+                    $('.errorTitle').removeClass('hidden');
+                    $('.errorTitle').text(data.errors.semester);
+                }
             } else {
                 toastr.success('Successfully added Course!', 'Success Alert', {timeOut: 5000});
                 courseCount += 1;
                 $('#courseCount').text(courseCount);
-                $('#courseTable').append("<tr class='item" + data.id + "'><td>" + data.id + "</td><td>" + data.name + "</td><td><button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' ><span class='fa fa-edit'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' ><span class='fa fa-trash'></span></button></td></tr>");
                 $('#addModal').modal('hide');
-                if($('#noSubject').length != 0){
-                    $(document).ajaxStop(function(){
-                        window.location.reload();
-                    });
-                }
+                $(document).ajaxStop(function(){
+                    window.location.reload();
+                });
             }
         },
     });
@@ -47,9 +54,23 @@ $('.modal-footer').on('click', '.add', function() {
 // Edit a post
 $(document).on('click', '.edit-modal', function() {
     $('#name_edit').val($(this).data('name'));
-    $('#id_edit').val($(this).data('id'));
+    $('#username_edit').val($(this).data('username'));
+    $('#email_edit').val($(this).data('email'));
+    $('#department_edit').val($(this).data('department'));
+    $('#gender_edit').val($(this).data('gender'));
+    $('#course_edit').val($(this).data('course'));
+    var subjects = ($(this).data('subjects'));
+    var sub_id = subjects.split(",");
+    var $select = $('#edit-subjects').selectize();
+    var selectize = $select[0].selectize;
+    selectize.setValue(sub_id);
     id = $(this).data('id');
     $('#editModal').modal('show');
+    $('#edit-subjects').selectize({
+        plugins: ['remove_button'],
+        delimiter: ',',
+        persist: false,
+    });
 });
 
 $('.modal-footer').on('click', '.edit', function() {
@@ -59,6 +80,9 @@ $('.modal-footer').on('click', '.edit', function() {
         data: {
             '_token': $('input[name=_token]').val(),
             'name': $('#name_edit').val(),
+            'semester': $('#semester_edit').val(),
+            'subjects': $('#edit-subjects').val(),
+            'description': $('#description_edit').val(),
         },
         success: function(data) {
             $('.errorTitle').addClass('hidden');
@@ -74,10 +98,19 @@ $('.modal-footer').on('click', '.edit', function() {
                     $('.errorTitle').removeClass('hidden');
                     $('.errorTitle').text(data.errors.name);
                 }
+                if (data.errors.description) {
+                    $('.errorTitle').removeClass('hidden');
+                    $('.errorTitle').text(data.errors.description);
+                }
+                if (data.errors.subjects) {
+                    $('.errorTitle').removeClass('hidden');
+                    $('.errorTitle').text(data.errors.subjects);
+                }
             } else {
                 toastr.success('Successfully updated Course!', 'Success Alert', {timeOut: 5000});
-                $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td>" + data.id + "</td><td>" + data.name + "</td><button class='edit-modal btn btn-info btn-sm'  data-id='" +  data.id + "' data-name='" + data.name + "'><span class='fa fa-edit'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' ><span class='fa fa-trash'></span></button></td></tr>");
-
+                $(document).ajaxStop(function(){
+                    window.location.reload();
+                });
             }
         }
     });
@@ -107,33 +140,4 @@ $('.modal-footer').on('click', '.delete', function() {
     });
 });
 
-//Add subjects
-$(document).on('click', '.add-subject', function(){
-   $('#id_course').val($(this).data('id'));
-   $('#name_course').val($(this).data('name'));
-   var subjects = JSON.parse("[" + $(this).data('subjects') + "]");
-   subjects = Object.assign(subjects);
-   console.log(subjects);
-    $('#input-subjects').selectize();
-   id = $(this).data('id');
-   $('#addSubject').modal('show');
 
-});
-
-$('.modal-footer').on('click', '.addSubjects', function(){
-
-    $.ajax({
-        type: 'POST',
-        url: 'course/addSubjects',
-        data: {
-          '_token' : $('input[name=_token]').val(),
-          'id_course' : $('input[name=id_course]').val(),
-          'name_course' : $('input[name=name_course]').val(),
-          'subjects' : $('#input-subjects').val()
-        },
-        success: function(data){
-            toastr.success('Subject added Successfully!', 'Subject Updated', {timeOut: 5000});
-            $('#addSubject').modal('hide');
-        }
-    });
-});

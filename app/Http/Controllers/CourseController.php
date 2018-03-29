@@ -31,6 +31,7 @@ class CourseController extends Controller
 
         foreach($courses as $course) {
             $course->list = $course->subjects()->get();
+            $course->sub_list = $course->subjects()->pluck('subjects.id')->toArray();
         }
 
         $subjects = Subject::all();
@@ -74,7 +75,12 @@ class CourseController extends Controller
         else{
             $course = new Course();
             $course->name = $request->name;
+            $course->semester = $request->semester;
+            $course->description = $request->description;
             $course->save();
+            foreach($request->subjects as $id){
+                $course->subjects()->attach($id);
+            }
             return response()->json( $course->toArray() );
         }
     }
@@ -116,6 +122,11 @@ class CourseController extends Controller
         } else {
             $course              = Course::findOrFail( $id );
             $course->name        = $request->name;
+            $course->description = $request->description;
+            $course->subjects()->detach();
+            foreach($request->subjects as $id){
+                $course->subjects()->attach($id);
+            }
             $course->save();
 
             return response()->json( $course->toArray() );

@@ -84,11 +84,13 @@
                     <td>{{$data->id}}</td>
                     <td>{{$data->name}}</td>
                     <td>{{App\Department::getExcerpt($data->description)}}</td>
-                    @foreach($courses as $course)
+                    @forelse($courses as $course)
                         @if($course->id == $data->course)
                             <td>{{ $course->name }}</td>
                         @endif
-                    @endforeach
+                    @empty
+                        <td>No courses</td>
+                    @endforelse
                     <td>{{$data->teachers_count}}</td>
                     <td>{{$data->students_count}}</td>
                     <td>
@@ -98,7 +100,7 @@
                             <span class="text-danger">Inactive</span>
                         @endif
                     </td>
-                    {{--                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->diffForHumans() }}</td>--}}
+                    {{--<td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->diffForHumans() }}</td>--}}
                     <td>
                         <button class="show-modal btn btn-sm btn-success" data-id="{{$data->id}}" data-course="{{ $data->course }}" data-name="{{$data->name}}" data-description="{{$data->description}}"><span class="fa fa-eye"></span></button>
                         <button class="edit-modal btn btn-sm btn-info" data-id="{{$data->id}}" data-course="{{ $data->course }}" data-name="{{$data->name}}" data-description="{{$data->description}}"><span class="fa fa-edit"></span></button>

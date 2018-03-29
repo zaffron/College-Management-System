@@ -15,6 +15,8 @@ class CoursesStudents extends Migration
     {
         Schema::create('course_student', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('course_id');
+            $table->integer('student_id');
             $table->timestamps();
         });
     }

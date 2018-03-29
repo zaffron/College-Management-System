@@ -8,7 +8,7 @@
                     <h4 class="card-title"><span class="fa fa-pencil-square-o"></span> Take Attendance </h4>
                     <hr>
                     <p class="card-text">You can take the attendance of the particular date.</p>
-                    <a href="#" class="card-footer text-white bg-primary card-link">Take Attendance <i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <button type="button" data-toggle="modal" data-target="#takeAttendance" class="btn btn-md btn-primary text-white">Take Attendance <i class="fa fa-pencil" aria-hidden="true"></i></button>
                 </div>
             </div>
             <div class="col-md-6 card bg-dark text-white">
@@ -47,6 +47,37 @@
                     <canvas id="myAreaChart" width="100%" height="30"></canvas>
                 </div>
                 <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('modals')
+
+    {{--Add modal for adding student--}}
+    <div class="modal fade" id="takeAttendance" tabindex="-1" role="dialog" aria-labelledby="takeAttendance" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Subject</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" class="form">
+                        <div class="form-group row">
+                            <label for="name" class="col-12 col-form-label">Subject Name:</label>
+                            <div class="col-12">
+                                <input class="form-control" name="name" type="text"  id="name_add">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary add">Add Subject</button>
+                </div>
             </div>
         </div>
     </div>

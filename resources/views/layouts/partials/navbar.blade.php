@@ -13,19 +13,25 @@
                 </a>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Attendance">
+                <a class="nav-link" href="{{ route('attendance.register') }}">
+                    <i class="fa fa-fw fa-book"></i>
+                    <span class="nav-link-text">Attendance register</span>
+                </a>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Attendance">
                 <a class="nav-link" href="{{ route('attendance.index') }}">
                     <i class="fa fa-fw fa-book"></i>
                     <span class="nav-link-text">Attendance</span>
                 </a>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Students">
-                <a class="nav-link" href="{{ route('student.index') }}">
+                <a class="nav-link" href="{{ route('user.students') }}">
                     <i class="fa fa-fw fa-user-o"></i>
                     <span class="nav-link-text">Students</span>
                 </a>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Proctees">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="{{ route('user.proctees') }}">
                     <i class="fa fa-fw fa-male"></i>
                     <span class="nav-link-text">Proctees</span>
                 </a>

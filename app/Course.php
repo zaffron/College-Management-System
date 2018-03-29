@@ -12,4 +12,5 @@ class Course extends Model
     {
         return $this->belongsToMany('App\Subject' , 'course_subject');
     }
+
 }
