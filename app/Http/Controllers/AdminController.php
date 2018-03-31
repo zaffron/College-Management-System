@@ -8,7 +8,9 @@ use App\Course;
 use App\Admin;
 use App\Student;
 use App\Subject;
+use Storage;
 use App\User;
+use Intervention\Image\Facades\Image;
 use App\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -34,6 +36,20 @@ class AdminController extends Controller
             'department' =>'required',
             'gender' => 'required',
         ];
+    protected $profile_update_rules = 
+        [
+            'name' => 'required|min:2|max:256|regex:/^[a-z ,.\'-]+$/i',
+            'email' => 'required|email|max:255',
+            'gender' =>'required',
+        ];
+    protected $profile_update_rules_password =
+        [
+            'name' => 'required|min:2|max:256|regex:/^[a-z ,.\'-]+$/i',
+            'email' => 'required|email|max:255',
+            'gender' =>'required',
+            'password' =>'required|min:6|max:255',
+        ];
+
 
     /**
      * Show the application dashboard.
@@ -51,9 +67,21 @@ class AdminController extends Controller
     }
 
 
-
+    /*Profile handling*/
     public function profile(Admin $id){
+
         return view('admin.profile');
+    }
+
+
+    public function announcement()
+    {
+        $departments = Department::all();
+        $courses = Course::all();
+        $subjects = Subject::all();
+        $students = Student::all();
+        $users = User::all();
+        return view('admin.announcement', compact('departments', 'courses', 'subjects', 'students', 'users'));
     }
 
     public function searchDepartment(Request $request)
@@ -104,6 +132,58 @@ class AdminController extends Controller
             $admin->password = bcrypt($request->password);
             $admin->save();
             return response()->json( $admin->toArray() );
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        if($request->password != '' || $request->password != "")
+        {
+            $validator = Validator::make( Input::all(), $this->profile_update_rules_password);
+            if($validator->fails())
+            {
+                return Response::json( array(
+                    'errors' => $validator->getMessageBag()->toArray()
+                ));
+            }else{
+                $admin = Admin::findOrFail($id);
+                $admin->name = $request->name;
+                $admin->gender = $request->gender;
+                $admin->email = $request->email;
+                $admin->description = $request->description;
+                $admin->password = bcrypt($request->password);
+                if ($request->hasFile('avatar')) {
+                            $image      = $request->file('avatar');
+                            $fileName   = time() . '.' . $image->getClientOriginalExtension();
+
+                            $img = Image::make($image->getRealPath());
+                            $img->resize(200, 200, function ($constraint) {
+                                $constraint->aspectRatio();                 
+                            });
+
+                            $img->stream(); // <-- Key point
+                            $admin->avatar = $fileName;
+                            Storage::disk('local')->put('images/profile'.'/'.$fileName, $img, 'public');
+                }
+                $admin->save();
+                return response()->json( $admin->toArray() );
+            }
+        }else{
+            $validator = Validator::make( Input::all(), $this->profile_update_rules);
+            if($validator->fails())
+            {
+                return Response::json( array(
+                    'errors' => $validator->getMessageBag()->toArray()
+                ));
+            }else{
+                $admin = Admin::findOrFail($id);
+                $admin->name = $request->name;
+                $admin->gender = $request->gender;
+                $admin->email = $request->email;
+                $admin->description = $request->description;
+                $admin->save();
+                return response()->json( $admin->toArray() );
+            }
         }
     }
 

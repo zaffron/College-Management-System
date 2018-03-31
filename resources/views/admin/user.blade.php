@@ -351,7 +351,7 @@
                             <div class="form-group row">
                                 <label for="gender" class="col-form-label col-md-2">Gender:</label>
                                 <select name="gender" id="gender_edit" class="form-control col-md-4">
-                                    <option value="male" selected>Male</option>
+                                    <option value="male" >Male</option>
                                     <option value="female">Female</option>
                                 </select>
                                 <!-- course -->

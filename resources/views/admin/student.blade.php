@@ -7,6 +7,28 @@
 
     <!-- toastr notifications -->
     <link rel="stylesheet" href="{{ asset('vendor/toastr/css/toastr.min.css') }}">
+    <style type="text/css">
+        /*for profile pic upload*/
+        .cms-avatar .krajee-default.file-preview-frame,.cms-avatar .krajee-default.file-preview-frame:hover {
+            margin: 0;
+            padding: 0;
+            border: none;
+            box-shadow: none;
+            text-align: center;
+        }
+        .cms-avatar {
+            display: inline-block;
+        }
+        .cms-avatar .file-input {
+            display: table-cell;
+            width: 213px;
+        }
+        .cms-reqd {
+            color: red;
+            font-family: monospace;
+            font-weight: normal;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -171,8 +193,14 @@
                         <div class="modal-body">
                             <form action="" class="form">
                                 <div class="form-group row">
-                                    <div class="col-md-4">
-                                        <img class="profile-img" src="{{ asset('img/dummy.png') }}" alt="Card image cap">
+                                    <div class="col-md-4 text-center">
+                                        <div class="cms-avatar">
+                                            <div class="file-loading">
+                                                <input id="avatar-1" name="avatar-1" type="file" required>
+                                             </div>
+                                         </div>
+                                    <div class="cms-avatar-hint"><small>Select file < 1500 KB</small></div>
+                                        <div id="cms-avatar-errors-1" class="center-block" style="width:800px;display:none"></div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group row">
@@ -494,6 +522,31 @@
                         '{{ $department->students_count }}',
                     @endforeach
                 ];
+            </script>
+            <script type="text/javascript">
+                $(document).on('load', '#addModal', function(){
+                    // file picture update
+                    var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' + 
+                        'onclick="alert(\'Call your custom code here.\')">' +
+                        '<i class="glyphicon glyphicon-tag"></i>' +
+                        '</button>'; 
+                    $("#avatar-1").fileinput({
+                        overwriteInitial: true,
+                        maxFileSize: 1500,
+                        showClose: false,
+                        showCaption: false,
+                        browseLabel: '',
+                        removeLabel: '',
+                        browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',
+                        removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
+                        removeTitle: 'Cancel or reset changes',
+                        elErrorContainer: '#cms-avatar-errors-1',
+                        msgErrorClass: 'alert alert-block alert-danger',
+                        defaultPreviewContent: '<img src="{{asset('img/dummy.png')}}" alt="Your Avatar">',
+                        layoutTemplates: {main2: '{preview} ' +  btnCust + ' {remove} {browse}'},
+                        allowedFileExtensions: ["jpg", "png", "gif"]
+                    });
+                });
             </script>
     {{--For toaster notification--}}
     <script type="text/javascript" src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>

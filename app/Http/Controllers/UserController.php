@@ -36,6 +36,15 @@ class UserController extends Controller
             'course' => 'required',
             'gender' => 'required',
         ];
+
+    protected $profile_update_rules = 
+        [
+            'name' => 'required|min:2|max:256|regex:/^[a-z ,.\'-]+$/i',
+            'email' => 'required|email|max:255',
+            'gender' =>'required',
+            'password' =>'required',
+        ];
+    
     /**
      * Display a listing of the resource.
      *

@@ -49,6 +49,7 @@ $('.modal-footer').on('click', '.add', function() {
     });
 });
 
+
 // Show a post
 $(document).on('click', '.show-modal', function() {
     $('#regno_show').val($(this).data('regno'));

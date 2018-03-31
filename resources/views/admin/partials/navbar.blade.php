@@ -42,6 +42,12 @@
                     <span class="nav-link-text">Courses</span>
                 </a>
             </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Announcements">
+                <a class="nav-link" href="{{ route('admin.announcement') }}">
+                    <i class="fa fa-fw fa-microphone"></i>
+                    <span class="nav-link-text">Announcement</span>
+                </a>
+            </li>
         </ul>
         <ul class="navbar-nav sidenav-toggler">
             <li class="nav-item">

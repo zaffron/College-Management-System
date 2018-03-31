@@ -38,7 +38,13 @@ Route::prefix('admin')->group(function(){
     Route::get('/', 'AdminController@index')->name('admin.dashboard');
     Route::post('/search/department', 'AdminController@searchDepartment')->name('admin.search.department');
     Route::post('/search/student', 'AdminController@searchStudent')->name('admin.search.student');
+
+    /*Admin profile*/
     Route::get('/profile/{id}', 'AdminController@profile')->name('admin.profile');
+    Route::post('/profile/{id}', 'AdminController@update')->name('admin.profile.update');
+
+    // Announcement
+    Route::get('/announcement', 'AdminController@announcement')->name('admin.announcement');
 
     //Course
     Route::post('course/addSubjects', 'CourseController@addSubjects');
