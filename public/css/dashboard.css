@@ -302,30 +302,30 @@ body.sidenav-toggled .navbar-sidenav-tooltip.show {
   .card-columns {
     column-count: 2; } }
 
-#avatar-uploader {
+.avatar-uploader {
   visibility: hidden; }
 
 .profile-img {
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
-  border-radius: 50%;
-  border: 2px solid black; }
+  border-radius: 50%;}
 
-#uploader {
+.uploader {
   position: absolute;
   background: #FFFFFF;
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
   top: 0;
   opacity: 0;
   padding-top: 40%;
-  left: 30px; }
-  #uploader:hover {
+  text-align:center;
+  left: 10px; }
+  .uploader:hover {
     opacity: 0.4;
     cursor: pointer; }
 

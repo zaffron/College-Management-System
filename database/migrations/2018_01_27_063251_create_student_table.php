@@ -23,8 +23,8 @@ class CreateStudentTable extends Migration
             $table->string('address')->nullable();
 	        $table->date('dob');
             $table->string('semester')->default('1');
-            $table->string('parent_contact')->nullable();
 	        $table->string('course');
+            $table->text('avatar')->nullable();
 	        $table->string('proctor');
             $table->timestamps();
         });

@@ -14,6 +14,8 @@
     <link href="{{asset('vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
     <!-- Custom styles for this template-->
     <link href="{{asset('css/dashboard.css')}}" rel="stylesheet">
+    {{-- CSRF --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('styles')
 </head>
 
@@ -35,11 +37,6 @@
 <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
 <!-- Custom scripts for all pages-->
 <script src="{{ asset('js/dashboard.min.js') }}"></script>
-<script>
-    window.Laravel = <?php echo json_encode([
-        'csrfToken' => csrf_token(),
-    ]); ?>
-</script>
 
 
 @yield('js')

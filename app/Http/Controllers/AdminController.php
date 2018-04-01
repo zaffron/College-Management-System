@@ -163,7 +163,7 @@ class AdminController extends Controller
 
                             $img->stream(); // <-- Key point
                             $admin->avatar = $fileName;
-                            Storage::disk('local')->put('images/profile'.'/'.$fileName, $img, 'public');
+                            Storage::disk('local')->put('public/images/profile'.'/'.$fileName, $img);
                 }
                 $admin->save();
                 return response()->json( $admin->toArray() );
@@ -181,6 +181,19 @@ class AdminController extends Controller
                 $admin->gender = $request->gender;
                 $admin->email = $request->email;
                 $admin->description = $request->description;
+                if ($request->hasFile('avatar')) {
+                            $image      = $request->file('avatar');
+                            $fileName   = time() . '.' . $image->getClientOriginalExtension();
+
+                            $img = Image::make($image->getRealPath());
+                            $img->resize(200, 200, function ($constraint) {
+                                $constraint->aspectRatio();                 
+                            });
+
+                            $img->stream(); // <-- Key point
+                            $admin->avatar = $fileName;
+                            Storage::disk('local')->put('public/images/profile'.'/'.$fileName, $img);
+                }
                 $admin->save();
                 return response()->json( $admin->toArray() );
             }

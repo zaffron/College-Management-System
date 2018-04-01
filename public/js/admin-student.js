@@ -1,22 +1,25 @@
 // add a new post
 var studentCount = parseInt($('#studentCount').text());
 
+/*Updating details*/
 
-$('.modal-footer').on('click', '.add', function() {
+
+$(document).on('click', '.add', function(e) {
+  e.preventDefault();
+
+  var formData = new FormData($('#add-student-form')[0]);
+
     $.ajax({
         type: 'POST',
-        url: 'student',
-        data: {
-            '_token': $('input[name=_token]').val(),
-            'name': $('#name_add').val(),
-            'email': $('#email_add').val(),
-            'regno': $('#regno_add').val(),
-            'contact':$('#contact_add').val(),
-            'dob': $('#dob_add').val(),
-            'course': $('#course_add').val(),
-            'gender': $('#gender_add').val(),
-            'proctor': $('#proctor_add').val(),
+        headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
+        url:  'student',
+        enctype: 'multipart/form-data',
+        async: false,
+        processData: false,
+        contentType: false,
+        data: formData,
         success: function(data) {
 
             if ((data.errors)) {
@@ -35,17 +38,13 @@ $('.modal-footer').on('click', '.add', function() {
                 }
             } else {
                 toastr.success('Successfully added Student!', 'Success Alert', {timeOut: 5000});
-                studentCount += 1;
-                $('#studentCount').text(studentCount);
-                $('#studentTable').append("<tr class='item" + data.id + "'><td>" + data.id + "</td><td>" + data.regno + "</td><td>" + data.name + "</td><td>" + data.department + "</td><td><button class='show-modal btn btn-success btn-sm' data-regno='" + data.regno + "' data-id='" + data.id + "' data-gender='" + data.gender + "' data-proctor='" + data.proctor + "' data-email='" + data.dob + "' data-email='" + data.contact + "' data-email='" + data.email + "' data-name='" + data.name + "' data-department='" + data.department + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-info btn-sm' data-id='" + data.id + "' data-gender='" + data.gender + "' data-proctor='" + data.proctor + "' data-email='" + data.dob + "' data-email='" + data.contact + "' data-email='" + data.email + "' data-name='" + data.name + "' data-department='" + data.department + "' data-regno='" + data.regno +"'><span class='fa fa-edit'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-regno='" + data.regno + "' data-name='" + data.name + "' data-department='" + data.department + "'><span class='fa fa-trash'></span></button></td></tr>");
-                $('#addModal').modal('hide');
                 if($('#noStudent').length != 0){
                     $(document).ajaxStop(function(){
                         window.location.reload();
                     });
                 }
             }
-        },
+        }
     });
 });
 
@@ -60,6 +59,9 @@ $(document).on('click', '.show-modal', function() {
     $('#dob_show').val($(this).data('dob'));
     $('#proctor_show').val($(this).data('proctor'));
     $('#contact_show').val($(this).data('contact'));
+    $('#semester_show').val($(this).data('semester'));
+    $('#avatar-show').attr('src', $(this).data('avatar'));
+    $('#address_show').val($(this).data('address'));
     $('#showModal').modal('show');
 });
 
@@ -74,29 +76,32 @@ $(document).on('click', '.edit-modal', function() {
     $('#course_edit').val($(this).data('course'));
     $('#gender_edit').val($(this).data('gender'));
     $('#proctor_edit').val($(this).data('proctor'));
+    $('#address_edit').val($(this).data('address'));
+    $('#semester_edit').val($(this).data('semester'));
+    $('#avatar_edit').val($(this).data('avatar'));
     id = $(this).data('id');
     $('#editModal').modal('show');
 });
 
-$('.modal-footer').on('click', '.edit', function() {
-    $.ajax({
-        type: 'PUT',
-        url: 'student/' + id,
-        data: {
-            '_token': $('input[name=_token]').val(),
-            'name': $('#name_edit').val(),
-            'email': $('#email_edit').val(),
-            'regno': $('#regno_edit').val(),
-            'contact':$('#contact_edit').val(),
-            'dob': $('#dob_edit').val(),
-            'course': $('#course_edit').val(),
-            'gender': $('#gender_edit').val(),
-            'proctor': $('#proctor_edit').val(),
-        },
-        success: function(data) {
-            $('.errorTitle').addClass('hidden');
-            $('.errorContent').addClass('hidden');
+$(document).on('click', '.edit', function(e) {
+    
+  e.preventDefault();
 
+  var formData = new FormData($('#edit-student')[0]);
+    formData.append("_method" , "PATCH" );
+
+    $.ajax({
+        type: 'POST',
+        headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url:  'student/' + id,
+        enctype: 'multipart/form-data',
+        async: false,
+        processData: false,
+        contentType: false,
+        data: formData,
+        success: function(data) {
             if ((data.errors)) {
                 setTimeout(function () {
                     $('#editModal').modal('show');
@@ -113,7 +118,9 @@ $('.modal-footer').on('click', '.edit', function() {
                 }
             } else {
                 toastr.success('Successfully updated Student!', 'Success Alert', {timeOut: 5000});
-                $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td>" + data.id + "</td><td>" + data.regno + "</td><td>" + data.name + "</td><td>" + data.courseName + "</td><td><button class='show-modal btn btn-success btn-sm' data-dob='" +  data.dob + "' data-regno='" +  data.regno +  "' data-id='" +  data.id + "' data-gender='" +  data.gender +  "' data-proctor='" + data.proctor + "' data-email='" + data.email + "' data-contact='" + data.contact + "' data-name='" + data.name + "' data-course='" + data.course + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-info btn-sm' data-dob='" +  data.dob + "' data-regno='" +  data.regno +  "' data-id='" +  data.id + "' data-gender='" +  data.gender +  "' data-proctor='" + data.proctor + "' data-email='" + data.email + "' data-contact='" + data.contact + "' data-name='" + data.name + "' data-course='" + data.course + "'><span class='fa fa-edit'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-course='" + data.course + "'><span class='fa fa-trash'></span></button></td></tr>");
+                $(document).ajaxStop(function(){
+                    window.location.reload();
+                });
 
             }
         }
@@ -131,6 +138,9 @@ $(document).on('click', '.delete-modal', function() {
 $('.modal-footer').on('click', '.delete', function() {
     $.ajax({
         type: 'DELETE',
+        headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         url: 'student/' + id,
         data: {
             '_token': $('input[name=_token]').val(),

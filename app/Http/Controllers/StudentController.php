@@ -9,6 +9,8 @@ use App\Department;
 use App\User;
 use DB;
 use App\Course;
+use Intervention\Image\Facades\Image;
+use Storage;
 use Excel;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -47,7 +49,6 @@ class StudentController extends Controller
             'gender' => 'required',
             'proctor' => 'required',
         ];
-
 
     /**
      * Display a listing of the resource.
@@ -129,6 +130,20 @@ class StudentController extends Controller
             $student->course = $request->course;
             $student->gender = $request->gender;
             $student->proctor = $request->proctor;
+            $student->address = $request->address;
+            if ($request->hasFile('avatar')) {
+                        $image      = $request->file('avatar');
+                        $fileName   = time() . '.' . $image->getClientOriginalExtension();
+
+                        $img = Image::make($image->getRealPath());
+                        $img->resize(200, 200, function ($constraint) {
+                            $constraint->aspectRatio();                 
+                        });
+
+                        $img->stream(); // <-- Key point
+                        $student->avatar = $fileName;
+                        Storage::disk('local')->put('public/images/students'.'/'.$fileName, $img);
+            }
             $student->save();
             $course = Course::findOrFail($student->course);
             $dept = Department::where('course'.'='.$course->id)->get();
@@ -187,14 +202,29 @@ class StudentController extends Controller
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
         }else {
             $student = Student::findOrFail($id);
+            $student->regno = strtoupper($request->regno);
             $student->name = $request->name;
-            $student->regno = $request->regno;
             $student->email = $request->email;
             $student->contact = $request->contact;
             $student->dob = $request->dob;
-            $student->gender = $request->gender;
-            $student->proctor = $request->proctor;
             $student->course = $request->course;
+            $student->gender = $request->gender;
+            $student->semester = $request->semester;
+            $student->proctor = $request->proctor;
+            $student->address = $request->address;
+            if ($request->hasFile('avatar')) {
+                        $image      = $request->file('avatar');
+                        $fileName   = time() . '.' . $image->getClientOriginalExtension();
+
+                        $img = Image::make($image->getRealPath());
+                        $img->resize(200, 200, function ($constraint) {
+                            $constraint->aspectRatio();                 
+                        });
+
+                        $img->stream(); // <-- Key point
+                        $student->avatar = $fileName;
+                        Storage::disk('local')->put('public/images/students'.'/'.$fileName, $img);
+            }
             $student->save();
             $course = Course::findOrFail($student->course);
             $student->courseName = $course->name;

@@ -9,9 +9,10 @@
     <style type="text/css">
         .profile-img{
             margin-top:50px;
-            width:200px;
-            height:200px;
-            border:none;
+        }
+        .uploader{
+            margin-top:50px;
+            margin-left:45px;
         }
     </style>
 
@@ -25,7 +26,7 @@
                 <div class="card p-2 text-center" >
                     <div class="col-md-12">
                         <img class="profile-img" id="avatar-pic" src="{{ (Auth::user()->avatar)? asset('storage/images/profile/'.(Auth::user()->avatar)):asset('img/dummy.png') }}" alt="Card image cap">
-                        <div id="uploader">Upload <span class="fa fa-image"></span></div>
+                        <div id="uploader" class="uploader">Upload <span class="fa fa-image"></span></div>
                     </div>
                     <div class="card-block">
                         <h4 class="card-title">{{ Auth::user()->username }}</h4>
@@ -40,7 +41,7 @@
                         {{ csrf_field() }}
                         <span class="pull-right"> User ID:<strong id="uid">{{ Auth::user()->id }}</strong></span>
 
-                        <input id="avatar-uploader" hidden="hidden" onchange="readURL(this);" name="avatar" type="file" required>
+                        <input id="avatar-uploader" class="avatar-uploader" hidden="hidden" onchange="readURL(this);" name="avatar" type="file" required>
 
 
                         <label for="name">Full Name:</label><br>

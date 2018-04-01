@@ -8,25 +8,11 @@
     <!-- toastr notifications -->
     <link rel="stylesheet" href="{{ asset('vendor/toastr/css/toastr.min.css') }}">
     <style type="text/css">
-        /*for profile pic upload*/
-        .cms-avatar .krajee-default.file-preview-frame,.cms-avatar .krajee-default.file-preview-frame:hover {
-            margin: 0;
-            padding: 0;
-            border: none;
-            box-shadow: none;
-            text-align: center;
+        .uploader{
+            left: 15px;
         }
-        .cms-avatar {
-            display: inline-block;
-        }
-        .cms-avatar .file-input {
-            display: table-cell;
-            width: 213px;
-        }
-        .cms-reqd {
-            color: red;
-            font-family: monospace;
-            font-weight: normal;
+        .profile-img{
+            border:none;
         }
     </style>
 @endsection
@@ -157,8 +143,8 @@
                         @endforeach
 
                     <td>
-                        <button class='show-modal btn btn-success btn-sm' data-dob="{{ $student->dob }}" data-regno='{{ $student->regno }}' data-id='{{ $student->id }}' data-gender='{{ $student->gender }}' data-proctor='{{ $student->proctor }}' data-email='{{ $student->email }}' data-contact='{{ $student->contact }}' data-name='{{ $student->name }}' data-course='{{ $student->course }}'><span class='fa fa-eye'></span></button>
-                        <button class='edit-modal btn btn-info btn-sm' data-dob="{{ $student->dob }}" data-regno='{{ $student->regno }}' data-id='{{ $student->id }}' data-gender='{{ $student->gender }}' data-proctor='{{ $student->proctor }}' data-email='{{ $student->email }}' data-contact='{{ $student->contact }}' data-name='{{ $student->name }}' data-course='{{ $student->course }}'><span class='fa fa-edit'></span></button>
+                        <button class='show-modal btn btn-success btn-sm' data-address='{{ $student->address }}'data-dob="{{ $student->dob }}" data-regno='{{ $student->regno }}' data-id='{{ $student->id }}' data-gender='{{ $student->gender }}' data-proctor='{{ $student->proctor }}' data-email='{{ $student->email }}' data-contact='{{ $student->contact }}' data-semester='{{ $student->semester }}' data-avatar='{{ asset("storage/images/students/".$student->avatar)}}' data-name='{{ $student->name }}' data-course='{{ $student->course }}'><span class='fa fa-eye'></span></button>
+                        <button class='edit-modal btn btn-info btn-sm' data-address='{{ $student->address}}' data-dob="{{ $student->dob }}" data-semester='{{ $student->semester }}' data-avatar='{{ asset("storage/images/students/".$student->avatar)}}' data-regno='{{ $student->regno }}' data-id='{{ $student->id }}' data-gender='{{ $student->gender }}' data-proctor='{{ $student->proctor }}' data-email='{{ $student->email }}' data-contact='{{ $student->contact }}' data-name='{{ $student->name }}' data-course='{{ $student->course }}'><span class='fa fa-edit'></span></button>
                         <button class='delete-modal btn btn-danger btn-sm' data-id='{{ $student->id }}' data-regno='{{ $student->regno }}' data-name='{{ $student->name }}' data-course='{{ $course->name }}'><span class='fa fa-trash'></span></button></td>
                 </tr>
                 @empty
@@ -191,16 +177,12 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="" class="form">
+                            <form action="#" id="add-student-form" method="POST" enctype="multipart/form-data" class="form">
                                 <div class="form-group row">
-                                    <div class="col-md-4 text-center">
-                                        <div class="cms-avatar">
-                                            <div class="file-loading">
-                                                <input id="avatar-1" name="avatar-1" type="file" required>
-                                             </div>
-                                         </div>
-                                    <div class="cms-avatar-hint"><small>Select file < 1500 KB</small></div>
-                                        <div id="cms-avatar-errors-1" class="center-block" style="width:800px;display:none"></div>
+                                    <div class="col-md-4">
+                                        <img class="profile-img" id="avatar-pic" class="avatar-pic" src="{{ asset('img/dummy.png') }}" alt="Card image cap">
+                                        <div id="uploader" class="uploader" class="text-center">Upload <span class="fa fa-image"></span></div>
+                                        <input id="avatar-uploader" class="avatar-uploader" hidden="hidden" onchange="readURL(this);" name="avatar" type="file" required>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group row">
@@ -243,9 +225,9 @@
                                     </div>
                                 </div>
                                 
-                                <div class="form-group row">
+                                    <div class="form-group row">
                                     <label for="course" class="col-1 col-form-label">Course</label>
-                                    <div class="col-5">
+                                    <div class="col-3">
                                         <select name="course" class="form-control" id="course_add">
                                             @forelse($departments as $department)
                                                 <option value="{{ $department->id }}">{{ $department->name }}</option>
@@ -253,6 +235,16 @@
                                                 No Department
                                             @endforelse
                                         </select>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="sem" class="col-md-4 col-form-label">Sem: </label>
+                                        <div class="col-md-8">
+                                            <select name="semester" class="form-control" id="semester_add">
+                                                @for($i=1;$i<=10;$i++)
+                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
+                                            </select>                                            
+                                        </div>
                                     </div>
                                     <label for="department-input" class="col-1 col-form-label">Proctor</label>
                                     <div class="col-5">
@@ -268,7 +260,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-2 col-form-label">Address</label>
-                                    <textarea class="form-control col-md-9" style="resize:none;" name="address_add" rows="2"></textarea>
+                                    <textarea class="form-control col-md-9" style="resize:none;" name="address" rows="2"></textarea>
                                 </div>
                             </form>
                         </div>
@@ -280,73 +272,89 @@
                 </div>
             </div>
 
-
-            {{--Edit model to edit student details--}}
+            {{--Edit model to update student details--}}
             <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit Student</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Update Student</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="" class="form">
+                            <form action="#" id="edit-student" method="PUT" enctype="multipart/form-data" class="form">
+
                                 <div class="form-group row">
-                                    <label for="regno" class="col-2 col-form-label">Regno</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="regno" type="text"  id="regno_edit">
+                                    <div class="col-md-4">
+                                        <img class="profile-img" id="avatar-pic-edit" class="avatar-pic" src="{{ asset('img/dummy.png') }}" alt="Card image cap">
+                                        <div id="uploader-edit" class="text-center uploader">Upload <span class="fa fa-image"></span></div>
+                                        <input id="avatar-uploader-edit" class="avatar-uploader" hidden="hidden" onchange="readURL(this);" name="avatar" type="file" required>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group row">
+                                            <label for="regno" class="col-2 col-form-label">Regno</label>
+                                            <div class="col-10">
+                                                <input class="form-control" name="regno" type="text"  id="regno_edit">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="name" class="col-2 col-form-label">Name</label>
+                                            <div class="col-10">
+                                                <input class="form-control" name="name" type="text"  id="name_edit">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="email" class="col-2 col-form-label">Email</label>
+                                            <div class="col-10">
+                                                <input class="form-control" name="email" type="email" id="email_edit">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="gender" class="col-2 col-form-label">Gender</label>
+                                            <div class="col-4">
+                                                <select name="gender" id="gender_edit" class="form-control">
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                </select>
+                                            </div>
+                                            <label for="dob" class="col-1 col-form-label">DOB</label>
+                                            <div class="col-5">
+                                                <input class="form-control" name="dob" type="date" value="1995-08-19" id="dob_edit">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="contact" class="col-2 col-form-label">Contact</label>
+                                            <div class="col-10">
+                                                <input class="form-control" name="contact" type="tel" id="contact_edit">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="name" class="col-2 col-form-label">Name</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="name" type="text"  id="name_edit">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="email" class="col-2 col-form-label">Email</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="email" type="email" id="email_edit">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="contact" class="col-2 col-form-label">Contact</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="contact" type="tel" id="contact_edit">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="dob" class="col-2 col-form-label">DOB</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="dob" type="date" id="dob_edit">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="department" class="col-3 col-form-label">Course</label>
-                                    <div class="col-9">
-                                        <select name="department" class="form-control" id="course_edit">
-                                            @forelse($courses as $course)
-                                                <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                
+                                    <div class="form-group row">
+                                    <label for="course" class="col-1 col-form-label">Course</label>
+                                    <div class="col-3">
+                                        <select name="course" class="form-control" id="course_edit">
+                                            @forelse($departments as $department)
+                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
                                             @empty
                                                 No Department
                                             @endforelse
                                         </select>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="gender" class="col-3 col-form-label">Gender</label>
-                                    <div class="col-9">
-                                        <select name="gender" id="gender_edit" class="form-control">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
+                                    <div class="form-group row">
+                                        <label for="sem" class="col-md-4 col-form-label">Sem: </label>
+                                        <div class="col-md-8">
+                                            <select name="semester" class="form-control" id="semester_edit">
+                                                @for($i=1;$i<=10;$i++)
+                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
+                                            </select>                                            
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="department-input" class="col-3 col-form-label">Proctor</label>
-                                    <div class="col-9">
+                                    <label for="department-input" class="col-1 col-form-label">Proctor</label>
+                                    <div class="col-5">
                                         <select name="proctor" id="proctor_edit" class="form-control">
                                             @forelse($users as $user)
                                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -355,19 +363,24 @@
                                             @endforelse
                                         </select>
                                     </div>
+                                    
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-2 col-form-label">Address</label>
+                                    <textarea class="form-control col-md-9" id="address_edit" style="resize:none;" name="address" rows="2"></textarea>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
+                            <button type="button" class="btn btn-primary edit">Update Student</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary edit" data-id="">Update Student</button>
                         </div>
                     </div>
                 </div>
             </div>
             {{--Show model to show student details--}}
-            <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="showModal" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+            <div class="modal  fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="showModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Show Student</h5>
@@ -376,72 +389,99 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="" class="form">
+                            <form action="#" id="add-student-form" method="POST" enctype="multipart/form-data" class="form">
                                 <div class="form-group row">
-                                    <label for="regno" class="col-2 col-form-label">Regno</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="regno" type="text"  id="regno_show"  readonly>
+                                    <div class="col-md-4">
+                                        <img class="profile-img" id="avatar-show" src="{{ asset('img/dummy.png') }}" alt="Card image cap">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group row">
+                                            <label for="regno" class="col-2 col-form-label">Regno</label>
+                                            <div class="col-10">
+                                                <input class="form-control" disabled="disabled" name="regno" type="text"  id="regno_show">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="name" class="col-2 col-form-label">Name</label>
+                                            <div class="col-10">
+                                                <input class="form-control" disabled="disabled" name="name" type="text"  id="name_show">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="email" class="col-2 col-form-label">Email</label>
+                                            <div class="col-10">
+                                                <input class="form-control" disabled="disabled" name="email" type="email" id="email_show">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="gender" class="col-2 col-form-label">Gender</label>
+                                            <div class="col-4">
+                                                <select name="gender" disabled="disabled" id="gender_show" class="form-control">
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                </select>
+                                            </div>
+                                            <label for="dob" class="col-1 col-form-label">DOB</label>
+                                            <div class="col-5">
+                                                <input class="form-control" disabled="disabled" name="dob" type="date" value="1995-08-19" id="dob_show">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="contact" class="col-2 col-form-label">Contact</label>
+                                            <div class="col-10">
+                                                <input class="form-control" disabled="disabled" name="contact" type="tel" id="contact_show">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="name" class="col-2 col-form-label">Name</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="name" type="text"  id="name_show" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="email" class="col-2 col-form-label">Email</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="email" type="email" id="email_show" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="contact" class="col-2 col-form-label">Contact</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="contact" type="tel" id="contact_show" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="dob" class="col-2 col-form-label">DOB</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="dob" type="date" id="dob_show" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="dob" class="col-2 col-form-label">Course</label>
-                                    <div class="col-10">
-                                        <select name="course" id="course_show" disabled>
-                                            @foreach($courses as $course)
-                                                <option value="{{ $course->id }}">{{ $course->name }}</option>
-                                            @endforeach
+                                
+                                    <div class="form-group row">
+                                    <label for="course" class="col-1 col-form-label">Course</label>
+                                    <div class="col-3">
+                                        <select name="course" class="form-control" disabled="disabled" id="course_show">
+                                            @forelse($departments as $department)
+                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                            @empty
+                                                No Department
+                                            @endforelse
                                         </select>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="dob" class="col-2 col-form-label">Gender</label>
-                                    <div class="col-10">
-                                        <input class="form-control" name="gender" type="text" id="gender_show" readonly>
+                                    <div class="form-group row">
+                                        <label for="sem" class="col-md-4 col-form-label">Sem: </label>
+                                        <div class="col-md-8">
+                                            <select name="semester" class="form-control" disabled="disabled" id="semester_show">
+                                                @for($i=1;$i<=10;$i++)
+                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
+                                            </select>                                            
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="dob" class="col-2 col-form-label">Proctor</label>
-                                    <div class="col-10">
-                                        <select name="proctor" id="proctor_show" disabled>
-                                            @foreach($users as $user)
+                                    <label for="department-input" class="col-1 col-form-label">Proctor</label>
+                                    <div class="col-5">
+                                        <select name="proctor" id="proctor_show" disabled="disabled" class="form-control">
+                                            @forelse($users as $user)
                                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                            @endforeach
+                                            @empty
+                                                No Proctor Available
+                                            @endforelse
                                         </select>
                                     </div>
+                                    
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-2 col-form-label">Address</label>
+                                    <textarea class="form-control col-md-9" id="address_show" disabled="disabled" style="resize:none;" name="address" rows="2"></textarea>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary add">Add Student</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Modal form to delete a department -->
+            <!-- Modal form to delete a student -->
             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -524,29 +564,52 @@
                 ];
             </script>
             <script type="text/javascript">
-                $(document).on('load', '#addModal', function(){
-                    // file picture update
-                    var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' + 
-                        'onclick="alert(\'Call your custom code here.\')">' +
-                        '<i class="glyphicon glyphicon-tag"></i>' +
-                        '</button>'; 
-                    $("#avatar-1").fileinput({
-                        overwriteInitial: true,
-                        maxFileSize: 1500,
-                        showClose: false,
-                        showCaption: false,
-                        browseLabel: '',
-                        removeLabel: '',
-                        browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',
-                        removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
-                        removeTitle: 'Cancel or reset changes',
-                        elErrorContainer: '#cms-avatar-errors-1',
-                        msgErrorClass: 'alert alert-block alert-danger',
-                        defaultPreviewContent: '<img src="{{asset('img/dummy.png')}}" alt="Your Avatar">',
-                        layoutTemplates: {main2: '{preview} ' +  btnCust + ' {remove} {browse}'},
-                        allowedFileExtensions: ["jpg", "png", "gif"]
-                    });
+                // For student photo
+                $('.show-modal,.edit-modal').on('click', function(){
+                    $('.profile-img').attr('src', $(this).data('avatar'));
                 });
+            </script>
+            <script type="text/javascript">
+
+                // Image uploading for new student
+                //=====================
+                $('#uploader').on('click',function(){
+                    $('#avatar-uploader').trigger('click');
+                });
+
+                function readURL(input) {
+                       if (input.files && input.files[0]) {
+                           var reader = new FileReader();
+
+                           reader.onload = function (e) {
+                               $('#avatar-pic')
+                                   .attr('src', e.target.result);
+                           };
+
+                           reader.readAsDataURL(input.files[0]);
+                       }
+                   }
+            </script>
+            <script type="text/javascript">
+
+                // Image uploading for new student
+                //=====================
+                $('#uploader-edit').on('click',function(){
+                    $('#avatar-uploader-edit').trigger('click');
+                });
+
+                function readURL(input) {
+                       if (input.files && input.files[0]) {
+                           var reader = new FileReader();
+
+                           reader.onload = function (e) {
+                               $('#avatar-pic-edit')
+                                   .attr('src', e.target.result);
+                           };
+
+                           reader.readAsDataURL(input.files[0]);
+                       }
+                   }
             </script>
     {{--For toaster notification--}}
     <script type="text/javascript" src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>

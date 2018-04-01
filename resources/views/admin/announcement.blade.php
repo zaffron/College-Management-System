@@ -3,10 +3,10 @@
 @section('content')
     <div class="container">
        <div class="row">
-            <div class="card col-md-12 text-white bg-dark o-hidden h-10">
-                <div class="card-body bg-dark">
+            <div class="card col-md-12 text-danger o-hidden h-10">
+                <div class="card-body">
                     <div class="text-center text-danger"><h3>Send Alert!</h3></div>
-                    <hr style="border:3px solid white;">
+                    <hr style="border:3px solid #db3444;">
                     <div class="col-md-12">
                         <label class="h4">Message</label>
                         <textarea class="form-control"></textarea><br>
@@ -14,10 +14,10 @@
                     </div>   
                 </div>
             </div>
-           <div class="card col-md-12 text-danger bg-dark o-hidden h-10">
+           <div class="card col-md-12 text-danger o-hidden h-10">
                 <div class="card-body">
                    <div class="text-center text-danger"><h3>Announce Semester End</h3></div>
-                   <hr style="border:3px solid white;">
+                   <hr style="border:3px solid #db3444;">
                    <p class="text-danger text-center"><strong>*Once the semester end is announced it can't be reverted back</strong></p>
                    <div class="col-md-12 text-center">
                        <form class="form-inline">

@@ -1,19 +1,19 @@
-#avatar-uploader{
+.avatar-uploader{
   visibility:hidden;
 }
 .profile-img{
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
   border:2px solid black;
 }
-#uploader{
+.uploader{
   position: absolute;
   background: #FFFFFF;
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
@@ -21,6 +21,7 @@
   opacity: 0;
   padding-top:40%;
   left:30px;
+  text-align:center;
   &:hover{
     opacity: 0.4;
     cursor: pointer;
