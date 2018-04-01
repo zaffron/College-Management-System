@@ -7,6 +7,8 @@ use Response;
 use App\Course;
 use App\Admin;
 use App\Student;
+use App\Announcement;
+use App\Notifications\AnnounceAll;
 use App\Subject;
 use Storage;
 use App\User;
@@ -49,7 +51,11 @@ class AdminController extends Controller
             'gender' =>'required',
             'password' =>'required|min:6|max:255',
         ];
-
+    protected $announcement_rules =
+        [
+            'id' => 'required',
+            'message' => 'required|min:5|max:255'
+        ];
 
     /**
      * Show the application dashboard.
@@ -82,6 +88,24 @@ class AdminController extends Controller
         $students = Student::all();
         $users = User::all();
         return view('admin.announcement', compact('departments', 'courses', 'subjects', 'students', 'users'));
+    }
+
+    public function createAnnouncement(Request $request)
+    {
+        $validator = Validator::make( Input::all(), $this->announcement_rules);
+        If($validator->fails())
+        {
+            return Response::json( array(
+                'errors' => $validator->getMessageBag()->toArray()
+            ));
+        }
+        $announcement = new Announcement;
+        $announcement->user_id = $request->id;
+        $announcement->message = $request->message;
+        $announcement->save();
+        auth()->user()->notify(new AnnounceAll($announcement));
+
+        return response()->json( $announcement->toArray() );
     }
 
     public function searchDepartment(Request $request)

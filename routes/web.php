@@ -21,6 +21,11 @@ Route::get('/', function () {
 /*Auth Controller*/
 Auth::routes();
 
+// Notification mark as read
+Route::get('/markAsRead', function(){
+    auth()->user()->unreadNotifications->markAsRead();
+});
+
 /*User Controllers*/
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::get('/dashboard', 'HomeController@index')->middleware('auth');
@@ -45,6 +50,7 @@ Route::prefix('admin')->group(function(){
 
     // Announcement
     Route::get('/announcement', 'AdminController@announcement')->name('admin.announcement');
+    Route::post('/announcement/create', 'AdminController@createAnnouncement')->name('admin.announcement.create');
 
     //Course
     Route::post('course/addSubjects', 'CourseController@addSubjects');

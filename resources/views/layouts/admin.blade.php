@@ -28,6 +28,28 @@
     </div>
 </div>
 
+
+<!-- The modal for notification-->
+<div class="modal fade" id="showMessage" tabindex="-1" role="dialog" aria-labelledby="showMessage" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sender"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <p id="message"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Bootstrap core JavaScript-->
 <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -37,6 +59,8 @@
 <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
 <!-- Custom scripts for all pages-->
 <script src="{{ asset('js/dashboard.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/common.js') }}"></script>
+
 
 
 @yield('js')
