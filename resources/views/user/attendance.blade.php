@@ -59,26 +59,55 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Subject</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Subjects:</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" class="form">
+                    <form action="{{ route('attendance.create') }}" method="GET">
                         <div class="form-group row">
                             <label for="name" class="col-12 col-form-label">Subject Name:</label>
                             <div class="col-12">
-                                <input class="form-control" name="name" type="text"  id="name_add">
+                                    <select class="form-control" name="subject" id="user-subjects">
+                                        @foreach(auth()->user()->subjects as $subject)
+                                            <option value="{{ $subject->id}}">{{ $subject->name }}</option>
+                                        @endforeach
+                                    </select> 
+                                    <input type="submit" hidden="hidden" id='submitter' name="Take attendance">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-12 col-form-label">Semester:</label>
+                            <div class="col-12">
+                                    <select class="form-control" name="semester" id="user-subjects">
+                                        @foreach($courses as $course)
+                                            @if(auth()->user()->course == $course->id)
+                                                @for($i=1;$i<=$course->semester;$i++)
+                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
+                                                @break
+                                            @endif
+                                        @endforeach
+                                    </select> 
+                                    <input type="submit" hidden="hidden" id='submitter' name="Take attendance">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary take-attendance">Take Attendance</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary add">Add Subject</button>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('js')
+<script type="text/javascript">
+    $('.take-attendance').on('click',function(){
+        $('#submitter').trigger('click');
+    });
+</script>
 @endsection

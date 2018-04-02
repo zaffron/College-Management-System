@@ -23,7 +23,7 @@ Auth::routes();
 
 // Notification mark as read
 Route::get('/markAsRead', function(){
-    auth()->user()->unreadNotifications->markAsRead();
+    auth()->user()->unreadNotifications->markAllAsRead();
 });
 
 /*User Controllers*/
@@ -32,6 +32,13 @@ Route::get('/dashboard', 'HomeController@index')->middleware('auth');
 Route::get('/students', 'HomeController@showStudents')->middleware('auth')->name('user.students');
 Route::post('/search/student', 'HomeController@searchStudents')->middleware('auth');
 Route::get('/proctees', 'HomeController@proctees')->middleware('auth')->name('user.proctees');
+Route::resource('attendance', 'AttendanceController');
+Route::resource('course', 'CourseController');
+Route::resource('user', 'UserController');
+Route::resource('department', 'DepartmentController');
+Route::resource('student', 'StudentController');
+Route::resource('subject', 'SubjectController');
+
 
 /*Admin Routes*/
 Route::prefix('admin')->group(function(){
@@ -67,7 +74,6 @@ Route::prefix('admin')->group(function(){
 	Route::resource('user', 'UserController');
 	Route::resource('department', 'DepartmentController');
 	Route::resource('student', 'StudentController');
-	Route::resource('attendance', 'AttendanceController');
 	Route::resource('subject', 'SubjectController');
 });
 

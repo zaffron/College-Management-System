@@ -14,6 +14,7 @@
     <link href="{{asset('vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
     <!-- Custom styles for this template-->
     <link href="{{asset('css/dashboard.css')}}" rel="stylesheet">
+    @yield('styles')
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">

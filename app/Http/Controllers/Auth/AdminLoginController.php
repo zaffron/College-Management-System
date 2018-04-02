@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Session;
 use Auth;
 
 class AdminLoginController extends Controller
@@ -41,7 +42,7 @@ class AdminLoginController extends Controller
 	 */
 	public function logout(Request $request)
 	{
-		Auth::guard('admin')->logout();
+		auth('admin')->logout();
 		$request->session()->flush();
 		$request->session()->regenerate();
 		return redirect()->guest(route( 'admin.login' ));
