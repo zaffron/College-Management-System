@@ -18,7 +18,7 @@ $("form").submit(function(e){
                     toastr.error('Validation error!', 'Error Alert', {timeOut: 5000});
                 }, 500);
             } else {
-                toastr.success('Successfully taken attendance!', 'Success Alert', {timeOut: 5000});
+                toastr.success(data.message, 'Success Alert', {timeOut: 5000});
             }
         },
     });

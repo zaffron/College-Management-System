@@ -56,7 +56,27 @@ class AttendanceController extends Controller
 
     public function storeEach(Request $request)
     {
-        dd($request->register);
+        $register = Register::findOrFail($request->register);
+        if($request->attendance == 'on' || $request->attendance == "on"){
+            $request->attendance = 1;
+        }else{
+            $request->attendance = 0;
+        }
+        $date = Carbon::now();
+        DB::table($register->tablename)->insert([
+            'ver_date' => $request->ver_date,
+            'regno' => $request->regno,
+            'std_name' => $request->std_name,
+            'attendance' => $request->attendance,
+            'month' => $date->month,
+            'day' => $date->day,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $message['message'] = 'Attendance taken for '.$request->std_name;
+
+        return response()->json( $message );
     }
 
     /**

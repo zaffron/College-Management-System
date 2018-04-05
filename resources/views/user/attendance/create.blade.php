@@ -59,6 +59,9 @@
                         <div class="checkbox-group">
                             <form method="POST" class="attendance-form">
                                 <input type="hidden" name="register" value="{{ $register->id }}">
+                                <input type="hidden" value="{{$ver_date}}" name="ver_date">
+                                <input type="hidden" name="regno" value="{{ $student->regno }}">
+                                <input type="hidden" name="std_name" value="{{ $student->name }}">
                                 <input type="checkbox" class="attendance-checkbox" checked="checked" name="attendance" id="checkbox-{{ $student->id }}" autocomplete="off" />
                                     <div class="btn-group">
                                         <label for="checkbox-{{ $student->id }}" class="tick btn btn-xs btn-primary">
@@ -68,7 +71,7 @@
                                         <label for="checkbox-{{ $student->id }}" class="status btn btn-xs btn-primary active">
                                         Present
                                        </label>
-                                        <button data-id="{{ $student->regno }}" data-name="{{ $student->name }}" class="btn btn-md h-50 btn-success">
+                                        <button class="btn btn-md h-50 btn-success">
                                         Submit <span class="fa fa-send"></span>
                                        </button>
                                     </div>
