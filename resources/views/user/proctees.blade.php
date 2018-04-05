@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="alert alert-success">
-            <strong>Hello User!</strong> You have <strong id="procteesNumber">{{ count($proctees) }}</strong> proctee under your list.
+            <strong>Hello User!</strong> You have <strong id="procteesNumber">{{ count(auth()->user()->proctees) }}</strong> proctee under your list.
         </div>
 
         <hr class="bg-primary">
@@ -25,14 +25,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach($proctees as $proctee)
+                    @foreach(Auth::user()->proctees as $proctee)
                         <tr>
                             <td>{{ $proctee->regno }}</td>
                             <td>{{ $proctee->name }}</td>
                             <td>{{ $proctee->email }}</td>
-                            <td>{{ $proctee->courses->name }}</td>
                             <td>
-                                <button data-toggle="modal" data-target="#showModal" class="btn btn-sm btn-info show-modal" data-id="{{ $proctee->id }}" data-regno="{{ $proctee->regno }}" data-name="{{ $proctee->name }}" data-dob="{{ $proctee->dob }}" data-email="{{ $proctee->email }}" data-gender="{{ $proctee->gender }}" data-contact="{{ $proctee->contact }}" data-course="{{ $proctee->courses->name }}" data-proctor="{{ $proctee->proctors->name }}"><span class="fa fa-eye"></span> Full Details</button>
+                                @foreach($courses as $course)
+                                    @if($course->id == $proctee->course)
+                                        {{ $course->name }}
+                                        @break
+                                    @endif
+                                @endforeach
+                            </td>
+                            <td>
+                                <button data-toggle="modal" data-target="#showModal" class="btn btn-sm btn-info show-modal" data-id="{{ $proctee->id }}" data-regno="{{ $proctee->regno }}" data-name="{{ $proctee->name }}" data-dob="{{ $proctee->dob }}" data-email="{{ $proctee->email }}" data-gender="{{ $proctee->gender }}" data-proctor="{{ auth()->user()->name }}" data-contact="{{ $proctee->contact }}" data-course="{{ $course->name }}" ><span class="fa fa-eye"></span> Full Details</button>
                             </td>
                         </tr>
                     @endforeach

@@ -23,6 +23,7 @@ class CreateStudentTable extends Migration
             $table->string('address')->nullable();
 	        $table->date('dob');
             $table->string('semester')->default('1');
+            $table->string('section')->default('A');
 	        $table->string('course');
             $table->text('avatar')->nullable();
 	        $table->string('proctor');

@@ -8,10 +8,10 @@ class Student extends Model
 {
     public function courses()
     {
-        return $this->hasOne('App\Course', 'id');
+        return $this->hasOne('App\Course', 'id', 'course');
     }
     public function proctors()
     {
-        return $this->hasOne('App\User', 'id');
+        return $this->hasOne('App\User', 'id', 'proctor');
     }
 }

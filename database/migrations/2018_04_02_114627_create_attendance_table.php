@@ -15,7 +15,7 @@ class CreateAttendanceTable extends Migration
     {
         Schema::create('attendance', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ver_id')->unique();
+            $table->string('ver_date');
             $table->integer('std_id');
             $table->integer('course_id');
             $table->integer('semester');

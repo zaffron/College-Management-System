@@ -156,7 +156,7 @@ $(document).on('click', '.edit-modal', function() {
     });
 });
 
-/*Adding user*/
+/*Editing user*/
 $('.modal-footer').on('click', '.edit-user', function() {
     $.ajax({
         type: 'PUT',

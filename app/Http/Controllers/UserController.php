@@ -11,6 +11,8 @@ use App\Course;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class UserController extends Controller
 {
@@ -96,7 +98,8 @@ class UserController extends Controller
             $user->gender = $request->gender;
             $user->email = $request->email;
             $user->department = $request->department;
-            $user->course = $request->course;
+            if($request->course)
+                $user->course = $request->course;
             $user->password = bcrypt($request->password);
             //Adding teacher count after adding user
             $department = Department::findOrFail($request->department);
@@ -142,7 +145,6 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $validator = Validator::make( Input::all(), $this->edit_rules);
         If($validator->fails())
         {

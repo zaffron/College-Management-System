@@ -12,8 +12,11 @@
     <link href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <!-- Custom fonts for this template-->
     <link href="{{asset('vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+    <!-- toastr notifications -->
+    <link rel="stylesheet" href="{{ asset('vendor/toastr/css/toastr.min.css') }}">
     <!-- Custom styles for this template-->
     <link href="{{asset('css/dashboard.css')}}" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('styles')
 </head>
 
@@ -57,6 +60,8 @@
     <script src="{{ asset('js/dashboard-charts.js') }}"></script>
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('js/dashboard.min.js') }}"></script>
+    {{--For toaster notification--}}
+    <script type="text/javascript" src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/common.js') }}"></script>
     @yield('js')
 

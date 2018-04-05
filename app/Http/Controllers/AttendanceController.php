@@ -11,6 +11,10 @@ use Carbon\Carbon;
 use App\Attendance;
 use Validator;
 use Response;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use App\Register;
+use DB;
 
 class AttendanceController extends Controller
 {
@@ -18,6 +22,8 @@ class AttendanceController extends Controller
         [
             'ver_id' => 'unique'
         ];
+
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +32,8 @@ class AttendanceController extends Controller
     public function index()
     {
         $courses = Course::all();
-	    return view('user.attendance', compact('courses'));
+        $registers = Register::where('teacher_id', auth()->user()->id)->get();
+	    return view('user.attendance', compact('courses', 'registers'));
     }
 
     /**
@@ -36,27 +43,20 @@ class AttendanceController extends Controller
      */
     public function create(Request $request)
     {
-        $courses = Course::all();
-        $user = auth()->user();
-        // Findding the right course
-        foreach($courses as $course_traverse){
-            if($course_traverse->id == $user->course){
-                $course = $course_traverse;
-                break;
-            }
-        }
-        foreach($course->subjects as $subject_traverse){
-            if($subject_traverse->id == $request->subject){
-                $subject = $subject_traverse;
-                break;
-            }
-        }
-        $semester = $request->semester;
+        $register = Register::findOrFail($request->register_id);
         $attn_date = Carbon::now();
         // Verification date
         $ver_date = Carbon::now()->format('d.m.Y');
-        $students = Student::where([['course', '=', $course->id],['semester', '=', $semester],])->orderBy('name', 'asc')->get();
-        return view('user.attendance.create', compact('course', 'subject', 'students', 'semester', 'attn_date', 'ver_date'));
+        // Plucking out students whoose attendance is already taken
+        $taken_students = DB::table($register->tablename)->where('ver_date',$ver_date)->pluck('regno');
+        // Taking only those students whoose attendance was not taken
+        $students = Student::where([['course', '=', $register->course],['semester', '=', $register->semester],['section', '=', $register->section]])->whereNotIn('regno',$taken_students)->orderBy('name', 'asc')->get();
+        return view('user.attendance.create', compact('students','register', 'attn_date', 'ver_date'));
+    }
+
+    public function storeEach(Request $request)
+    {
+        dd($request->register);
     }
 
     /**
@@ -74,8 +74,8 @@ class AttendanceController extends Controller
         $attn_date = $request->attn_date;
         foreach($students as $student)
         {
-            $uid = $request->ver_date . $course->id . $semester . $subject->id . $student->id;
-            $validate = Attendance::where('ver_id', $uid)->first();
+            $ver_id = $request->ver_date;
+            $validate = Attendance::where('ver_id', $ver_id)->first();
             If($validate)
             {
                 continue;

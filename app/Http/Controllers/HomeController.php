@@ -39,8 +39,8 @@ class HomeController extends Controller
     }
     public function showStudents()
     {
-        $students = \App\Student::all();
-        $courses = \App\Course::all();
+        $students = Student::all();
+        $courses = Course::all();
 
         return view('user.student', compact('students', 'courses'));
     }
@@ -60,9 +60,8 @@ class HomeController extends Controller
     }
     public function proctees()
     {
-        $user = Auth::user();
-        $proctees = $user->proctees;
-        return view('user.proctees', compact('proctees'));
+        $courses = Course::all();
+        return view('user.proctees', compact('courses'));
     }
 }
 

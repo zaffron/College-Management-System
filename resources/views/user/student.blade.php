@@ -33,6 +33,7 @@
                             <td>{{ $student->name }}</td>
                             <td>{{ $student->email }}</td>
                             <td>{{ $student->courses->name }}</td>
+                            </td>
                             <td>
                                 <button data-toggle="modal" data-target="#showModal" class="btn btn-sm btn-info show-modal" data-id="{{ $student->id }}" data-regno="{{ $student->regno }}" data-name="{{ $student->name }}" data-dob="{{ $student->dob }}" data-email="{{ $student->email }}" data-gender="{{ $student->gender }}" data-contact="{{ $student->contact }}" data-course="{{ $student->courses->name }}" data-proctor="{{ $student->proctors->name }}"><span class="fa fa-eye"></span> Full Details</button>
                             </td>

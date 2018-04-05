@@ -38,6 +38,8 @@ Route::resource('user', 'UserController');
 Route::resource('department', 'DepartmentController');
 Route::resource('student', 'StudentController');
 Route::resource('subject', 'SubjectController');
+Route::resource('register', 'RegisterController');
+Route::post('/attendance/register/storeEach', 'AttendanceController@storeEach');
 
 
 /*Admin Routes*/

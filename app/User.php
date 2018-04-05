@@ -37,5 +37,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Subject', 'user_subject');
     }
+    public function courses()
+    {
+        return $this->hasOne('App\Course', 'id', 'course');
+    }
 
 }
