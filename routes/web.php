@@ -41,6 +41,11 @@ Route::resource('subject', 'SubjectController');
 Route::resource('register', 'RegisterController');
 Route::post('/attendance/register/storeEach', 'AttendanceController@storeEach');
 
+/*User profile*/
+Route::get('/profile/{id}', 'HomeController@profile')->name('user.profile');
+Route::post('/profile/{id}', 'HomeController@updateProfile')->name('user.profile.update');
+
+
 
 /*Admin Routes*/
 Route::prefix('admin')->group(function(){

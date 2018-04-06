@@ -27,22 +27,11 @@ $(document).on('click', '.add', function(e) {
                     $('#addModal').modal('show');
                     toastr.error('Validation error!', 'Error Alert', {timeOut: 5000});
                 }, 500);
-
-                if (data.errors.name) {
-                    $('.errorTitle').removeClass('hidden');
-                    $('.errorTitle').text(data.errors.name);
-                }
-                if (data.errors.email) {
-                    $('.errorContent').removeClass('hidden');
-                    $('.errorContent').text(data.errors.email);
-                }
             } else {
                 toastr.success('Successfully added Student!', 'Success Alert', {timeOut: 5000});
-                if($('#noStudent').length != 0){
                     $(document).ajaxStop(function(){
                         window.location.reload();
                     });
-                }
             }
         }
     });

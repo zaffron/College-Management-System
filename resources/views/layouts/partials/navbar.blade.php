@@ -56,7 +56,7 @@
                     @endforelse
             </li>
             <li class="nav-item user-name-dispaly">
-                <a href="#" class="nav navbar-text">Welcome! {{ Auth::user()->name }}</a>
+                <a href="{{ route('user.profile', auth()->user()->id) }}" class="nav navbar-text">Welcome! {{ Auth::user()->name }}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="modal" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">

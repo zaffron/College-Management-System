@@ -182,8 +182,8 @@
                         <div class="form-group row">
                             <label for="gender" class="col-form-label col-md-2">Gender:</label>
                             <select name="gender" id="gender_add" class="form-control col-md-4">
-                                <option value="male" selected>Male</option>
-                                <option value="female">Female</option>
+                                <option value="m" selected>Male</option>
+                                <option value="f">Female</option>
                             </select>
                             <!-- course -->
                             <label class="col-form-label col-md-2">Course: </label>

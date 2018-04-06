@@ -66,6 +66,8 @@ class UserController extends Controller
 		return view('admin.user',compact('users','admins','subjects','courses','departments'));
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      *

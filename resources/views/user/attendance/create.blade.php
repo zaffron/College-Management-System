@@ -42,7 +42,6 @@
             </div>
         </div>
         <form class="form" action="{{ route('attendance.store') }}" method="POST">
-            {{ csrf_field() }}
             <table class="table table-striped col-md-12 text-center table-dark">
                 <tr>
                     <th>#</th>
@@ -51,7 +50,7 @@
                     <th>Ateendance</th>
                 </tr>
                 @foreach($students as $student)
-                <tr>
+                <tr id="row-{{ $student->regno }}">
                     <td>{{ $student->id }}</td>
                     <td>{{ $student->regno }}</td>
                     <td>{{ $student->name }}</td>

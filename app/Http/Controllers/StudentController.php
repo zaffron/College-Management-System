@@ -122,6 +122,7 @@ class StudentController extends Controller
         }
         else{
             $student = new Student();
+            $course = Course::findOrFail($request->course);
             $student->regno = strtoupper($request->regno);
             $student->name = $request->name;
             $student->email = $request->email;
@@ -131,6 +132,10 @@ class StudentController extends Controller
             $student->gender = $request->gender;
             $student->proctor = $request->proctor;
             $student->address = $request->address;
+            $student->section = $request->section;
+            // Attaching course with student
+            $course->students()->attach($student->id);
+
             if ($request->hasFile('avatar')) {
                         $image      = $request->file('avatar');
                         $fileName   = time() . '.' . $image->getClientOriginalExtension();
@@ -145,8 +150,7 @@ class StudentController extends Controller
                         Storage::disk('local')->put('public/images/students'.'/'.$fileName, $img);
             }
             $student->save();
-            $course = Course::findOrFail($student->course);
-            $dept = Department::where('course'.'='.$course->id)->get();
+            $dept = Department::where('course',$student->course)->first();
             $dept->students_count += 1;
             $dept->save();
             $student->courseName = $course->name;
@@ -202,6 +206,14 @@ class StudentController extends Controller
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
         }else {
             $student = Student::findOrFail($id);
+            if($request->course != $student->course){
+                // Detaching previous course
+                $course = Course::findOrFail($student->course);
+                $course->students()->detach($student->id);
+                // Making connection to the new one
+                $course = Course::findOrFail($request->course);
+                $course->students()->attach($student->id);
+            }
             $student->regno = strtoupper($request->regno);
             $student->name = $request->name;
             $student->email = $request->email;

@@ -75,6 +75,7 @@ class AttendanceController extends Controller
         ]);
 
         $message['message'] = 'Attendance taken for '.$request->std_name;
+        $message['regno'] = $request->regno;
 
         return response()->json( $message );
     }

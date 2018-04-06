@@ -218,8 +218,19 @@
                                         </div>
                                         <div class="form-group row">
                                             <label for="contact" class="col-2 col-form-label">Contact</label>
-                                            <div class="col-10">
+                                            <div class="col-4">
                                                 <input class="form-control" name="contact" type="tel" id="contact_add">
+                                            </div>
+                                            <label for="section" class="col-2 col-form-label">Section</label>
+                                            <div class="col-4">
+                                                <select id="section_edit" name="section" class="form-control">
+                                                    <option value="A">A</option>
+                                                    <option value="B">B</option>
+                                                    <option value="C">C</option>
+                                                    <option value="D">D</option>
+                                                    <option value="E">E</option>
+                                                    <option value="F">F</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -289,7 +300,7 @@
                                     <div class="col-md-4">
                                         <img class="profile-img" id="avatar-pic-edit" class="avatar-pic" src="{{ asset('img/dummy.png') }}" alt="Card image cap">
                                         <div id="uploader-edit" class="text-center uploader">Upload <span class="fa fa-image"></span></div>
-                                        <input id="avatar-uploader-edit" class="avatar-uploader" hidden="hidden" onchange="readURL(this);" name="avatar" type="file" required>
+                                        <input id="avatar-uploader-edit" class="avatar-uploader" hidden="hidden" onchange="readURLEdit(this);" name="avatar" type="file" required>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group row">
@@ -325,8 +336,19 @@
                                         </div>
                                         <div class="form-group row">
                                             <label for="contact" class="col-2 col-form-label">Contact</label>
-                                            <div class="col-10">
+                                            <div class="col-4">
                                                 <input class="form-control" name="contact" type="tel" id="contact_edit">
+                                            </div>
+                                            <label for="section" class="col-2 col-form-label">Section</label>
+                                            <div class="col-4">
+                                                <select id="section_edit" name="section" class="form-control">
+                                                    <option value="A">A</option>
+                                                    <option value="B">B</option>
+                                                    <option value="C">C</option>
+                                                    <option value="D">D</option>
+                                                    <option value="E">E</option>
+                                                    <option value="F">F</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -592,13 +614,13 @@
             </script>
             <script type="text/javascript">
 
-                // Image uploading for new student
+                // Image uploading for edit student
                 //=====================
                 $('#uploader-edit').on('click',function(){
                     $('#avatar-uploader-edit').trigger('click');
                 });
 
-                function readURL(input) {
+                function readURLEdit(input) {
                        if (input.files && input.files[0]) {
                            var reader = new FileReader();
 
