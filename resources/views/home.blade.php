@@ -103,7 +103,7 @@
           data: {
             labels: attendance_holder[labeldata].reverse(),
             datasets: [{
-              label: "Sessions",
+              label: "Students",
               lineTension: 0.3,
               backgroundColor: "rgba(2,117,216,0.2)",
               borderColor: "rgba(2,117,216,1)",
@@ -162,7 +162,7 @@
               data: {
                 labels: attendance_holder[labeldata].reverse(),
                 datasets: [{
-                  label: "Sessions",
+                  label: "Students",
                   lineTension: 0.3,
                   backgroundColor: "rgba(2,117,216,0.2)",
                   borderColor: "rgba(2,117,216,1)",

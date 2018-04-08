@@ -1,9 +1,15 @@
 <!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+<nav class="navbar navbar-expand-lg {{(auth()->user()->d_mode)? ' navbar-dark bg-dark ':' navbar-light bg-light '}}fixed-top" id="mainNav">
     <a class="navbar-brand" href="{{ route('home') }}">Dashboard</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
+    <div class="toggle-button-container" style="color:skyblue;">
+      Dark Mode: 
+      <button type="button" id="theme-changer" class="btn btn-sm btn-toggle {{(auth()->user()->d_mode)? ' active ':''}}" onclick="changeThemeUser({{auth()->user()->id}});" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <div class="handle"></div>
+      </button>
+    </div>
     <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">

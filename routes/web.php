@@ -40,6 +40,12 @@ Route::resource('student', 'StudentController');
 Route::resource('subject', 'SubjectController');
 Route::resource('register', 'RegisterController');
 Route::post('/attendance/register/storeEach', 'AttendanceController@storeEach');
+Route::post('/changeUserTheme/{status}', function($status){
+    $user = auth()->user();
+    $user->d_mode = $status;
+    $user->save();
+    return back()->with('Message', 'Success');
+})->middleware('auth');
 
 /*User profile*/
 Route::get('/profile/{id}', 'HomeController@profile')->name('user.profile');
@@ -57,6 +63,14 @@ Route::prefix('admin')->group(function(){
     Route::get('/', 'AdminController@index')->name('admin.dashboard');
     Route::post('/search/department', 'AdminController@searchDepartment')->name('admin.search.department');
     Route::post('/search/student', 'AdminController@searchStudent')->name('admin.search.student');
+    // Changing theme mode for admin
+    Route::post('/changeAdminTheme/{status}', function($status){
+        $user = auth()->user();
+        $user->d_mode = $status;
+        $user->save();
+        return back()->with('Message', 'Success');
+    })->middleware('auth:admin');
+
 
     /*Admin profile*/
     Route::get('/profile/{id}', 'AdminController@profile')->name('admin.profile');

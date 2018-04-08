@@ -22,6 +22,7 @@ class CreateAdminTable extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('password');
             $table->string('gender');
+            $table->boolean('d_mode')->default('0');
             $table->rememberToken();
             $table->timestamps();
         });

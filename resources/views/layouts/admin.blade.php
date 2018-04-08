@@ -14,6 +14,9 @@
     <link href="{{asset('vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
     <!-- Custom styles for this template-->
     <link href="{{asset('css/dashboard.css')}}" rel="stylesheet">
+    {{-- For toggle button --}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/toggle-button.css')}}">
+
     {{-- CSRF --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('styles')

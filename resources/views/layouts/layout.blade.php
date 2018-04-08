@@ -16,8 +16,14 @@
     <link rel="stylesheet" href="{{ asset('vendor/toastr/css/toastr.min.css') }}">
     <!-- Custom styles for this template-->
     <link href="{{asset('css/dashboard.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/toggle-button.css')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('styles')
+    <style type="text/css">
+      .toggle-button-container{
+        color:#fff;
+      }
+    </style>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
