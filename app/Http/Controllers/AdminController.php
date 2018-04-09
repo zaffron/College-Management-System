@@ -16,6 +16,8 @@ use Intervention\Image\Facades\Image;
 use App\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use DB;
+use App\Register;
 
 class AdminController extends Controller
 {
@@ -93,7 +95,7 @@ class AdminController extends Controller
     public function createAnnouncement(Request $request)
     {
         $validator = Validator::make( Input::all(), $this->announcement_rules);
-        If($validator->fails())
+        if($validator->fails())
         {
             return Response::json( array(
                 'errors' => $validator->getMessageBag()->toArray()
@@ -106,6 +108,59 @@ class AdminController extends Controller
         auth()->user()->notify(new AnnounceAll($announcement));
 
         return response()->json( $announcement->toArray() );
+    }
+
+    public function semesterEnd(Request $request)
+    {
+        $validator = Validator::make( Input::all(), ['course'=>'required']);
+        if($validator->fails())
+        {
+            return Response::json( array(
+                'errors' => $validator->getMessageBag()->toArray()
+            ));
+        }
+
+        $course = Course::findOrFail($request->course);
+
+        // Incrementing student semester
+        // Incrementing the semester of every student related to that course
+        $students = Student::where('course', $course->id)->get();
+        foreach($students as $student)
+        {
+            $student->increment('semester', 1);
+            $student->save();
+            if($student->semester > $course->semester){
+                $graduated = new GraduatedStudent();
+                $graduated = $student->replicate();
+                $graduated->save();
+                Student::where('regno', $student->regno)->delete();
+            }
+
+        }
+
+        $announcement = new Announcement;
+        $announcement->user_id = auth()->user()->id;
+        $announcement->message = 'Semester ended for '.auth()->user()->name;
+        $announcement->save();
+        auth()->user()->notify(new AnnounceAll($announcement));
+
+        // Register incremented for new sem and deleted if outdated
+        $registers = Register::where('course', $course->id)->get();
+        foreach($registers as $register)
+        {
+            $register->increment('semester', 1);
+            $register->save();
+            DB::table($register->tablename)->truncate();
+        }
+        $outdated_registers = Register::where([['course','=',$course->id],['semester','>',$course->semester]])->get();
+        if($outdated_registers){
+            foreach($outdated_registers as $register){
+                DB::table($register->tablename)->delete();
+            }
+        }
+
+        return response()->json( ['message' => 'Semester ended for '.$course->name.' by '.auth()->user()->name ] );
+
     }
 
     public function searchDepartment(Request $request)

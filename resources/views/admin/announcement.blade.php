@@ -28,10 +28,10 @@
                    <hr style="border:3px solid #db3444;">
                    <p class="text-danger text-center"><strong>*Once the semester end is announced it can't be reverted back</strong></p>
                    <div class="col-md-12 text-center">
-                       <form class="form-inline">
-                           <div class="form-group col-md-10">
-                               <label class="form-control-label col-md-5">Choose to end semester | Course:</label>
-                               <select id="annouce_course" class="form-control col-md-6">
+                       <div class="form-inline" >
+                           <div class="form-group col-md-8">
+                               <label class="form-control-label col-md-6">Choose to end semester | Course:</label>
+                               <select id="sem_end_course" class="form-control col-md-6">
                                    @forelse($courses as $course)
                                         <option value="{{ $course->id}}">{{ $course->name }}</option>
                                     @empty
@@ -40,9 +40,9 @@
                                </select>
                            </div>
                            <div class="form-group">
-                               <button class="btn btn-danger">End semester</button>
+                               <button class="btn btn-danger announce_semester_end">End semester</button>
                            </div>
-                       </form>
+                       </div>
                    </div>
                </div>
            </div>

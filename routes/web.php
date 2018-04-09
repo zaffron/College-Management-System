@@ -79,6 +79,7 @@ Route::prefix('admin')->group(function(){
     // Announcement
     Route::get('/announcement', 'AdminController@announcement')->name('admin.announcement');
     Route::post('/announcement/create', 'AdminController@createAnnouncement')->name('admin.announcement.create');
+    Route::post('/announcement/semester', 'AdminController@semesterEnd')->name('admin.announcement.semester')->middleware('auth:admin');
 
     //Course
     Route::post('course/addSubjects', 'CourseController@addSubjects');
