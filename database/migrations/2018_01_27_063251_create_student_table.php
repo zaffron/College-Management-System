@@ -25,6 +25,8 @@ class CreateStudentTable extends Migration
             $table->string('semester')->default('1');
             $table->string('section')->default('A');
 	        $table->string('course');
+            $table->string('p_contact');
+            $table->string('p_email')->nullable();
             $table->text('avatar')->nullable();
 	        $table->string('proctor');
             $table->timestamps();

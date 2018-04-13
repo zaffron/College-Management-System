@@ -22,9 +22,11 @@ class GraduatedStudents extends Migration
             $table->string('contact');
             $table->string('address')->nullable();
             $table->date('dob');
-            $table->string('semester')->default('1');
-            $table->string('section')->default('A');
+            $table->string('semester');
+            $table->string('section');
             $table->string('course');
+            $table->string('p_contact');
+            $table->string('p_email')->nullable();
             $table->text('avatar')->nullable();
             $table->string('proctor');
             $table->timestamps();

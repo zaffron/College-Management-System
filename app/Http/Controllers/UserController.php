@@ -161,6 +161,7 @@ class UserController extends Controller
             $user->email = $request->email;
             $department = Department::findOrFail($user->department);
             $department->teachers_count = $department->teachers_count - 1;
+            $department->save();
             $user->department = $request->department;
             $user->course = $request->course;
             //Adding teacher count after adding user

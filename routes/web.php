@@ -86,7 +86,7 @@ Route::prefix('admin')->group(function(){
 
 
     /*Import export using CSV and XLS*/
-    Route::post('/postImport', 'StudentController@postImport');
+    Route::post('/postImport', 'StudentController@studentsImport');
     Route::post('/postExport/{type}', 'StudentController@studentsExport')->name('student.export');
 
     //Department

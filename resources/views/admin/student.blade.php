@@ -143,8 +143,8 @@
                         @endforeach
 
                     <td>
-                        <button class='show-modal btn btn-success btn-sm' data-address='{{ $student->address }}'data-dob="{{ $student->dob }}" data-regno='{{ $student->regno }}' data-id='{{ $student->id }}' data-gender='{{ $student->gender }}' data-proctor='{{ $student->proctor }}' data-email='{{ $student->email }}' data-contact='{{ $student->contact }}' data-semester='{{ $student->semester }}' data-avatar='{{ asset("storage/images/students/".$student->avatar)}}' data-name='{{ $student->name }}' data-course='{{ $student->course }}'><span class='fa fa-eye'></span></button>
-                        <button class='edit-modal btn btn-info btn-sm' data-address='{{ $student->address}}' data-dob="{{ $student->dob }}" data-semester='{{ $student->semester }}' data-avatar='{{ asset("storage/images/students/".$student->avatar)}}' data-regno='{{ $student->regno }}' data-id='{{ $student->id }}' data-gender='{{ $student->gender }}' data-proctor='{{ $student->proctor }}' data-email='{{ $student->email }}' data-contact='{{ $student->contact }}' data-name='{{ $student->name }}' data-course='{{ $student->course }}'><span class='fa fa-edit'></span></button>
+                        <button class='show-modal btn btn-success btn-sm' data-address='{{ $student->address }}'data-dob="{{ $student->dob }}" data-regno='{{ $student->regno }}' data-id='{{ $student->id }}' data-gender='{{ $student->gender }}' data-proctor='{{ $student->proctor }}' data-email='{{ $student->email }}' data-contact='{{ $student->contact }}' data-semester='{{ $student->semester }}' data-avatar='{{ asset("storage/images/students/".$student->avatar)}}' data-name='{{ $student->name }}' data-p_contact = {{ $student->p_contact }} data-p_email = '{{ ($student->p_email)? $student->p_email: "No email" }}' data-course='{{ $student->course }}'><span class='fa fa-eye'></span></button>
+                        <button class='edit-modal btn btn-info btn-sm' data-address='{{ $student->address}}' data-dob="{{ $student->dob }}" data-semester='{{ $student->semester }}' data-avatar='{{ asset("storage/images/students/".$student->avatar)}}' data-regno='{{ $student->regno }}' data-id='{{ $student->id }}' data-gender='{{ $student->gender }}' data-proctor='{{ $student->proctor }}' data-email='{{ $student->email }}' data-contact='{{ $student->contact }}' data-name='{{ $student->name }}' data-p_contact= {{ $student->p_contact }} data-p_email='{{ ($student->p_email)? $student->p_email: "" }}'data-course='{{ $student->course }}'><span class='fa fa-edit'></span></button>
                         <button class='delete-modal btn btn-danger btn-sm' data-id='{{ $student->id }}' data-regno='{{ $student->regno }}' data-name='{{ $student->name }}' data-course='{{ $course->name }}'><span class='fa fa-trash'></span></button></td>
                 </tr>
                 @empty
@@ -270,6 +270,13 @@
                                     
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-2 col-form-label">Parent No.</label>
+                                    <input class="form-control col-md-3" type="tel" name="p_contact" >
+
+                                    <label class="col-2 col-form-label">Parent Email</label>
+                                    <input class="form-control col-md-4" type="email" name="p_email" >
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-2 col-form-label">Address</label>
                                     <textarea class="form-control col-md-9" style="resize:none;" name="address" rows="2"></textarea>
                                 </div>
@@ -388,6 +395,13 @@
                                     
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-2 col-form-label">Parent No.</label>
+                                    <input class="form-control col-md-4" id="parent_contact_edit" type="tel" name="p_contact" >
+
+                                    <label class="col-2 col-form-label">Parent Email</label>
+                                    <input class="form-control col-md-3" id="parent_email_edit" type="email" name="p_email" >
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-2 col-form-label">Address</label>
                                     <textarea class="form-control col-md-9" id="address_edit" style="resize:none;" name="address" rows="2"></textarea>
                                 </div>
@@ -491,6 +505,13 @@
                                     
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-2 col-form-label">Parent No.</label>
+                                    <input class="form-control col-md-4" type="tel" disabled="disabled" name="p_contact" id="parent_contact_show">
+
+                                    <label class="col-2 col-form-label">Parent Email</label>
+                                    <input class="form-control col-md-3" id="parent_email_show" type="email" disabled="disabled" name="p_email" >
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-2 col-form-label">Address</label>
                                     <textarea class="form-control col-md-9" id="address_show" disabled="disabled" style="resize:none;" name="address" rows="2"></textarea>
                                 </div>
@@ -553,11 +574,12 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="" class="form" enctype="multipart/form-data">
+                            <form id="importForm" class="form" enctype="multipart/form-data">
+
                                 <div class="form-group row">
                                     <label for="file" class="col-2 col-form-label">File</label>
                                     <div class="col-10">
-                                        <input class="form-control" name="file" type="file"  id="file_import">
+                                        <input class="form-control" name="students" type="file"  id="file_import">
                                     </div>
                                 </div>
                             </form>
@@ -565,6 +587,26 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary xConfirm"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{--Edit model to show error details while importing--}}
+            <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Error while importing</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="error_container">
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>

@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use DB;
 use App\Register;
+use App\GraduatedStudent;
 
 class AdminController extends Controller
 {
@@ -125,20 +126,21 @@ class AdminController extends Controller
         // Incrementing student semester
         // Incrementing the semester of every student related to that course
         $students = Student::where('course', $course->id)->get();
-        foreach($students as $student)
+        $department = Department::where('course', $course->id)->first();
+        foreach($students as $i => $student)
         {
             $student->increment('semester', 1);
             $student->save();
             if($student->semester > $course->semester){
-                $graduated = new GraduatedStudent();
-                $graduated = $student->replicate();
-                $graduated->save();
+                $graduated[$i] = (new GraduatedStudent())->firstOrCreate($student->toArray());
                 Student::where('regno', $student->regno)->delete();
+                $department->decrement('students_count', 1);
+                $department->save();
             }
 
         }
 
-        $announcement = new Announcement;
+        $announcement = new Announcement();
         $announcement->user_id = auth()->user()->id;
         $announcement->message = 'Semester ended for '.auth()->user()->name;
         $announcement->save();

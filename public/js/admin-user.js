@@ -54,9 +54,9 @@ $('.modal-footer').on('click', '.add-admin', function() {
                 }
             } else {
                     toastr.success('Successfully added Admin!', 'Success Alert', {timeOut: 5000});
-                    adminCount += 1;
-                    $('#adminCount').text(adminCount);
-                    $('#adminsTable').append("<tr class='item" + data.id + "'><td>" + data.id + "</td><td>" + data.username + "</td><td>" + data.email + "</td><td><button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-department='" + data.department + "' data-name='" + data.username + "' data-email='" + data.email + "'><span class='fa fa-eye'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.username + "'><span class='fa fa-trash'></span></button></td></tr>");
+                    $(document).ajaxStop(function(){
+                        window.location.reload();
+                    });
             }
         },
     });
@@ -108,9 +108,9 @@ $('.modal-footer').on('click', '.add-user', function() {
                 }
             } else {
                     toastr.success('Successfully added User!', 'Success Alert', {timeOut: 5000});
-                    userCount += 1;
-                    $('#userCount').text(userCount);
-                    $('#usersTable').append("<tr class='item" + data.id + "'><td>" + data.id + "</td><td>" + data.username + "</td><td>" + data.email + "</td><td><button class='show-modal btn btn-success btn-sm' data-id='" + data.id + "' data-department='" + data.department + "' data-name='" + data.username + "' data-email='" + data.email + "'><span class='fa fa-eye'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-name='" + data.name + "' data-description='" + data.username + "'><span class='fa fa-trash'></span></button></td></tr>");
+                        $(document).ajaxStop(function(){
+                            window.location.reload();
+                        });
             }
         },
     });

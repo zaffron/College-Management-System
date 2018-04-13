@@ -243,8 +243,8 @@
                             <!-- gender -->
                             <label for="gender" class="col-form-label col-md-2">Gender:</label>
                             <select name="gender" id="gender_add" class="form-control col-md-4">
-                                <option value="male" selected>Male</option>
-                                <option value="female">Female</option>
+                                <option value="m" selected>Male</option>
+                                <option value="f">Female</option>
                             </select>
                         </div>
                         <div class="form-group row">
@@ -300,8 +300,8 @@
                         <div class="form-group">
                             <label for="gender" class="col-form-label col-sm-2">Gender:</label>
                             <select name="gender" id="gender_show" disabled class="form-control">
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
+                                <option value="m">Male</option>
+                                <option value="f">Female</option>
                             </select>
                         </div>
                     </form>
@@ -320,7 +320,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title modal-name">Show User</h4>
+                        <h4 class="modal-title modal-name">Update User</h4>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -351,8 +351,8 @@
                             <div class="form-group row">
                                 <label for="gender" class="col-form-label col-md-2">Gender:</label>
                                 <select name="gender" id="gender_edit" class="form-control col-md-4">
-                                    <option value="male" >Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="m" >Male</option>
+                                    <option value="f">Female</option>
                                 </select>
                                 <!-- course -->
                                 <label class="col-form-label col-md-2">Course: </label>

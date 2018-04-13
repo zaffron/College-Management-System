@@ -34,12 +34,13 @@ $(document).on('click', '.announce_semester_end', function(){
 	        'course': $('#sem_end_course').val(),
 	    },
 	    success: function(data) {
+	    	console.log('hello');
 	        if ((data.errors)) {
 	            setTimeout(function () {
 	                toastr.error('No Message found!', 'Error Alert', {timeOut: 5000});
 	            }, 500);
 	        } else {
-	            toastr.info('Semester end announced!', 'Success Alert', {timeOut: 5000});
+	            toastr.info(data.message, 'Success Alert', {timeOut: 5000});
 	        }
 	    },
 	});

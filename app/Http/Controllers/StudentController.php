@@ -34,6 +34,7 @@ class StudentController extends Controller
                 'contact' => 'required|min:10',
                 'dob' => 'required',
                 'course' => 'required',
+                'p_contact' => 'required',
                 'gender' => 'required',
                 'proctor' => 'required',
             ];
@@ -45,6 +46,7 @@ class StudentController extends Controller
             'regno' => 'required|min:10|unique:students',
             'contact' => 'required|min:10',
             'dob' => 'required',
+            'p_contact' => 'required|min:10',
             'course' => 'required',
             'gender' => 'required',
             'proctor' => 'required',
@@ -77,6 +79,7 @@ class StudentController extends Controller
 
     public function studentsImport(Request $request)
     {
+        $error_excel = array();
         if($request->hasFile('students')){
             $path = $request->file('students')->getRealPath();
             $data = \Excel::load($path)->get();
@@ -89,20 +92,53 @@ class StudentController extends Controller
                             'email' => $value->email,
                             'contact' => $value->contact,
                             'dob' => $value->dob,
+                            'section' => $value->section,
+                            'course' => $value->course,
+                            'semester' => $value->semester,
+                            'proctor' => $value->proctor,
+                            'p_contact' => $value->contact,
+                            'p_email' => $value->p_email,
+                            'address' => $value->address,
                             'course' => $value->course,
                             'gender' => $value->gender,
                             'proctor' => $value->proctor,
                         ];
                 }
-                if(!empty($student_list)){
-                    Student::insert($student_list);
-                    \Session::flash('success', 'File imported successfully');
-                }
+                foreach ($student_list as $key => $value) {
+                    $validator = Validator::make( $value, $this->rules);
+                    if($validator->fails()){
+                        $error = $validator->getMessageBag()->toArray();
+                        $errors[] = $error;
+                        $error_excel[] = $value;
+                        continue;
+                    }
+                    Student::insert($value);
+                } //for tracing all students
             }else{
-                \Session::flash('warning', 'There is no file to import');
-            }
+
+                return redirect()->back()->with('error', 'No Entries Found!');
+            }//content checking condition
+        }else{
+            return redirect()->back()->with('errfile', 'No file found');
+        }//file checking condition
+        if(count($error_excel)>0){
+            $excel_file = Excel::create('Students not imported', function($excel) use ($error_excel){
+                $excel->sheet('Students not imported', function($sheet) use ($error_excel){
+                   $sheet->fromArray($error_excel);
+                });
+            });
+
+            $excel_file = $excel_file->string('xlsx');
+            $response_file = array(
+                'name' => 'Discarded Students',
+                'file' => "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," . base64_encode($excel_file),
+
+            );
+
+            return response()->json($response_file);
         }
-        return redirect()->back();
+
+        return back()->with('message', 'All done!');
     }
 
     /**
@@ -114,7 +150,7 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make( Input::all(), $this->rules);
-        If($validator->fails())
+        if($validator->fails())
         {
             return Response::json( array(
                 'errors' => $validator->getMessageBag()->toArray()
@@ -133,6 +169,11 @@ class StudentController extends Controller
             $student->proctor = $request->proctor;
             $student->address = $request->address;
             $student->section = $request->section;
+            $student->p_contact = $request->p_contact;
+            if(isset($request->p_email))
+            {
+                $student->p_email = $request->p_email;
+            }
             // Attaching course with student
             $course->students()->attach($student->id);
 
@@ -142,7 +183,7 @@ class StudentController extends Controller
 
                         $img = Image::make($image->getRealPath());
                         $img->resize(200, 200, function ($constraint) {
-                            $constraint->aspectRatio();                 
+                            $constraint->aspectRatio();
                         });
 
                         $img->stream(); // <-- Key point
@@ -224,6 +265,11 @@ class StudentController extends Controller
             $student->semester = $request->semester;
             $student->proctor = $request->proctor;
             $student->address = $request->address;
+            $student->p_contact = $request->p_contact;
+            if(isset($request->p_email))
+            {
+                $student->p_email = $request->p_email;
+            }
             if ($request->hasFile('avatar')) {
                         $image      = $request->file('avatar');
                         $fileName   = time() . '.' . $image->getClientOriginalExtension();

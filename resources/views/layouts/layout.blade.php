@@ -26,7 +26,7 @@
     </style>
 </head>
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<body class="fixed-nav sticky-footer {{(auth()->user()->d_mode)? ' bg-dark ':' bg-light '}} " id="page-top">
     @include('layouts.partials.navbar')
         <div class="content-wrapper">
             <div class="container-fluid">

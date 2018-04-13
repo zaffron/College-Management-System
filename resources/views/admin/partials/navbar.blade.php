@@ -71,9 +71,13 @@
                     </span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="alertsDropdown">
-                    @foreach(auth()->user()->unreadNotifications as $notification)
+                    @forelse(auth()->user()->unreadNotifications as $notification)
                         @include('layouts.partials.notifications.'.snake_case(class_basename($notification->type)));
-                    @endforeach
+                    @empty
+                    <div class="container">
+                        No notifications                        
+                    </div>
+                    @endforelse
             </li>
             <li class="nav-item user-name-dispaly">
                 <a href="{{ route('admin.profile', Auth::user()->id ) }}" class="nav navbar-text">Welcome! {{ auth()->user()->name }}</a>

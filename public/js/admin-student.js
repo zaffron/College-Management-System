@@ -1,6 +1,10 @@
 // add a new post
 var studentCount = parseInt($('#studentCount').text());
 
+// Data elements required
+var url;
+var type;
+
 /*Updating details*/
 
 
@@ -51,6 +55,8 @@ $(document).on('click', '.show-modal', function() {
     $('#semester_show').val($(this).data('semester'));
     $('#avatar-show').attr('src', $(this).data('avatar'));
     $('#address_show').val($(this).data('address'));
+    $('#parent_contact_show').val($(this).data('p_contact'));
+    $('#parent_email_show').val($(this).data('p_email'));
     $('#showModal').modal('show');
 });
 
@@ -68,6 +74,8 @@ $(document).on('click', '.edit-modal', function() {
     $('#address_edit').val($(this).data('address'));
     $('#semester_edit').val($(this).data('semester'));
     $('#avatar_edit').val($(this).data('avatar'));
+    $('#parent_contact_edit').val($(this).data('p_contact'));
+    $('#parent_email_edit').val($(this).data('p_email'));
     id = $(this).data('id');
     $('#editModal').modal('show');
 });
@@ -154,8 +162,8 @@ $('.modal-footer').on('click', '.delete', function() {
 $(document).on('click', '#importXLS', function(){
     $('#xTitle').text("Import Excel file");
    $('.xConfirm').text("Import");
-    var url = 'postImport';
-    var type = 'xls';
+    url = 'postImport';
+    type = 'xls';
 });
 
 //Import CSV
@@ -169,16 +177,37 @@ $(document).on('click', '#importCSV', function(){
 
 
 //Importing file
-$('.modal-footer').on('click', '.xConfirm', function() {
+$('.modal-footer').on('click', '.xConfirm', function(e) {
+    e.preventDefault();
+    var formData = new FormData($('#importForm')[0]);
     $.ajax({
         type: 'POST',
         url: url,
-        data: {
-            '_token': $('input[name=_token]').val(),
-            'file' : $('input[name=file]').val(),
+        headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
+        enctype: 'multipart/form-data',
+        async: false,
+        processData: false,
+        contentType: false,
+        data: formData,
         success: function(data) {
-            toastr.success('Operation Successful!', 'Success Alert', {timeOut: 5000});
+            toastr.success('Operation Successful!', 'Success Alert', {timeOut: 1000});
+            if(data.file){
+                toastr.error('Some inputs discarded. Check the file!', 'Input discarded', {timeOut: 5000});
+                var a = document.createElement("a");
+                a.href = data.file;
+                a.download = data.name;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            }
+            if(data.message){
+                toastr.success('All inputs are imported succesfully!', {timeOut: 5000});
+            }
+            if(data.error){
+                toastr.error('No entried found!', {timeOut: 5000});
+            }
         }
     });
 });
