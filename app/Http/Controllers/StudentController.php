@@ -113,6 +113,9 @@ class StudentController extends Controller
                         continue;
                     }
                     Student::insert($value);
+                    $department = Department::where('course', $value['course'])->first();
+                    $department->increment('students_count', 1);
+                    $department->save();
                 } //for tracing all students
             }else{
 

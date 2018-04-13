@@ -13,6 +13,8 @@ class AdminLoginController extends Controller
 	{
 		$this->middleware('guest');
 	}
+	protected $redirectAfterLogout = 'admin/login';
+
     public function showLoginForm()
     {
     	return view('auth.admin-login');
@@ -45,6 +47,6 @@ class AdminLoginController extends Controller
 		auth('admin')->logout();
 		$request->session()->flush();
 		$request->session()->regenerate();
-		return redirect()->guest(route( 'admin.login' ));
+		return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
 	}
 }
