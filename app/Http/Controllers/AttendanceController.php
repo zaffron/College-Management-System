@@ -94,7 +94,9 @@ class AttendanceController extends Controller
             $data['email'] = $student->p_email;
             $data['name'] = $student->name.' parent';
 
-            dispatch(new SendMail($data));
+            $sms['name'] = $student->name;
+            $sms['contact'] = $student->p_contact;
+            dispatch(new SendMail($data, $sms));
         }
 
         return response()->json( $message );
