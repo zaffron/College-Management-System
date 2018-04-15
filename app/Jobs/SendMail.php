@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class SendMail  implements ShouldQueue
+class SendMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -33,12 +33,9 @@ class SendMail  implements ShouldQueue
     public function handle()
     {
         $data = $this->data;
-        Mail::send('emails.send', $data , function ($message) use ($data)
-        {
-            $message->from('zaffron@gmail.com', 'Zaffron');
-            $message->to($data['toMail']);
-            $message->sender('zaffron@gmail.com', 'Zaffron');
-            $message->subject($data['subject']);
+        Mail::send('emails.send', $data, function ($m) use ($data) {
+            $m->from('hello@app.com', 'Your Application');
+            $m->to($data['email'], $data['name'])->subject('Your Child\'s missing attendance!');
         });
         return response()->json(['message' => 'Request completed']);
     }

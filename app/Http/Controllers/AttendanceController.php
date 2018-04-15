@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Schema;
 use Response;
 use Validator;
 use Mail;
+use Queue;
 
 class AttendanceController extends Controller
 {
@@ -85,7 +86,16 @@ class AttendanceController extends Controller
                 $counter++;
             }
         }
+        if($counter < 1){
+            $student = Student::where('regno', $request->regno)->first();
+            $data['title'] = 'Missing attendance!';
+            $data['subject'] = 'Your child\'s missing attendance!';
+            $data['content'] = 'Your child '.$student->name.' hasn\'t attended any class this week. Please enquire with your child for the timely remedy. Otherwise he will fall short on attendance';
+            $data['email'] = $student->p_email;
+            $data['name'] = $student->name.' parent';
 
+            dispatch(new SendMail($data));
+        }
 
         return response()->json( $message );
     }
