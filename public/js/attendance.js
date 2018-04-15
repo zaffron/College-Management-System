@@ -2,9 +2,13 @@
 
 $("form").submit(function(e){
     e.preventDefault();
-
+    $('#row-'+ this.elements.regno.value).animate({
+        opacity: 'hide', // animate slideUp
+        right: '200px',  // slide left
+        }, 'slow', 'linear', function() {
+          $(this).remove();
+    });
     var formData = new FormData(this);
-    console.log('hell');
     $.ajax({
         type: 'POST',
         url:  'register/storeEach',
@@ -22,12 +26,7 @@ $("form").submit(function(e){
                 }, 500);
             } else {
                 toastr.success(data.message, 'Success Alert', {timeOut: 5000});
-                $('#row-'+ data.regno).animate({
-                    opacity: 'hide', // animate slideUp
-                    right: '200px',  // slide left
-                    }, 'slow', 'linear', function() {
-                      $(this).remove();
-                });
+
             }
         },
     });

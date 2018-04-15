@@ -26,12 +26,18 @@ Route::get('/markAsRead', function(){
     auth()->user()->unreadNotifications->markAllAsRead();
 });
 
+// Sending mail
+Route::post('/send', 'EmailController@send');
+
 /*User Controllers*/
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::get('/dashboard', 'HomeController@index')->middleware('auth');
 Route::get('/students', 'HomeController@showStudents')->middleware('auth')->name('user.students');
 Route::post('/search/student', 'HomeController@searchStudents')->middleware('auth');
+// Related to proctees
 Route::get('/proctees', 'HomeController@proctees')->middleware('auth')->name('user.proctees');
+Route::post('/proctee/update', 'HomeController@procteeUpdate')->middleware('auth');
+
 Route::resource('attendance', 'AttendanceController');
 Route::resource('course', 'CourseController');
 Route::resource('user', 'UserController');

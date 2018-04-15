@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Subject;
-use App\Course;
-use App\Student;
-use App\Department;
-use Carbon\Carbon;
 use App\Attendance;
-use Validator;
-use Response;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use App\Course;
+use App\Department;
+use App\Jobs\SendMail;
 use App\Register;
+use App\Student;
+use App\Subject;
+use Carbon\Carbon;
 use DB;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Response;
+use Validator;
+use Mail;
 
 class AttendanceController extends Controller
 {
@@ -75,7 +77,15 @@ class AttendanceController extends Controller
         ]);
 
         $message['message'] = 'Attendance taken for '.$request->std_name;
-        $message['regno'] = $request->regno;
+        $counter = 0;
+        for($i=0;$i<6;$i++){
+            $today = Carbon::today()->subDays($i);
+            $attendance = DB::table($register->tablename)->whereYear('created_at','=',$today->year)->whereMonth('created_at','=',$today->month)->whereDay('created_at','=',$today->day)->where('regno','=',$request->regno)->where('attendance','=','1')->get();
+            if(count($attendance)){
+                $counter++;
+            }
+        }
+
 
         return response()->json( $message );
     }

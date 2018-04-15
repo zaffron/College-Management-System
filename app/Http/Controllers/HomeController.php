@@ -33,6 +33,14 @@ class HomeController extends Controller
             'gender' =>'required',
             'password' =>'required|min:6|max:255',
         ];
+
+    protected $proctee_update_rules = 
+        [
+            'email' => 'required|email|max:255',
+            'contact' => 'required|min:10|max:13',
+            'parent_contact' => 'required|min:10|max:13',
+            'address' => 'required|min:2|max:255',
+        ];
     /**
      * Create a new controller instance.
      *
@@ -150,8 +158,10 @@ class HomeController extends Controller
     {
         $students = Student::all();
         $courses = Course::all();
+        $departments = \App\Department::all();
+        $users = \App\User::all();
 
-        return view('user.student', compact('students', 'courses'));
+        return view('user.student', compact('students', 'courses', 'departments', 'users'));
     }
     public function searchStudents()
     {
@@ -170,7 +180,29 @@ class HomeController extends Controller
     public function proctees()
     {
         $courses = Course::all();
-        return view('user.proctees', compact('courses'));
+        $departments = \App\Department::all();
+        $users = \App\User::all();
+        return view('user.proctees', compact('courses', 'departments', 'users'));
+    }
+
+    public function procteeUpdate(Request $request)
+    {
+        $validator = Validator::make( Input::all(), $this->proctee_update_rules);
+        if($validator->fails())
+        {
+            return Response::json( array(
+                'errors' => $validator->getMessageBag()->toArray()
+            ));
+        }
+        $student = Student::where('regno', $request->regno)->first();
+        $student->email = $request->email;
+        $student->contact = $request->contact;
+        $student->p_contact = $request->parent_contact;
+        $student->p_email = $request->parent_email;
+        $student->address = $request->address;
+        $student->save();
+
+        return back()->with('message', 'Proctee Details Updated!');
     }
 }
 

@@ -56,9 +56,9 @@
                     @forelse(auth()->user()->unreadNotifications as $notification)
                         @include('layouts.partials.notifications.'.snake_case(class_basename($notification->type)));
                     @empty
-                        <div class="container bg-info text-white">
-                            Nothing to show
-                        </div>
+                    <div class="container">
+                        No notifications                        
+                    </div>
                     @endforelse
             </li>
             <li class="nav-item user-name-dispaly">
