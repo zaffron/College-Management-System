@@ -1,7 +1,6 @@
 
 // Show a student
 $('.show-modal').click(function() {
-	console.log('hello');
     $('#regno_show').val($(this).data('regno'));
     $('#email_show').val($(this).data('email'));
     $('#gender_show').val($(this).data('gender'));

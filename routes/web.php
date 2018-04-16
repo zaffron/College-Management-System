@@ -22,12 +22,10 @@ Route::get('/', function () {
 Auth::routes();
 
 // Notification mark as read
-Route::get('/markAsRead', function(){
-    auth()->user()->unreadNotifications->markAllAsRead();
+Route::get('/markAsReadUser/{id}', function($id){
+   auth()->user()->unreadNotifications->where('id', $id)->markAsRead();
 });
 
-// Sending mail
-Route::post('/send', 'EmailController@send');
 
 /*User Controllers*/
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
@@ -42,7 +40,12 @@ Route::resource('attendance', 'AttendanceController');
 Route::resource('course', 'CourseController');
 Route::resource('user', 'UserController');
 Route::resource('department', 'DepartmentController');
+
+// Student controller
 Route::resource('student', 'StudentController');
+Route::get('studnet/graduated', 'HomeController@graduated')->middleware('auth')->name('user.graduated');
+Route::post('/search/graduated', 'HomeController@searchGraduated')->middleware('auth');
+
 Route::resource('subject', 'SubjectController');
 Route::resource('register', 'RegisterController');
 Route::post('/attendance/register/storeEach', 'AttendanceController@storeEach');
@@ -75,6 +78,11 @@ Route::prefix('admin')->group(function(){
         $user->d_mode = $status;
         $user->save();
         return back()->with('Message', 'Success');
+    })->middleware('auth:admin');
+
+    // Notification mark as read
+    Route::get('/markAsReadAdmin/{id}', function($id){
+       auth()->user()->unreadNotifications->where('id', $id)->markAsRead();
     })->middleware('auth:admin');
 
 

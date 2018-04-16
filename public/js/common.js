@@ -5,8 +5,11 @@ function notificationExpander(sender, message){
 }
 // For making notification as read
 $(function(){
-	$('.message-container').click(function(){
-		$.get('/markAsRead');
+	$('.user-nav>.message-container').click(function(){
+		$.get('admin/markAsReadUser/' + $(this).data('id'));
+	});
+	$('.admin-nav>.message-container').click(function(){
+		$.get('markAsReadAdmin/' + $(this).data('id'));
 	});
 });
 

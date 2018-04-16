@@ -21,11 +21,9 @@ $("form").submit(function(e){
         data: formData,
         success: function(data) {
             if ((data.errors)) {
-                setTimeout(function () {
-                    toastr.error('Validation error!', 'Error Alert', {timeOut: 5000});
-                }, 500);
+                    toastr.error('Validation error!', 'Error Alert', {timeOut: 500});
             } else {
-                toastr.success(data.message, 'Success Alert', {timeOut: 5000});
+                toastr.success(data.message, 'Success Alert', {timeOut: 500});
 
             }
         },

@@ -1,20 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Subject;
-use Auth;
 use App\Course;
-use App\User;
-use Illuminate\Support\Facades\Input;
-use App\Student;
-use Illuminate\Http\Request;
+use App\Department;
+use App\GraduatedStudent;
 use App\Register;
+use App\Student;
+use App\Subject;
+use App\User;
+use Auth;
 use Carbon\Carbon;
 use DB;
-use Validator;
-use Response;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image;
+use Response;
 use Storage;
+use Validator;
 
 
 
@@ -158,10 +160,19 @@ class HomeController extends Controller
     {
         $students = Student::all();
         $courses = Course::all();
-        $departments = \App\Department::all();
-        $users = \App\User::all();
+        $departments = Department::all();
+        $users = User::all();
 
         return view('user.student', compact('students', 'courses', 'departments', 'users'));
+    }
+    public function graduated()
+    {
+        $students = GraduatedStudent::all();
+        $courses = Course::all();
+        $departments = Department::all();
+        $users = User::all();
+
+        return view('user.graduated', compact('students', 'courses', 'departments', 'users'));
     }
     public function searchStudents()
     {
@@ -177,6 +188,22 @@ class HomeController extends Controller
         }
         return response()->json( $students->toArray() );
     }
+    
+    public function searchGraduated()
+    {
+        $course = Course::where('name', 'Like','%'.Input::get('query').'%')->pluck('id')->toArray();
+        $students = GraduatedStudent::where('regno','like','%'.Input::get('query').'%')->orWhere('name', 'like', '%'.Input::get('query').'%')->orWhereIn('course',$course)->get();
+
+        foreach($students as $student)
+        {
+            $course = Course::findOrFail($student->course);
+            $proctor = User::findOrFail($student->proctor);
+            $student->courseName = $course->name;
+            $student->proctorName = $proctor->name;
+        }
+        return response()->json( $students->toArray() );
+    }
+
     public function proctees()
     {
         $courses = Course::all();

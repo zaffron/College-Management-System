@@ -70,7 +70,7 @@
                     <span class="badge badge-pill badge-warning">{{ count(auth()->user()->unreadNotifications)}}</span>
                     </span>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="alertsDropdown">
+                <div class="dropdown-menu admin-nav" aria-labelledby="alertsDropdown">
                     @forelse(auth()->user()->unreadNotifications as $notification)
                         @include('layouts.partials.notifications.'.snake_case(class_basename($notification->type)));
                     @empty

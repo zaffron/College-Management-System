@@ -30,6 +30,12 @@
                     <span class="nav-link-text">Students</span>
                 </a>
             </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Students">
+                <a class="nav-link" href="{{ route('user.graduated') }}">
+                    <i class="fa fa-fw fa-graduation-cap"></i>
+                    <span class="nav-link-text">Graduated Students</span>
+                </a>
+            </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Proctees">
                 <a class="nav-link" href="{{ route('user.proctees') }}">
                     <i class="fa fa-fw fa-male"></i>
@@ -52,7 +58,7 @@
                     <span class="badge badge-pill badge-warning">{{ count(auth()->user()->unreadNotifications)}}</span>
                     </span>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="alertsDropdown">
+                <div class="dropdown-menu user-nav" aria-labelledby="alertsDropdown">
                     @forelse(auth()->user()->unreadNotifications as $notification)
                         @include('layouts.partials.notifications.'.snake_case(class_basename($notification->type)));
                     @empty

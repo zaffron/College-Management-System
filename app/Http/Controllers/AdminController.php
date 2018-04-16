@@ -1,24 +1,25 @@
 <?php
 
 namespace App\Http\Controllers;
-use Auth;
-use Validator;
-use Response;
-use App\Course;
 use App\Admin;
-use App\Student;
 use App\Announcement;
-use App\Notifications\AnnounceAll;
-use App\Subject;
-use Storage;
-use App\User;
-use Intervention\Image\Facades\Image;
+use App\Course;
 use App\Department;
+use App\GraduatedStudent;
+use App\Notifications\AnnounceAll;
+use App\Register;
+use App\Student;
+use App\Subject;
+use App\User;
+use Auth;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use DB;
-use App\Register;
-use App\GraduatedStudent;
+use Illuminate\Support\Facades\Notification;
+use Intervention\Image\Facades\Image;
+use Response;
+use Storage;
+use Validator;
 
 class AdminController extends Controller
 {
@@ -106,7 +107,13 @@ class AdminController extends Controller
         $announcement->user_id = $request->id;
         $announcement->message = $request->message;
         $announcement->save();
-        auth()->user()->notify(new AnnounceAll($announcement));
+
+        //Now time to send notification to all users
+        $admins = Admin::all();
+        $users = User::all();
+
+        Notification::send($users, new AnnounceAll($announcement));
+        Notification::send($admins, new AnnounceAll($announcement));
 
         return response()->json( $announcement->toArray() );
     }
