@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Register;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use App\Subject;
-use App\Course;
-use App\Student;
-use App\Department;
 use App\Attendance;
-use Validator;
-use Response;
+use App\Course;
+use App\Department;
+use App\Register;
+use App\Student;
+use App\Subject;
+use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Response;
+use Validator;
 
 class RegisterController extends Controller
 {
@@ -68,17 +69,18 @@ class RegisterController extends Controller
         $register->tablename = $tablename;
         $register->save();
 
+        $students = Student::select('id','name','regno')->where([['course','=', $course],['section','=',$section],['semester','=',$semester]])->get()->toArray();
+
         // Creating table for attendance
         Schema::create($tablename, function (Blueprint $table) {
                 $table->increments('id');
-                $table->string('ver_date');
                 $table->string('regno');
-                $table->string('std_name');
-                $table->boolean('attendance');
-                $table->string('month');
-                $table->string('day');
+                $table->string('name');
                 $table->timestamps();
             });
+
+        DB::table($tablename)->insert($students);
+
         return response()->json( $register->toArray() );
     }
 

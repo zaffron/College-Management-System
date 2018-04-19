@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Schema;
 use Intervention\Image\Facades\Image;
 use Response;
 use Storage;
@@ -138,14 +139,18 @@ class HomeController extends Controller
             // Get last 7 day attendance
             foreach($registers as $register){
                 $total_attendance = array();
-                $i = 0;
-                while($i < 7)
+                $j = 6;
+                for($i=0;$i<7;$i++)
                 {
-                    $today = Carbon::today()->subDays($i);
-                    $attendance = DB::table($register->tablename)->whereYear('created_at','=',$today->year)->whereMonth('created_at','=',$today->month)->whereDay('created_at','=',$today->day)->where('attendance','=','1')->get();
+                    $today = Carbon::today()->subDays($j);
+                    $attendance = 0;
+                    if(Schema::hasColumn($register->tablename,$today->month.'-'.$today->day))
+                    {
+                        $attendance = DB::table($register->tablename)->where($today->month.'-'.$today->day,'>',0)->pluck($today->month.'-'.$today->day)->count();
+                    }
                     $total_attendance_day[$i] = $today->format("F")." ".$today->day;
-                    $total_attendance[$i] = $attendance->count();
-                    $i++;
+                    $total_attendance[$i] = $attendance;
+                    $j--;
                 }
                 $register->total_attendance = json_encode($total_attendance);
                 $register->total_attendance_day = json_encode($total_attendance_day);

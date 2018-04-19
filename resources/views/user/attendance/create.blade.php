@@ -32,33 +32,44 @@
 
 @section('content')
     <div class="container">
-        <div class="col-xl-12 col-sm-12 mb-3">
+        <div class="col-xl-12 col-sm-12 mb-3 bg-secondary">
             <div class="card text-white bg-info o-hidden h-100">
                 <div class="card-body row">
-                    <div class="col-md-4">Date: {{ $attn_date }}<br> Faculty: {{ auth()->user()->name }}</div>
+                    <div class="col-md-4 form-inline">
+                        Date: {{ $attn_date }}-&nbsp;
+                        <select name="attn_day" id="attn_day" class="form-control">
+                            @foreach($attn_day as $day)
+                                <option value="{{ $day }}">{{ $day }}</option>
+                            @endforeach
+                        </select>
+                        <br> Faculty: {{ auth()->user()->name }}</div>
                     <div class="col-md-4 text-center"><h3>Take Attendance</h3>Subject: {{ $register->subjects->name }}</div>
                     <div class="col-md-4 text-right">Course: {{ $register->courses->name }}<br>Semester: {{ $register->semester }}</div>
                 </div>
             </div>
         </div>
+        @if($attendance_taken > 0)
+            <div class="col-md-12">
+                <div class="alert alert-danger text-center">Attendance already taken {{ $attendance_taken }} times for this batch.</div>
+            </div>
+        @endif
         <form class="form" action="{{ route('attendance.store') }}" method="POST">
             <table class="table table-striped col-md-12 text-center table-dark">
                 <tr>
-                    <th>#</th>
-                    <th>Reg. No.</th>
-                    <th>Name</th>
-                    <th>Ateendance</th>
+                    <th class="col-md-1">#</th>
+                    <th class="col-md-2">Reg. No.</th>
+                    <th class="col-md-5">Name</th>
+                    <th class="col-md-4">Ateendance</th>
                 </tr>
                 @foreach($students as $student)
                 <tr id="row-{{ $student->regno }}">
-                    <td>{{ $student->id }}</td>
-                    <td>{{ $student->regno }}</td>
-                    <td>{{ $student->name }}</td>
-                    <td>
+                    <td class="col-md-1">{{ $student->id }}</td>
+                    <td class="col-md-2">{{ $student->regno }}</td>
+                    <td class="col-md-5">{{ $student->name }}</td>
+                    <td class="col-md-4">
                         <div class="checkbox-group">
                             <form method="POST" class="attendance-form">
                                 <input type="hidden" name="register" value="{{ $register->id }}">
-                                <input type="hidden" value="{{$ver_date}}" name="ver_date">
                                 <input type="hidden" name="regno" value="{{ $student->regno }}">
                                 <input type="hidden" name="std_name" value="{{ $student->name }}">
                                 <input type="checkbox" class="attendance-checkbox" checked="checked" name="attendance" id="checkbox-{{ $student->id }}" autocomplete="off" />

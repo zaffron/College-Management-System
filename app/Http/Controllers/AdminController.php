@@ -76,6 +76,30 @@ class AdminController extends Controller
    		return view('admin.home', compact('departments', 'courses', 'subjects', 'students', 'users'));
     }
 
+    // Graduated student section
+    public function graduated()
+    {
+        $students = GraduatedStudent::all();
+        $courses = Course::all();
+        $departments = Department::all();
+        $users = User::all();
+
+        return view('admin.graduated', compact('students', 'courses', 'departments', 'users'));
+    }
+    public function searchGraduated()
+    {
+        $course = Course::where('name', 'Like','%'.Input::get('query').'%')->pluck('id')->toArray();
+        $students = GraduatedStudent::where('regno','like','%'.Input::get('query').'%')->orWhere('name', 'like', '%'.Input::get('query').'%')->orWhereIn('course',$course)->get();
+
+        foreach($students as $student)
+        {
+            $course = Course::findOrFail($student->course);
+            $proctor = User::findOrFail($student->proctor);
+            $student->courseName = $course->name;
+            $student->proctorName = $proctor->name;
+        }
+        return response()->json( $students->toArray() );
+    }
 
     /*Profile handling*/
     public function profile(Admin $id){

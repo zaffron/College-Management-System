@@ -21,11 +21,6 @@ use Queue;
 
 class AttendanceController extends Controller
 {
-    protected $attn_rules =
-        [
-            'ver_id' => 'unique'
-        ];
-
 
     /**
      * Display a listing of the resource.
@@ -47,14 +42,22 @@ class AttendanceController extends Controller
     public function create(Request $request)
     {
         $register = Register::findOrFail($request->register_id);
-        $attn_date = Carbon::now();
-        // Verification date
-        $ver_date = Carbon::now()->format('d.m.Y');
-        // Plucking out students whoose attendance is already taken
-        $taken_students = DB::table($register->tablename)->where('ver_date',$ver_date)->pluck('regno');
+        $attn_date = Carbon::now()->format('Y-m');
+        for($i=0;$i<3;$i++){
+            $attn_day[$i] = Carbon::now()->subDays($i)->day;
+        }
+
         // Taking only those students whoose attendance was not taken
-        $students = Student::where([['course', '=', $register->course],['semester', '=', $register->semester],['section', '=', $register->section]])->whereNotIn('regno',$taken_students)->orderBy('name', 'asc')->get();
-        return view('user.attendance.create', compact('students','register', 'attn_date', 'ver_date'));
+        $students = Student::where([['course', '=', $register->course],['semester', '=', $register->semester],['section', '=', $register->section]])->orderBy('name', 'asc')->get();
+        
+        $todays_column = Carbon::now()->month.'-'.Carbon::now()->day;
+        $attendance_taken = 0;
+        if(Schema::hasColumn($register->tablename, $todays_column))
+        {
+            $attendance_taken = DB::table($register->tablename)->max($todays_column);
+        }
+
+        return view('user.attendance.create', compact('students','register', 'attn_date','attn_day', 'attendance_taken'));
     }
 
     public function storeEach(Request $request)
@@ -65,24 +68,40 @@ class AttendanceController extends Controller
         }else{
             $request->attendance = 0;
         }
+
         $date = Carbon::now();
-        DB::table($register->tablename)->insert([
-            'ver_date' => $request->ver_date,
-            'regno' => $request->regno,
-            'std_name' => $request->std_name,
-            'attendance' => $request->attendance,
-            'month' => $date->month,
-            'day' => $date->day,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
+        // Preparing column
+        $type = 'integer';
+        $autoincrement = false;
+        $length = '2';
+        $fieldname = $date->month.'-'.$request->day;
+
+        if(Schema::hasColumn($register->tablename, $fieldname))
+        {
+            // If field is found it should be incremented
+            $attendance = DB::table($register->tablename)->where('regno','=',$request->regno)->pluck($fieldname)[0] + $request->attendance;
+            DB::table($register->tablename)->where('regno','=',$request->regno)->update([$fieldname => $attendance]);
+
+        }else{
+            //If no field is found then that field will be created
+            Schema::table($register->tablename, function (Blueprint $table) use ($type, $length, $autoincrement, $fieldname) {
+                $table->$type($fieldname,$autoincrement, $length);
+            });
+            DB::table($register->tablename)->where('regno','=',$request->regno)->insert([
+                    $fieldname => $request->attendance,
+                ]);
+
+        }
 
         $message['message'] = 'Attendance taken for '.$request->std_name;
         $counter = 0;
         for($i=0;$i<6;$i++){
             $today = Carbon::today()->subDays($i);
-            $attendance = DB::table($register->tablename)->whereYear('created_at','=',$today->year)->whereMonth('created_at','=',$today->month)->whereDay('created_at','=',$today->day)->where('regno','=',$request->regno)->where('attendance','=','1')->get();
-            if(count($attendance)){
+            if(Schema::hasColumn($register->tablename,$today->month.'-'.$today->day))
+            {
+                $attendance = DB::table($register->tablename)->where('regno','=',$request->regno)->pluck($today->month.'-'.$today->day);
+            }
+            if($attendance[0]){
                 $counter++;
             }
         }

@@ -9,6 +9,7 @@ $("form").submit(function(e){
           $(this).remove();
     });
     var formData = new FormData(this);
+    formData.append('day', $('#attn_day').val());
     $.ajax({
         type: 'POST',
         url:  'register/storeEach',

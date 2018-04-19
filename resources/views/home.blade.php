@@ -81,7 +81,7 @@
     <script type="text/javascript">
       var attendance_holder = new Array();
             @foreach($registers as $register)
-                attendance_holder["{!! $register->subjects->id !!}{{ $register->section }}attendance"]= {!! $register->total_attendance !!};
+                attendance_holder["{!! $register->subjects->id !!}{{ $register->section }}attendance"] = {!! $register->total_attendance !!};
                 attendance_holder["{!! $register->subjects->id !!}{{ $register->section }}days"] = {!! $register->total_attendance_day !!};
             @endforeach
 
@@ -95,13 +95,14 @@
 
         subject_id = $('#attendance_subject').val();
         section = $('#section').val();
+
         labeldata =  subject_id+section+"days";
         fulldata = subject_id+section+"attendance";
         // Now plotting the chart
         var myLineChart = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: attendance_holder[labeldata].reverse(),
+            labels: attendance_holder[labeldata],
             datasets: [{
               label: "Students",
               lineTension: 0.3,
@@ -114,7 +115,7 @@
               pointHoverBackgroundColor: "rgba(2,117,216,1)",
               pointHitRadius: 20,
               pointBorderWidth: 2,
-              data: attendance_holder[fulldata].reverse(),
+              data: attendance_holder[fulldata],
             }],
           },
           options: {
@@ -160,7 +161,7 @@
             var myLineChart = new Chart(ctx, {
               type: 'line',
               data: {
-                labels: attendance_holder[labeldata].reverse(),
+                labels: attendance_holder[labeldata],
                 datasets: [{
                   label: "Students",
                   lineTension: 0.3,
@@ -173,7 +174,7 @@
                   pointHoverBackgroundColor: "rgba(2,117,216,1)",
                   pointHitRadius: 20,
                   pointBorderWidth: 2,
-                  data: attendance_holder[fulldata].reverse(),
+                  data: attendance_holder[fulldata],
                 }],
               },
               options: {

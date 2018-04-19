@@ -43,7 +43,7 @@ Route::resource('department', 'DepartmentController');
 
 // Student controller
 Route::resource('student', 'StudentController');
-Route::get('studnet/graduated', 'HomeController@graduated')->middleware('auth')->name('user.graduated');
+Route::get('student/graduated', 'HomeController@graduated')->middleware('auth')->name('user.graduated');
 Route::post('/search/graduated', 'HomeController@searchGraduated')->middleware('auth');
 
 Route::resource('subject', 'SubjectController');
@@ -72,6 +72,10 @@ Route::prefix('admin')->group(function(){
     Route::get('/', 'AdminController@index')->name('admin.dashboard');
     Route::post('/search/department', 'AdminController@searchDepartment')->name('admin.search.department');
     Route::post('/search/student', 'AdminController@searchStudent')->name('admin.search.student');
+    // Graduate students
+    Route::get('student/graduated', 'AdminController@graduated')->middleware('auth:admin')->name('admin.graduated');
+    Route::post('search/graduated', 'AdminController@searchGraduated');
+
     // Changing theme mode for admin
     Route::post('/changeAdminTheme/{status}', function($status){
         $user = auth()->user();
