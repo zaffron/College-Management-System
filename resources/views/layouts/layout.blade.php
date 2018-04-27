@@ -55,7 +55,8 @@
                </div>
            </div>
        </div>
-
+    {{-- Main js for pusher --}}
+    <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

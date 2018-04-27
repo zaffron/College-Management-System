@@ -1,13 +1,8 @@
-require ('./bootstrap');
+import Echo from "laravel-echo"
 
-Vue.component('search', require('./components/SearchComponenet.vue'));
+window.Pusher = require('pusher-js');
 
-const app = new Vue({
-   el: '#app'
-    data: {
-       searchQuery: ''
-    }
-    methods:{
-
-    }
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: '04f79c1249d217bf1b80'
 });

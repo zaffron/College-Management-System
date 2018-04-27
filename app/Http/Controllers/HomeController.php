@@ -54,6 +54,13 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    public function report()
+    {
+        dd('report');
+        return view('user.report');
+    }
+
+
     /*Profile handling for user*/
     public function profile(User $id){
 

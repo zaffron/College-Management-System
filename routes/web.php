@@ -26,7 +26,11 @@ Route::get('/markAsReadUser/{id}', function($id){
    auth()->user()->unreadNotifications->where('id', $id)->markAsRead();
 });
 
-
+//Attendance report
+Route::get('/attendance/reportTotal', 'AttendanceController@reportTotal')->middleware('auth')->name('attendance.report.total');
+Route::get('/attendance/reportSingle', 'AttendanceController@reportSingle')->middleware('auth')->name('attendance.report.single');
+Route::post('/report/getTotalData', 'AttendanceController@getTotalData')->middleware('auth');
+Route::post('/report/getSingleData', 'AttendanceController@getSingleData')->middleware('auth');
 /*User Controllers*/
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::get('/dashboard', 'HomeController@index')->middleware('auth');
@@ -55,6 +59,8 @@ Route::post('/changeUserTheme/{status}', function($status){
     $user->save();
     return back()->with('Message', 'Success');
 })->middleware('auth');
+
+
 
 /*User profile*/
 Route::get('/profile/{id}', 'HomeController@profile')->name('user.profile');

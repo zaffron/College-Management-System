@@ -34,6 +34,54 @@ class AttendanceController extends Controller
 	    return view('user.attendance', compact('courses', 'registers'));
     }
 
+    public function reportTotal()
+    {
+        $students = Student::all();
+        $year = Carbon::now()->format('Y');
+        return view('user.reports.total', compact('students', 'year'));
+    }
+    public function reportSingle()
+    {
+        $students = Student::all();
+        $year = Carbon::now()->format('Y');
+
+        return view('user.reports.single', compact('students', 'year'));
+    }
+    public function getTotalData(Request $request)
+    {
+        $register = Register::where([['course','=',auth()->user()->course],['subject','=',$request->subject],['semester','=',$request->semester],['section','=',$request->section],['year','=', $request->batch]])->first();
+
+        $attendance_table = DB::table($register->tablename)->get();
+        $total_class = DB::table($register->tablename)->max('total_class');
+
+        return response()->json( $attendance_table->toArray() );
+    }
+    public function getSingleData(Request $request)
+    {        
+        $register = Register::where([['course','=',auth()->user()->course],['subject','=',$request->subject],['semester','=',$request->semester],['section','=',$request->section],['year','=', $request->batch]])->first();
+
+        $attendance_table = DB::table($register->tablename)->where('regno',$request->regno)->first();
+
+        $fields = ['id','regno','name','total_class','attended','created_at','updated_at'];
+
+        $dates = collect($attendance_table)->except($fields);
+
+        $results = array();
+        $i=0;
+        foreach($dates as $date=>$key)
+        {
+            $timestamps = new Carbon($request->batch.'-'.$date);
+            $results[] = array(
+                'id' => (string)$i,
+                'title' => (string)$key.' times present in the class',
+                'url' => '#',
+                'class' => "event-info",
+                'start' => (string)$timestamps->timestamp.'000',
+            );
+        }
+
+        return json_encode($results);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -91,6 +139,14 @@ class AttendanceController extends Controller
                     $fieldname => $request->attendance,
                 ]);
 
+        }
+        if($request->attendance){
+            DB::table($register->tablename)->where('regno', '=', $request->regno)->update([
+                    'total_class' => DB::raw('total_class + 1'),
+                    'attended' => DB::raw('attended + 1'),
+                ]);
+        }else{
+            DB::table($register->tablename)->where('regno', '=', $request->regno)->increment('total_class');
         }
 
         $message['message'] = 'Attendance taken for '.$request->std_name;

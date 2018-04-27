@@ -24,6 +24,20 @@
                     <span class="nav-link-text">Attendance</span>
                 </a>
             </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents">
+                <i class="fa fa-fw fa-file"></i>
+                <span class="nav-link-text">Attendance Report</span>
+              </a>
+                  <ul class="sidenav-second-level collapse" id="collapseComponents">
+                    <li>
+                      <a href="{{ route('attendance.report.total') }}">Total Attendance</a>
+                    </li>
+                    <li>
+                      <a href="{{ route('attendance.report.single') }}">Individual Attendance</a>
+                    </li>
+                  </ul>
+            </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Students">
                 <a class="nav-link" href="{{ route('user.students') }}">
                     <i class="fa fa-fw fa-user-o"></i>

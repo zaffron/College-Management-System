@@ -76,6 +76,8 @@ class RegisterController extends Controller
                 $table->increments('id');
                 $table->string('regno');
                 $table->string('name');
+                $table->integer('total_class')->default(0);
+                $table->integer('attended')->default(0);
                 $table->timestamps();
             });
 
