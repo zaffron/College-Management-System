@@ -14,10 +14,11 @@ use DB;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
-use Response;
-use Validator;
+use Maatwebsite\Excel\Facades\Excel;
 use Mail;
 use Queue;
+use Response;
+use Validator;
 
 class AttendanceController extends Controller
 {
@@ -52,9 +53,30 @@ class AttendanceController extends Controller
         $register = Register::where([['course','=',auth()->user()->course],['subject','=',$request->subject],['semester','=',$request->semester],['section','=',$request->section],['year','=', $request->batch]])->first();
 
         $attendance_table = DB::table($register->tablename)->get();
-        $total_class = DB::table($register->tablename)->max('total_class');
 
-        return response()->json( $attendance_table->toArray() );
+        $total_class = DB::table($register->tablename)->max('total_class');
+        // To export or download student percentage
+        $data = json_decode( json_encode($attendance_table->toArray()), true);
+        
+        $name = 'Report - '.$register->subjects->name.' - '.$register->year.' - '.$register->semester.' - '.$register->section;
+
+        $excel_file = Excel::create($name, function($excel) use ($data,$name){
+            $excel->sheet($name, function($sheet) use ($data){
+               $sheet->fromArray($data);
+            });
+        });
+
+
+        // Converting to suitable format so that ajax can download it
+        $excel_file = $excel_file->string('xlsx');
+        $response_excel = array(
+            'name' => $name,
+            'file' => "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," . base64_encode($excel_file),
+
+        );
+        
+
+        return response()->json( $attendance_table->toArray(), $response_excel );
     }
     public function getSingleData(Request $request)
     {        

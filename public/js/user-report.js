@@ -24,6 +24,7 @@ $('.totalController').on('change click load',function(){
                 }, 500);
 
             } else {
+                console.log(data);
                 toastr.success('Successfully fetched data!', 'Success Alert', {timeOut: 5000});
                 var elements = '<table class="table table-bordered"><tr><th>Regno</th><th>Name</th><th>Attendance</th><th>%</th></tr>';
                 var last_elements = '</table>';

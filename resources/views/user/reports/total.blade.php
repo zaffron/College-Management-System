@@ -52,6 +52,7 @@
 	</div>
 	<hr>
 	<div class="container" id="attendanceTableHolder">
+		<button class="btn btn-md btn-primary pull-right mb-2">Download <span class="fa fa-arrow-down"></span></button>
 		<table class="table table-bordered" id="attendanceTable">
 			<tr>
 				<th>Regno</th>
