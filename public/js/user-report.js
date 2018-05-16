@@ -26,7 +26,7 @@ $('.totalController').on('change click load',function(){
             } else {
                 console.log(data);
                 toastr.success('Successfully fetched data!', 'Success Alert', {timeOut: 5000});
-                var elements = '<table class="table table-bordered"><tr><th>Regno</th><th>Name</th><th>Attendance</th><th>%</th></tr>';
+                var elements = '<table class="table table-bordered"><tr><th>Regno</th><th>Name</th><th>Attendance</th><th>%</th><th>Operation</th></tr>';
                 var last_elements = '</table>';
                 var property;
                 var percentage;
@@ -38,14 +38,45 @@ $('.totalController').on('change click load',function(){
                     }else{
                         property = '';
                     }
-                	elements += '<tr><td>'+ data[i].regno +'</td><td>'+ data[i].name +'</td><td>'+ data[i].attended +'</td><td class="'+ property +'">'  + percentage +'%</td></tr>';
+                	elements += '<tr><td>'+ data[i].regno +'</td><td>'+ data[i].name +'</td><td>'+ data[i].attended +'</td><td class="'+ property +'">'  + percentage +'%</td><td><button class="send-report btn btn-danger btn-md" data-percentage="' + percentage +'" data-regno="' + data[i].regno + '">Report Parents</td></tr>';
                 }
                 elements += last_elements;
                 document.getElementById('attendanceTableHolder').innerHTML = elements;
+                
+                $('button.send-report').on('click',function(){
+                var regno = $(this).data("regno");
+                var percentage = $(this).data("percentage");
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: '/report/reportParent',
+                        headers:{
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            'regno': regno,
+                            'percentage': percentage,
+                        },
+                        success: function(data) {
+
+                            if ((data.errors)) {
+                                setTimeout(function () {
+                                    toastr.error('No data found!', 'Error Alert', {timeOut: 5000});
+                                }, 500);
+
+                            } else {
+                                toastr.success('Successfully sent report!', 'Success Alert', {timeOut: 5000});
+                            }
+                        },
+
+                    });
+                });
+
             }
         },
     });
 });
+
 
 $('.changer').on('change blur',function(){
     var subject = $('#singleSubject').val();

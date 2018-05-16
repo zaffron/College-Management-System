@@ -21,6 +21,9 @@ Route::get('/', function () {
 /*Auth Controller*/
 Auth::routes();
 
+// Report parent
+Route::post('/report/reportParent', 'AttendanceController@reportParent');
+
 // Notification mark as read
 Route::get('/markAsReadUser/{id}', function($id){
    auth()->user()->unreadNotifications->where('id', $id)->markAsRead();

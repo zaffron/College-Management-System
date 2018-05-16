@@ -34,7 +34,23 @@ class AttendanceController extends Controller
         $registers = Register::where('teacher_id', auth()->user()->id)->get();
 	    return view('user.attendance', compact('courses', 'registers'));
     }
+    public function reportParent(Request $request)
+    {   
+        $regno = $request->regno;
+        $percentage = $request->percentage;
+        $student = Student::where('regno', $request->regno)->first();
+        $data['title'] = 'Attendance Report!';
+        $data['subject'] = 'Your child\'s attendance report!';
+        $data['content'] = 'Your child '.$student->name.' attendace as per today is '.$percentage.'. If it is less than 75% please kindly contact with your child for the enquiry as he has to maintain 75% attendance for attending the exams.' ;
+        $data['email'] = $student->p_email;
+        $data['name'] = $student->name.' parent';
 
+        $sms['name'] = $student->name;
+        $sms['percentage'] = $request->percentage;
+        $sms['contact'] = $student->p_contact;
+        dispatch(new SendMail($data, $sms));
+
+    }
     public function reportTotal()
     {
         $students = Student::all();
@@ -55,28 +71,28 @@ class AttendanceController extends Controller
         $attendance_table = DB::table($register->tablename)->get();
 
         $total_class = DB::table($register->tablename)->max('total_class');
-        // To export or download student percentage
-        $data = json_decode( json_encode($attendance_table->toArray()), true);
+        // // To export or download student percentage
+        // $data = json_decode( json_encode($attendance_table->toArray()), true);
         
-        $name = 'Report - '.$register->subjects->name.' - '.$register->year.' - '.$register->semester.' - '.$register->section;
+        // $name = 'Report - '.$register->subjects->name.' - '.$register->year.' - '.$register->semester.' - '.$register->section;
 
-        $excel_file = Excel::create($name, function($excel) use ($data,$name){
-            $excel->sheet($name, function($sheet) use ($data){
-               $sheet->fromArray($data);
-            });
-        });
+        // $excel_file = Excel::create($name, function($excel) use ($data,$name){
+        //     $excel->sheet($name, function($sheet) use ($data){
+        //        $sheet->fromArray($data);
+        //     });
+        // });
 
 
         // Converting to suitable format so that ajax can download it
-        $excel_file = $excel_file->string('xlsx');
-        $response_excel = array(
-            'name' => $name,
-            'file' => "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," . base64_encode($excel_file),
+        // $excel_file = $excel_file->string('xlsx');
+        // $response_excel = array(
+        //     'name' => $name,
+        //     'file' => "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," . base64_encode($excel_file),
 
-        );
+        // );
         
 
-        return response()->json( $attendance_table->toArray(), $response_excel );
+        return response()->json( $attendance_table->toArray());
     }
     public function getSingleData(Request $request)
     {        

@@ -45,7 +45,8 @@ class SendMail implements ShouldQueue
         $user="avlasgamer2427@gmail.com:#123Zalayan#";
         $receipientno=$sms['contact'];
         $senderID="TEST SMS";
-        $msgtxt="This message is from CMS.Your child ".$sms['name']." hasn't attended class for a week. We request you to contact him and provide the reasons. Your call to the proctor will be really appreciated.";
+        $msgtxt="This message is from CMS.Your child ".$sms['name']." has ".$sms['percentage']." percentage attendace as per today. If your child's attendance is less than 50 percentage we kindly suggest you to contact him and provide the reasons.";
+        echo $msgtxt;
         curl_setopt($ch,CURLOPT_URL,  "http://api.mVaayoo.com/mvaayooapi/MessageCompose");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
